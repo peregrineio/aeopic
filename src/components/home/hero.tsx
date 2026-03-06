@@ -17,7 +17,7 @@ export function Hero() {
         preload="metadata"
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="/videos/herobackgroundbg.mp4" type="video/mp4" />
+        <source src="/videos/hero-bg-compressed.mp4" type="video/mp4" />
       </video>
 
       {/* Dark overlay for text readability */}

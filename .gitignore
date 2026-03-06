@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large video files (use external hosting)
-public/videos/*.mp4
+# Large uncompressed video files
+public/videos/herobackgroundbg.mp4
