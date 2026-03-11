@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
-import { User, Star, Shield, Heart, Hammer, TrendingUp } from "lucide-react";
+import {
+  Star,
+  Shield,
+  Heart,
+  Hammer,
+  TrendingUp,
+  Code2,
+  Sparkles,
+  Palette,
+  Compass,
+  Megaphone,
+  Headphones,
+} from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
 import { SectionHeader } from "@/components/shared/section-header";
 import { CTASection } from "@/components/shared/cta-section";
@@ -7,24 +19,45 @@ import { CTASection } from "@/components/shared/cta-section";
 export const metadata: Metadata = {
   title: "About Us | Aeopic",
   description:
-    "Meet the team behind Aeopic. We're a group of builders who believe great software should be accessible to every business.",
+    "A small, focused team of engineers and strategists building custom software for businesses that are ready to grow.",
 };
 
-const team = [
+const capabilities = [
   {
-    name: "Founder 1",
-    role: "Co-Founder",
-    bio: "Software engineer with a passion for building products that solve real problems.",
+    icon: Code2,
+    title: "Engineering",
+    description:
+      "Full-stack developers who build production-grade platforms from the ground up.",
   },
   {
-    name: "Founder 2",
-    role: "Co-Founder",
-    bio: "Business strategist focused on helping companies scale through technology.",
+    icon: Sparkles,
+    title: "AI & Automation",
+    description:
+      "Specialists in integrating AI into real business workflows — not just chatbots.",
   },
   {
-    name: "Founder 3",
-    role: "Co-Founder",
-    bio: "Full-stack developer who believes in clean code and great user experiences.",
+    icon: Palette,
+    title: "Design & UX",
+    description:
+      "Interfaces built for humans first, with obsessive attention to usability.",
+  },
+  {
+    icon: Compass,
+    title: "Strategy & Growth",
+    description:
+      "We don't just build — we help you figure out what to build and why.",
+  },
+  {
+    icon: Megaphone,
+    title: "Marketing",
+    description:
+      "Data-driven campaigns that connect your business with the right customers.",
+  },
+  {
+    icon: Headphones,
+    title: "Support & Delivery",
+    description:
+      "We stick around after launch. Your success is our success.",
   },
 ];
 
@@ -61,8 +94,8 @@ export default function AboutPage() {
     <>
       <ServiceHero
         eyebrow="About Us"
-        headline="Meet the Team Behind Aeopic"
-        subheadline="We're a group of builders who believe great software should be accessible to every business."
+        headline="A Team Built to Build"
+        subheadline="A small, focused team of engineers and strategists building custom software for businesses that are ready to grow."
         gradient
       />
 
@@ -94,19 +127,29 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* The Team */}
-      <section className="section-padding bg-[hsl(var(--neutral-bg))]">
+      {/* What We Bring to the Table */}
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
-          <SectionHeader headline="The Team" centered />
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {team.map((member) => (
-              <div key={member.name} className="premium-card p-6 text-center">
-                <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center mx-auto mb-4">
-                  <User className="h-10 w-10 text-primary" />
+          <SectionHeader
+            headline="What We Bring to the Table"
+            subheadline="Engineers, designers, and strategists — working together to turn your ideas into production-ready software."
+            centered
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {capabilities.map((capability, index) => (
+              <div
+                key={capability.title}
+                className={`p-6 border-l-4 border-primary rounded-r-lg hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 ${
+                  index % 2 === 0 ? "bg-white" : "bg-white"
+                }`}
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-4 shadow-md shadow-primary/20">
+                  <capability.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold mb-1">{member.name}</h3>
-                <p className="text-sm text-primary mb-3">{member.role}</p>
-                <p className="text-sm text-muted-foreground">{member.bio}</p>
+                <h3 className="font-semibold text-lg mb-2">{capability.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {capability.description}
+                </p>
               </div>
             ))}
           </div>
@@ -114,14 +157,17 @@ export default function AboutPage() {
       </section>
 
       {/* Our Values */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#0F1226]">
         <div className="container-site">
-          <SectionHeader headline="Our Values" centered />
+          <SectionHeader headline="Our Values" centered dark />
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {values.map((value) => (
-              <div key={value.title} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="h-6 w-6 text-primary" />
+              <div
+                key={value.title}
+                className="bg-[#F6F7FB] border-l-4 border-primary p-6 text-center hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300 rounded-r-lg"
+              >
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto mb-4 shadow-md shadow-primary/20">
+                  <value.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="font-semibold mb-2">{value.title}</h3>
                 <p className="text-sm text-muted-foreground">

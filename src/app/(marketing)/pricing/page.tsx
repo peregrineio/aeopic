@@ -111,25 +111,32 @@ export default function PricingPage() {
       />
 
       {/* Pricing Tiers */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <div className="grid lg:grid-cols-3 gap-8">
             {pricingTiers.map((tier) => (
               <div
                 key={tier.name}
-                className={`premium-card p-8 relative ${
+                className={`premium-card p-8 relative bg-white ${
                   tier.featured
-                    ? "border-2 border-primary lg:scale-105"
-                    : ""
+                    ? "border-2 border-transparent bg-gradient-to-br from-primary/5 to-primary/10 lg:scale-105 shadow-xl shadow-primary/10"
+                    : "border border-border hover:border-primary/30 transition-colors"
                 }`}
+                style={tier.featured ? {
+                  backgroundImage: 'linear-gradient(white, white), linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.5))',
+                  backgroundOrigin: 'border-box',
+                  backgroundClip: 'padding-box, border-box',
+                } : undefined}
               >
                 {tier.featured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary to-primary/80 text-white text-xs font-semibold rounded-full shadow-md shadow-primary/20">
                     Most Popular
                   </span>
                 )}
 
-                <span className="px-3 py-1 bg-accent text-sm font-medium rounded-full">
+                <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                  tier.featured ? 'bg-primary/10 text-primary' : 'bg-accent'
+                }`}>
                   {tier.tag}
                 </span>
 

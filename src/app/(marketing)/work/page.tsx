@@ -62,13 +62,16 @@ export default function WorkPage() {
       />
 
       {/* Capabilities */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <SectionHeader headline="Our Capabilities" centered />
           <div className="grid md:grid-cols-2 gap-6">
-            {capabilities.map((item) => (
-              <div key={item.title} className="premium-card p-8">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+            {capabilities.map((item, index) => (
+              <div
+                key={item.title}
+                className="premium-card p-8 bg-white border-l-4 border-primary hover:shadow-lg hover:shadow-primary/5 transition-shadow"
+              >
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 border border-primary/20">
                   <item.icon className="h-7 w-7 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
@@ -80,7 +83,7 @@ export default function WorkPage() {
       </section>
 
       {/* Tech Stack */}
-      <section className="section-padding bg-[hsl(var(--neutral-bg))]">
+      <section className="section-padding bg-white">
         <div className="container-site">
           <SectionHeader
             headline="Our Stack in Action"
@@ -91,7 +94,7 @@ export default function WorkPage() {
             {techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 bg-white border border-border rounded-full text-sm font-medium"
+                className="px-4 py-2 bg-[#F6F7FB] border border-primary/10 rounded-full text-sm font-medium hover:border-primary/30 transition-colors"
               >
                 {tech}
               </span>
@@ -101,10 +104,10 @@ export default function WorkPage() {
       </section>
 
       {/* Case Studies Coming Soon */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="premium-card p-12">
+            <div className="premium-card p-12 bg-white border-2 border-primary/20">
               <h2 className="text-2xl font-bold mb-4">Case Studies Coming Soon</h2>
               <p className="text-muted-foreground mb-8">
                 We're documenting our latest projects. In the meantime, let's

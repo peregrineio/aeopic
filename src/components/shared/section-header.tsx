@@ -5,6 +5,8 @@ interface SectionHeaderProps {
   headline: string;
   subheadline?: string;
   centered?: boolean;
+  className?: string;
+  dark?: boolean;
 }
 
 export function SectionHeader({
@@ -12,20 +14,26 @@ export function SectionHeader({
   headline,
   subheadline,
   centered = true,
+  className,
+  dark = false,
 }: SectionHeaderProps) {
   return (
-    <div className={cn("mb-12 md:mb-16", centered && "text-center")}>
+    <div className={cn("mb-12 md:mb-16", centered && "text-center", className)}>
       {eyebrow && (
-        <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-3">
+        <p className={cn(
+          "text-sm font-semibold uppercase tracking-wider mb-3",
+          dark ? "text-primary/80" : "text-primary"
+        )}>
           {eyebrow}
         </p>
       )}
-      <h2 className="mb-4">{headline}</h2>
+      <h2 className={cn("mb-4", dark && "text-white")}>{headline}</h2>
       {subheadline && (
         <p
           className={cn(
-            "text-lg text-muted-foreground max-w-2xl",
-            centered && "mx-auto"
+            "text-lg max-w-2xl",
+            centered && "mx-auto",
+            dark ? "text-white/70" : "text-muted-foreground"
           )}
         >
           {subheadline}

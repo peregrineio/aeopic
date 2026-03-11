@@ -49,13 +49,18 @@ export function Header() {
     return pathname.startsWith(href);
   };
 
+  // Determine if we're on the homepage (which has a dark hero)
+  const isHomePage = pathname === "/";
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-sm"
-          : "bg-transparent"
+          : isHomePage
+            ? "bg-transparent"
+            : "bg-[#0F1226]"
       )}
     >
       <div className="container-site">
@@ -91,7 +96,7 @@ export function Header() {
                         {link.label}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4">
+                        <ul className="grid w-[400px] gap-3 p-4 bg-white rounded-lg shadow-lg border">
                           {link.children.map((child) => (
                             <li key={child.label}>
                               <NavigationMenuLink asChild>

@@ -122,13 +122,13 @@ export default function ProcessPage() {
       />
 
       {/* Timeline Overview */}
-      <section className="py-12 bg-white border-b">
+      <section className="py-12 bg-[#F6F7FB] border-b border-primary/10">
         <div className="container-site">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             {phases.map((phase, index) => (
               <div key={phase.number} className="flex items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-white flex items-center justify-center font-bold shadow-md shadow-primary/20">
                     {phase.number}
                   </div>
                   <div>
@@ -139,7 +139,7 @@ export default function ProcessPage() {
                   </div>
                 </div>
                 {index < phases.length - 1 && (
-                  <div className="hidden lg:block w-16 h-px bg-border mx-4" />
+                  <div className="hidden lg:block w-16 h-0.5 bg-gradient-to-r from-primary/40 to-primary/20 mx-4" />
                 )}
               </div>
             ))}
@@ -148,18 +148,23 @@ export default function ProcessPage() {
       </section>
 
       {/* Phase Details */}
-      <section className="section-padding bg-white">
-        <div className="container-site">
-          <div className="space-y-24">
-            {phases.map((phase) => (
-              <div key={phase.number} className="grid lg:grid-cols-2 gap-12 items-start">
-                <div>
+      <div>
+        {phases.map((phase, index) => (
+          <section
+            key={phase.number}
+            className={`section-padding ${
+              index % 2 === 0 ? "bg-white" : "bg-[#F6F7FB]"
+            }`}
+          >
+            <div className="container-site">
+              <div className="grid lg:grid-cols-2 gap-12 items-start">
+                <div className="border-l-4 border-primary pl-6">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/20">
                       <phase.icon className="h-7 w-7 text-primary" />
                     </div>
                     <div>
-                      <span className="px-3 py-1 bg-accent text-sm font-medium rounded-full">
+                      <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
                         {phase.duration}
                       </span>
                     </div>
@@ -187,22 +192,22 @@ export default function ProcessPage() {
                   </ul>
 
                   {phase.callout && (
-                    <p className="text-sm italic text-muted-foreground bg-accent p-4 rounded-lg">
+                    <p className="text-sm italic text-muted-foreground bg-primary/5 border-l-2 border-primary p-4 rounded-r-lg">
                       {phase.callout}
                     </p>
                   )}
                 </div>
 
                 <div className="space-y-4">
-                  <div className="premium-card p-6">
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">
+                  <div className="premium-card p-6 border-l-4 border-primary">
+                    <p className="text-sm font-semibold text-primary mb-2">
                       DELIVERABLE
                     </p>
                     <p className="font-medium">{phase.deliverable}</p>
                   </div>
 
                   {phase.investment && (
-                    <div className="premium-card p-6">
+                    <div className="premium-card p-6 border-l-4 border-primary/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">
                         YOUR INVESTMENT
                       </p>
@@ -211,10 +216,10 @@ export default function ProcessPage() {
                   )}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        ))}
+      </div>
 
       {/* What to Expect */}
       <section className="section-padding bg-[hsl(var(--neutral-bg))]">

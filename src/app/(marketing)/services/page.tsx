@@ -79,17 +79,21 @@ export default function ServicesPage() {
       />
 
       {/* Service Blocks */}
-      <section className="section-padding bg-white">
-        <div className="container-site">
-          <div className="space-y-24">
-            {services.map((service, index) => (
+      <div>
+        {services.map((service, index) => (
+          <section
+            key={service.title}
+            className={`section-padding ${
+              index % 2 === 0 ? "bg-white" : "bg-[#F6F7FB]"
+            }`}
+          >
+            <div className="container-site">
               <div
-                key={service.title}
                 className={`grid lg:grid-cols-2 gap-12 items-center ${
                   index % 2 === 1 ? "lg:flex-row-reverse" : ""
                 }`}
               >
-                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                <div className={`${index % 2 === 1 ? "lg:order-2" : ""} border-l-4 border-primary pl-6`}>
                   <h2 className="text-2xl md:text-3xl font-bold mb-4">
                     {service.title}
                   </h2>
@@ -123,13 +127,13 @@ export default function ServicesPage() {
                 <div
                   className={`${
                     index % 2 === 1 ? "lg:order-1" : ""
-                  } aspect-video bg-accent rounded-xl`}
+                  } aspect-video bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20`}
                 />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        ))}
+      </div>
 
       <CTASection
         headline="Ready to Build?"
