@@ -1,103 +1,74 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  MessageCircle,
+  FileText,
+  CheckCircle,
+  Check,
+  Mail,
+  MapPin,
+  ArrowRight,
+} from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
-import { SectionHeader } from "@/components/shared/section-header";
 import { FAQSection } from "@/components/shared/faq-section";
-import { CTASection } from "@/components/shared/cta-section";
-import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "Pricing | Aeopic",
-  description:
-    "Transparent pricing with no hidden fees. Project-based, monthly retainer, or full partnership options.",
-};
-
-const pricingTiers = [
+const processSteps = [
   {
-    name: "Project-Based",
-    tag: "One-Time Build",
-    price: "Custom Quote",
-    description: "Fixed scope, fixed price. Best for one-time platform builds.",
-    features: [
-      "Complete platform build",
-      "Source code ownership",
-      "Documentation",
-      "30 days post-launch support",
-    ],
-    cta: "Get a Quote",
-    featured: false,
+    icon: MessageCircle,
+    title: "We Listen",
+    description:
+      "Tell us what you need. We'll ask the right questions to understand your business, goals, and budget.",
   },
   {
-    name: "Monthly Retainer",
-    tag: "Ongoing Partnership",
-    price: "Custom/Month",
+    icon: FileText,
+    title: "We Scope It",
     description:
-      "Ongoing development, marketing, and support. Best for growing businesses.",
-    features: [
-      "Everything in Project-Based",
-      "Ongoing development hours",
-      "Marketing services",
-      "Priority support",
-      "Monthly strategy calls",
-    ],
-    cta: "Get Started",
-    featured: true,
+      "We put together a detailed proposal with clear deliverables, timeline, and transparent pricing. No surprises.",
   },
   {
-    name: "Full Partnership",
-    tag: "Dedicated Team",
-    price: "Custom Quote",
+    icon: CheckCircle,
+    title: "You Decide",
     description:
-      "Dedicated team, priority everything, strategic planning. Best for scaling fast.",
-    features: [
-      "Everything in Retainer",
-      "Dedicated team allocation",
-      "Weekly strategy sessions",
-      "Unlimited support",
-      "Custom integrations",
-    ],
-    cta: "Contact Us",
-    featured: false,
+      "Review the proposal on your terms. No pressure, no rush. If it's a fit, we get to work.",
   },
 ];
 
 const alwaysIncluded = [
   "100% source code ownership",
-  "Modern, maintained tech stack",
-  "Responsive support",
-  "Complete documentation",
-  "Deployment & hosting guidance",
-  "Security best practices",
-  "Performance optimization",
-  "Bug fixes included",
+  "Modern, production-grade technology",
+  "Responsive, mobile-first design",
+  "Documentation & training",
+  "Post-launch support",
+  "No vendor lock-in — ever",
 ];
 
 const faqs = [
   {
-    question: "How do I know which model is right for me?",
+    question: "How much does a typical project cost?",
     answer:
-      "It depends on your needs. One-time projects work well for specific builds. Retainers are ideal if you need ongoing development and marketing. We'll help you figure out what makes sense during our initial conversation.",
+      "It depends on scope, but most projects range from a few thousand to tens of thousands. We'll give you a clear number after understanding your needs — no vague ranges, no hidden fees.",
   },
   {
-    question: "What happens if the scope changes mid-project?",
+    question: "Do you offer payment plans?",
     answer:
-      "We handle scope changes transparently. If you want to add features, we'll quote the additional work before starting. No surprises.",
+      "Yes. We work with you to find a payment structure that fits your budget — whether that's milestone-based, monthly, or a custom arrangement.",
   },
   {
-    question: "Are there any hidden fees?",
+    question: "What if my needs change during the project?",
     answer:
-      "No. Our quotes include everything discussed. Third-party costs (hosting, domains, integrations) are always disclosed upfront.",
+      "It happens. We handle scope changes transparently — we'll tell you how it affects the timeline and cost before making any changes.",
   },
   {
-    question: "What's your refund/cancellation policy?",
+    question: "What does ongoing support cost?",
     answer:
-      "For retainers, you can cancel anytime with 30 days notice. For projects, we work in milestones — you only pay for completed work.",
+      "We offer monthly retainer plans for ongoing development, marketing, and support. We'll recommend what makes sense for your business after launch.",
   },
   {
-    question: "How does your pricing compare to agencies?",
+    question: "Can I see a proposal before committing?",
     answer:
-      "Traditional agencies often charge $50-150k+ for comparable work. We deliver the same quality at a fraction of the cost by staying lean and focused.",
+      "Absolutely. We provide a detailed proposal with clear scope, timeline, and pricing before you commit to anything.",
   },
 ];
 
@@ -105,100 +76,179 @@ export default function PricingPage() {
   return (
     <>
       <ServiceHero
-        eyebrow="Investment"
-        headline="Transparent Pricing"
-        subheadline="No hidden fees. No surprises. Clear investment for clear results."
+        eyebrow="Pricing"
+        headline="Every Business Is Different. Your Pricing Should Be Too."
+        subheadline="We don't do cookie-cutter packages. Every project is scoped to your specific needs, goals, and budget. Let's talk about yours."
       />
 
-      {/* Pricing Tiers */}
+      {/* How Our Pricing Works */}
       <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {pricingTiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`premium-card p-8 relative bg-white ${
-                  tier.featured
-                    ? "border-2 border-transparent bg-gradient-to-br from-primary/5 to-primary/10 lg:scale-105 shadow-xl shadow-primary/10"
-                    : "border border-border hover:border-primary/30 transition-colors"
-                }`}
-                style={tier.featured ? {
-                  backgroundImage: 'linear-gradient(white, white), linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.5))',
-                  backgroundOrigin: 'border-box',
-                  backgroundClip: 'padding-box, border-box',
-                } : undefined}
-              >
-                {tier.featured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary to-primary/80 text-white text-xs font-semibold rounded-full shadow-md shadow-primary/20">
-                    Most Popular
-                  </span>
-                )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              How Our Pricing Works
+            </h2>
+          </motion.div>
 
-                <span className={`px-3 py-1 text-sm font-medium rounded-full ${
-                  tier.featured ? 'bg-primary/10 text-primary' : 'bg-accent'
-                }`}>
-                  {tier.tag}
-                </span>
-
-                <h3 className="text-2xl font-bold mt-4 mb-2">{tier.name}</h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  {tier.description}
-                </p>
-
-                <p className="text-3xl font-bold text-primary mb-6">
-                  {tier.price}
-                </p>
-
-                <ul className="space-y-3 mb-8">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <Button
-                  asChild
-                  className={`w-full ${
-                    tier.featured
-                      ? "cta-gradient text-white hover:opacity-90"
-                      : ""
-                  }`}
-                  variant={tier.featured ? "default" : "outline"}
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {processSteps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative"
                 >
-                  <Link href="/start">{tier.cta}</Link>
-                </Button>
-              </div>
-            ))}
+                  {/* Connecting line (desktop only) */}
+                  {index < processSteps.length - 1 && (
+                    <div className="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-px bg-primary/20" />
+                  )}
+
+                  <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100 h-full">
+                    {/* Step number */}
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">
+                      {index + 1}
+                    </div>
+
+                    {/* Icon */}
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                      <Icon className="h-8 w-8 text-primary" />
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+
+                    {/* Description */}
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* What's Always Included */}
-      <section className="section-padding bg-[hsl(var(--neutral-bg))]">
+      <section className="section-padding bg-white">
         <div className="container-site">
-          <SectionHeader headline="What's Always Included" centered />
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {alwaysIncluded.map((item) => (
-              <div key={item} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary flex-shrink-0" />
-                <span className="text-sm">{item}</span>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              What&apos;s Always Included
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              No matter the project size or scope
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {alwaysIncluded.map((item, index) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="flex items-center gap-4 bg-[#F6F7FB] p-5 rounded-xl"
+              >
+                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-green-600" />
+                </div>
+                <span className="font-medium">{item}</span>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <FAQSection items={faqs} />
+      {/* Let's Talk About Your Project - Main CTA */}
+      <section className="relative py-24 md:py-32 bg-[#0F1226] overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-primary/10 blur-[100px]" />
+          <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-primary/5 blur-[100px]" />
+          {/* Grid pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, white 1px, transparent 1px),
+                linear-gradient(to bottom, white 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+            }}
+          />
+        </div>
 
-      <CTASection
-        headline="Ready to Get Started?"
-        subheadline="Let's discuss your project and find the right fit."
-        ctaText="Start the Conversation"
-        ctaHref="/start"
-        variant="dark"
-      />
+        <div className="container-site relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            {/* Headline */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Ready to Get a Custom Quote?
+            </h2>
+
+            {/* Subheadline */}
+            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Every conversation starts with understanding your business. No
+              sales pitch. No obligation. Just a straightforward discussion
+              about what&apos;s possible and what it would cost.
+            </p>
+
+            {/* Primary CTA */}
+            <Link
+              href="/start"
+              className="group inline-flex items-center gap-3 cta-gradient text-white text-lg font-semibold px-10 py-5 rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
+            >
+              <span>Start a Conversation</span>
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            {/* Email */}
+            <div className="mt-8">
+              <a
+                href="mailto:contact@aeopic.com"
+                className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+              >
+                <Mail className="h-5 w-5" />
+                <span className="text-lg">contact@aeopic.com</span>
+              </a>
+            </div>
+
+            {/* Trust line */}
+            <div className="mt-8 flex items-center justify-center gap-2 text-white/40 text-sm">
+              <MapPin className="h-4 w-4" />
+              <span>
+                We typically respond within 24 hours. Houston-based.
+                Remote-friendly.
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <div className="bg-[#F6F7FB]">
+        <FAQSection items={faqs} />
+      </div>
     </>
   );
 }

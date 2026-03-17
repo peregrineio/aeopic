@@ -1,31 +1,29 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
 import {
   Ticket,
   BookOpen,
   MessageSquare,
   CreditCard,
   Brain,
-  Zap,
-  Shield,
-  Target,
+  TrendingUp,
+  Lock,
+  ChevronDown,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ServiceHero } from "@/components/services/service-hero";
 import { SectionHeader } from "@/components/shared/section-header";
 import { FAQSection } from "@/components/shared/faq-section";
 import { CTASection } from "@/components/shared/cta-section";
 import { RelatedServices } from "@/components/services/related-services";
 
-export const metadata: Metadata = {
-  title: "AI-Powered Business Tools | Aeopic",
-  description:
-    "Smart ticket systems, knowledge bases, customer support — AI that works for you, not against you.",
-};
-
 const aiSolutions = [
   {
     icon: Ticket,
     title: "Ticket Management Systems",
     subtitle: "AI-categorized, auto-routed, priority-scored",
+    color: "#726AFF",
     features: [
       "Smart categorization",
       "Auto-assignment",
@@ -38,6 +36,7 @@ const aiSolutions = [
     icon: BookOpen,
     title: "Knowledge Base Systems",
     subtitle: "AI-searchable, auto-suggested, self-updating",
+    color: "#3b82f6",
     features: [
       "Natural language search",
       "Auto-generated answers",
@@ -49,6 +48,7 @@ const aiSolutions = [
     icon: MessageSquare,
     title: "Customer Support (Phone & Chat)",
     subtitle: "AI-assisted responses, sentiment analysis, escalation",
+    color: "#38a169",
     features: [
       "Chat widget",
       "Phone integration",
@@ -61,6 +61,7 @@ const aiSolutions = [
     icon: CreditCard,
     title: "Payment Processing",
     subtitle: "Automated invoicing, subscription management",
+    color: "#f59e0b",
     features: [
       "Stripe integration",
       "Recurring billing",
@@ -68,6 +69,33 @@ const aiSolutions = [
       "Payment links",
       "Financial reporting",
     ],
+  },
+];
+
+const aiCapabilities = [
+  {
+    icon: Brain,
+    title: "Understands Your Business",
+    gradientFrom: "#726AFF",
+    gradientTo: "#5B54D6",
+    shortText: "Your AI tools learn your specific workflow, customer patterns, and business rules.",
+    expandedText: "Unlike generic AI, our tools are trained on YOUR data. They know your services, your pricing, your customer history. When a customer asks a question, the AI doesn't give a generic answer — it gives YOUR answer, pulling from your knowledge base, service catalog, and past interactions.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Gets Smarter Over Time",
+    gradientFrom: "#3b82f6",
+    gradientTo: "#2563eb",
+    shortText: "Every interaction makes the system more accurate and more helpful.",
+    expandedText: "Our AI tools analyze patterns in your tickets, customer inquiries, and support interactions. Common questions get faster answers. Recurring issues get flagged before they become problems. The longer you use it, the better it gets — without any manual training from you.",
+  },
+  {
+    icon: Lock,
+    title: "Your Data Stays Yours",
+    gradientFrom: "#38a169",
+    gradientTo: "#2f855a",
+    shortText: "Bank-level encryption. No data sharing. Full compliance.",
+    expandedText: "Your customer data never leaves your platform. We use end-to-end encryption, role-based access controls, and enterprise-level security practices. Your data isn't used to train AI models. It's not shared with anyone. It's yours and only yours.",
   },
 ];
 
@@ -94,7 +122,81 @@ const faqs = [
   },
 ];
 
+function AICapabilityCard({ capability, isExpanded, onToggle }: {
+  capability: typeof aiCapabilities[0];
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
+  const Icon = capability.icon;
+
+  return (
+    <div
+      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+      onClick={onToggle}
+    >
+      {/* Gradient header */}
+      <div
+        className="h-2"
+        style={{
+          background: `linear-gradient(90deg, ${capability.gradientFrom}, ${capability.gradientTo})`,
+        }}
+      />
+
+      <div className="p-6">
+        {/* Icon */}
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center mb-4"
+          style={{
+            background: `linear-gradient(135deg, ${capability.gradientFrom}, ${capability.gradientTo})`,
+          }}
+        >
+          <Icon className="h-7 w-7 text-white" />
+        </div>
+
+        {/* Title */}
+        <h3 className="text-lg font-bold text-foreground mb-2">
+          {capability.title}
+        </h3>
+
+        {/* Short text */}
+        <p className="text-muted-foreground text-sm mb-4">
+          {capability.shortText}
+        </p>
+
+        {/* Expand indicator */}
+        <div className="flex items-center gap-2 text-primary text-sm font-medium">
+          <span>{isExpanded ? "Show less" : "Learn more"}</span>
+          <ChevronDown
+            className={`h-4 w-4 transition-transform duration-300 ${
+              isExpanded ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+
+        {/* Expanded content */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <p className="text-foreground text-sm leading-relaxed mt-4 pt-4 border-t border-gray-100">
+                {capability.expandedText}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
 export default function AIToolsPage() {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
   return (
     <>
       <ServiceHero
@@ -113,79 +215,77 @@ export default function AIToolsPage() {
           <p className="text-center text-muted-foreground max-w-3xl mx-auto text-lg">
             Businesses that adopt AI tools gain competitive advantages: faster
             response times, lower operational costs, better customer experience.
-            The question isn't whether to use AI — it's how fast you can
+            The question isn&apos;t whether to use AI — it&apos;s how fast you can
             implement it.
           </p>
         </div>
       </section>
 
-      {/* What We Build */}
-      <section className="section-padding bg-[hsl(var(--neutral-bg))]">
+      {/* What We Build - with colors */}
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <SectionHeader headline="What We Build" centered />
           <div className="grid md:grid-cols-2 gap-8">
-            {aiSolutions.map((solution) => (
-              <div key={solution.title} className="premium-card p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <solution.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{solution.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {solution.subtitle}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {solution.features.map((feature) => (
-                    <span
-                      key={feature}
-                      className="px-3 py-1 bg-accent text-sm rounded-full"
+            {aiSolutions.map((solution) => {
+              const Icon = solution.icon;
+              return (
+                <div
+                  key={solution.title}
+                  className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                  style={{ borderTopColor: solution.color, borderTopWidth: "4px" }}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div
+                      className="w-12 h-12 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: `${solution.color}20` }}
                     >
-                      {feature}
-                    </span>
-                  ))}
+                      <Icon className="h-6 w-6" style={{ color: solution.color }} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{solution.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {solution.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {solution.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className="px-3 py-1 bg-[#F6F7FB] text-sm rounded-full"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* How AI Fits In */}
-      <section className="section-padding bg-white">
+      {/* AI Capabilities - Expandable Cards */}
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <SectionHeader
             headline="Designed Around AI, Not Bolted On"
             centered
           />
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-muted-foreground text-lg mb-8">
-              We don't add AI to existing tools. We architect platforms where AI
-              is a foundational layer — understanding context, learning
-              patterns, and getting smarter over time.
-            </p>
-            <div className="grid sm:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <Brain className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-medium">Context-Aware</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <Zap className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-medium">Always Learning</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <Shield className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-medium">Enterprise Secure</p>
-              </div>
-            </div>
+          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+            We don&apos;t add AI to existing tools. We architect platforms where AI
+            is a foundational layer — understanding context, learning patterns,
+            and getting smarter over time.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {aiCapabilities.map((capability, index) => (
+              <AICapabilityCard
+                key={capability.title}
+                capability={capability}
+                isExpanded={expandedCard === index}
+                onToggle={() => setExpandedCard(expandedCard === index ? null : index)}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
 import { CTASection } from "@/components/shared/cta-section";
+import { WhoWeHelp } from "@/components/home/who-we-help";
 
 export const metadata: Metadata = {
   title: "Services | Aeopic",
@@ -134,6 +135,8 @@ export default function ServicesPage() {
           </section>
         ))}
       </div>
+
+      <WhoWeHelp />
 
       <CTASection
         headline="Ready to Build?"

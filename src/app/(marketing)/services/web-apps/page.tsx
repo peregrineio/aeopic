@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, TrendingUp, Shield, Zap, Key } from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
 import { SectionHeader } from "@/components/shared/section-header";
 import { WebAppsFeatures } from "@/components/services/webapps-features";
@@ -20,14 +20,35 @@ const painPoints = [
   "Off-the-shelf doesn't handle your edge cases",
 ];
 
-const techStack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "ShadCN UI",
-  "Supabase",
-  "Vercel",
+const businessBenefits = [
+  {
+    icon: TrendingUp,
+    title: "More Customers, Less Effort",
+    color: "#38a169",
+    description:
+      "Your platform works 24/7 — taking bookings, capturing leads, and serving customers while you sleep. No more missed calls. No more lost opportunities.",
+  },
+  {
+    icon: Shield,
+    title: "Fewer Headaches, More Control",
+    color: "#726AFF",
+    description:
+      "Everything in one place. No more juggling 5 different tools, spreadsheets, and sticky notes. One dashboard. One login. Full visibility.",
+  },
+  {
+    icon: Zap,
+    title: "Operations That Scale",
+    color: "#f59e0b",
+    description:
+      "Built to grow with you. Whether you have 2 employees or 200, your platform handles the load without breaking down or slowing you down.",
+  },
+  {
+    icon: Key,
+    title: "Software You Own",
+    color: "#1e3a5f",
+    description:
+      "No vendor lock-in. No surprise price hikes. You own 100% of the code. It's yours forever, even if you stop working with us.",
+  },
 ];
 
 const faqs = [
@@ -99,26 +120,40 @@ export default function WebAppsPage() {
         </div>
       </section>
 
-      {/* Our Stack */}
-      <section className="section-padding bg-white">
+      {/* What This Means for Your Business */}
+      <section className="section-padding bg-[#F6F7FB]">
         <div className="container-site">
           <SectionHeader
-            headline="Built With Modern, Battle-Tested Technology"
+            headline="What This Means for Your Business"
             centered
           />
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {techStack.map((tech) => (
-              <span
-                key={tech}
-                className="px-4 py-2 bg-accent rounded-full text-sm font-medium"
-              >
-                {tech}
-              </span>
-            ))}
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {businessBenefits.map((benefit) => {
+              const Icon = benefit.icon;
+              return (
+                <div
+                  key={benefit.title}
+                  className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                  style={{ borderLeftColor: benefit.color, borderLeftWidth: "4px" }}
+                >
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                    style={{ backgroundColor: `${benefit.color}20` }}
+                  >
+                    <Icon className="h-6 w-6" style={{ color: benefit.color }} />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-            We use the same stack trusted by companies like Netflix, Nike, and
-            Notion.
+          <p className="text-center text-muted-foreground text-sm mt-8">
+            Powered by modern, production-grade technology.
           </p>
         </div>
       </section>

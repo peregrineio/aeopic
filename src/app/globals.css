@@ -505,4 +505,81 @@ html {
     background-size: 200% 200%;
     animation: gradient-shift 8s ease infinite;
   }
+
+  /* ===== FOOTER SPECIFIC STYLES ===== */
+
+  /* Footer CTA button shimmer effect */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .footer-cta-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-cta-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Service pill hover lift */
+  .service-pill {
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .service-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -10px hsl(243 100% 71% / 0.3);
+  }
+
+  /* Social icon magnetic effect simulation */
+  .social-magnetic {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .social-magnetic:hover {
+    transform: scale(1.15);
+  }
+
+  /* Footer gradient mesh animation */
+  @keyframes mesh-float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(10px, -10px) scale(1.05);
+    }
+    66% {
+      transform: translate(-5px, 5px) scale(0.98);
+    }
+  }
+
+  .mesh-animated > div:first-child {
+    animation: mesh-float 20s ease-in-out infinite;
+  }
+
+  /* Email link glow effect */
+  .email-glow {
+    transition: text-shadow 0.3s ease;
+  }
+
+  .email-glow:hover {
+    text-shadow: 0 0 30px hsl(243 100% 71% / 0.5);
+  }
 }

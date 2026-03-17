@@ -69,7 +69,7 @@ export function ProcessPreview() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block eyebrow text-primary mb-4"
+            className="inline-block text-white/90 tracking-[0.2em] uppercase text-sm font-semibold mb-4"
           >
             How We Work
           </motion.span>
@@ -160,7 +160,7 @@ export function ProcessPreview() {
         >
           <Link
             href="/process"
-            className="group inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+            className="group inline-flex items-center gap-2 text-[#726AFF] hover:text-white font-medium transition-colors"
           >
             <span>See Our Full Process</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

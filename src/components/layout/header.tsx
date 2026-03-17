@@ -79,7 +79,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
-            <NavigationMenu>
+            <NavigationMenu delayDuration={0} skipDelayDuration={0}>
               <NavigationMenuList>
                 {navLinks.map((link) =>
                   link.children ? (
@@ -95,8 +95,8 @@ export function Header() {
                       >
                         {link.label}
                       </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 bg-white rounded-lg shadow-lg border">
+                      <NavigationMenuContent className="z-50">
+                        <ul className="grid w-[400px] gap-3 p-4 bg-white rounded-lg shadow-lg border z-50">
                           {link.children.map((child) => (
                             <li key={child.label}>
                               <NavigationMenuLink asChild>

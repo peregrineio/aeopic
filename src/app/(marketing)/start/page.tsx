@@ -333,11 +333,11 @@ export default function StartPage() {
                 Prefer email?
               </p>
               <a
-                href="mailto:hello@aeopic.com"
+                href="mailto:contact@aeopic.com"
                 className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
               >
                 <Mail className="h-4 w-4" />
-                hello@aeopic.com
+                contact@aeopic.com
               </a>
             </div>
           </div>

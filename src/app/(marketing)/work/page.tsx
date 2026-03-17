@@ -40,18 +40,6 @@ const capabilities = [
   },
 ];
 
-const techStack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Supabase",
-  "Tailwind",
-  "ShadCN UI",
-  "Stripe",
-  "Vercel",
-  "AI Integration",
-];
-
 export default function WorkPage() {
   return (
     <>
@@ -82,23 +70,22 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <section className="section-padding bg-white">
+      {/* Why Our Clients Trust Us */}
+      <section className="section-padding bg-[#0F1226]">
         <div className="container-site">
-          <SectionHeader
-            headline="Our Stack in Action"
-            subheadline="Every project uses production-grade technology"
-            centered
-          />
-          <div className="flex flex-wrap justify-center gap-3">
-            {techStack.map((tech) => (
-              <span
-                key={tech}
-                className="px-4 py-2 bg-[#F6F7FB] border border-primary/10 rounded-full text-sm font-medium hover:border-primary/30 transition-colors"
-              >
-                {tech}
-              </span>
-            ))}
+          <div className="grid md:grid-cols-3 gap-8 text-center text-white">
+            <div>
+              <div className="text-4xl font-bold text-[#726AFF] mb-2">100%</div>
+              <div className="text-white/60">Code Ownership</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-[#726AFF] mb-2">8-12 Weeks</div>
+              <div className="text-white/60">Average Delivery</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-[#726AFF] mb-2">24/7</div>
+              <div className="text-white/60">Your Platform Never Sleeps</div>
+            </div>
           </div>
         </div>
       </section>

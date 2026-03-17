@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     // const resend = new Resend(process.env.RESEND_API_KEY);
     // await resend.emails.send({
     //   from: 'Aeopic <noreply@aeopic.com>',
-    //   to: process.env.TEAM_EMAIL || 'hello@aeopic.com',
+    //   to: process.env.TEAM_EMAIL || 'contact@aeopic.com',
     //   subject: `New Project Inquiry from ${validatedData.name}`,
     //   text: formatEmailBody(validatedData),
     // });

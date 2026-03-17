@@ -64,11 +64,11 @@ export default function ThankYouPage() {
           <div className="premium-card p-6 mb-12">
             <p className="font-semibold mb-2">Have questions in the meantime?</p>
             <a
-              href="mailto:hello@aeopic.com"
+              href="mailto:contact@aeopic.com"
               className="inline-flex items-center gap-2 text-primary hover:underline"
             >
               <Mail className="h-4 w-4" />
-              hello@aeopic.com
+              contact@aeopic.com
             </a>
             <p className="text-sm text-muted-foreground mt-2">
               We're here to help.
