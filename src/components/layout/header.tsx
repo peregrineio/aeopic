@@ -170,7 +170,7 @@ export function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+              <SheetContent side="right" className="w-[300px] sm:w-[350px] bg-white border-l border-border">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-8">
