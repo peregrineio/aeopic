@@ -8,7 +8,6 @@ import {
   Code2,
   Sparkles,
   Palette,
-  Compass,
   Megaphone,
   Headphones,
 } from "lucide-react";
@@ -28,36 +27,42 @@ const capabilities = [
     title: "Engineering",
     description:
       "Full-stack developers who build production-grade platforms from the ground up.",
+    color: "#726AFF",
   },
   {
     icon: Sparkles,
     title: "AI & Automation",
     description:
       "Specialists in integrating AI into real business workflows — not just chatbots.",
+    color: "#3b82f6",
   },
   {
     icon: Palette,
     title: "Design & UX",
     description:
       "Interfaces built for humans first, with obsessive attention to usability.",
+    color: "#38a169",
   },
   {
-    icon: Compass,
+    icon: TrendingUp,
     title: "Strategy & Growth",
     description:
       "We don't just build — we help you figure out what to build and why.",
+    color: "#726AFF",
   },
   {
     icon: Megaphone,
     title: "Marketing",
     description:
       "Data-driven campaigns that connect your business with the right customers.",
+    color: "#3b82f6",
   },
   {
     icon: Headphones,
     title: "Support & Delivery",
     description:
       "We stick around after launch. Your success is our success.",
+    color: "#38a169",
   },
 ];
 
@@ -66,26 +71,31 @@ const values = [
     icon: Star,
     title: "Excellence",
     description: "We don't ship anything we wouldn't use ourselves",
+    color: "#726AFF",
   },
   {
     icon: Shield,
     title: "Integrity",
     description: "Honest timelines, transparent pricing, no shortcuts",
+    color: "#3b82f6",
   },
   {
     icon: Heart,
     title: "Service",
     description: "We build for people, not just profit",
+    color: "#ef4444",
   },
   {
     icon: Hammer,
     title: "Craft",
     description: "We love what we do and it shows in the code",
+    color: "#f59e0b",
   },
   {
     icon: TrendingUp,
     title: "Growth",
     description: "We're always learning, always improving",
+    color: "#38a169",
   },
 ];
 
@@ -100,7 +110,7 @@ export default function AboutPage() {
       />
 
       {/* Our Story */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#EEEEF8]">
         <div className="container-site">
           <div className="max-w-3xl mx-auto">
             <SectionHeader headline="Why We Started Aeopic" centered={false} />
@@ -136,15 +146,20 @@ export default function AboutPage() {
             centered
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {capabilities.map((capability, index) => (
+            {capabilities.map((capability) => (
               <div
                 key={capability.title}
-                className={`p-6 border-l-4 border-primary rounded-r-lg hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 ${
-                  index % 2 === 0 ? "bg-white" : "bg-white"
-                }`}
+                className="p-6 bg-white border-l-4 rounded-r-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                style={{ borderLeftColor: capability.color }}
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-4 shadow-md shadow-primary/20">
-                  <capability.icon className="h-6 w-6 text-white" />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ backgroundColor: `${capability.color}15` }}
+                >
+                  <capability.icon
+                    className="h-6 w-6"
+                    style={{ color: capability.color }}
+                  />
                 </div>
                 <h3 className="font-semibold text-lg mb-2">{capability.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -164,10 +179,17 @@ export default function AboutPage() {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="bg-[#F6F7FB] border-l-4 border-primary p-6 text-center hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300 rounded-r-lg"
+                className="bg-white border-l-4 p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 rounded-r-lg"
+                style={{ borderLeftColor: value.color }}
               >
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto mb-4 shadow-md shadow-primary/20">
-                  <value.icon className="h-6 w-6 text-white" />
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                  style={{ backgroundColor: `${value.color}15` }}
+                >
+                  <value.icon
+                    className="h-6 w-6"
+                    style={{ color: value.color }}
+                  />
                 </div>
                 <h3 className="font-semibold mb-2">{value.title}</h3>
                 <p className="text-sm text-muted-foreground">

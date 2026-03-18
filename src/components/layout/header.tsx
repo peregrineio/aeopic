@@ -90,7 +90,7 @@ export function Header() {
                           isScrolled
                             ? "text-foreground hover:text-primary"
                             : "text-white/90 hover:text-white",
-                          isActive(link.href) && "text-primary"
+                          isActive(link.href) && "text-[#726AFF] font-semibold"
                         )}
                       >
                         {link.label}
@@ -124,19 +124,20 @@ export function Header() {
                     </NavigationMenuItem>
                   ) : (
                     <NavigationMenuItem key={link.label}>
-                      <Link href={link.href} legacyBehavior passHref>
-                        <NavigationMenuLink
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={link.href}
                           className={cn(
                             "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
                             isScrolled
                               ? "text-foreground hover:text-primary"
                               : "text-white/90 hover:text-white",
-                            isActive(link.href) && "text-primary"
+                            isActive(link.href) && "text-[#726AFF] font-semibold"
                           )}
                         >
                           {link.label}
-                        </NavigationMenuLink>
-                      </Link>
+                        </Link>
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
                   )
                 )}

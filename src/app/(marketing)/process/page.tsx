@@ -153,7 +153,7 @@ export default function ProcessPage() {
           <section
             key={phase.number}
             className={`section-padding ${
-              index % 2 === 0 ? "bg-white" : "bg-[#F6F7FB]"
+              index % 2 === 0 ? "bg-[#EEEEF8]" : "bg-white"
             }`}
           >
             <div className="container-site">
