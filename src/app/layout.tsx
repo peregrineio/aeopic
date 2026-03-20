@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   },
   description:
     "Customer-tailored web applications, AI-powered tools, marketing, and eCommerce solutions.",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "Aeopic | Custom Software Development",
     description:
