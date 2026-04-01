@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { contactFormSchema } from "@/lib/validations";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY || "");
+  }
+  return resend;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,8 +73,10 @@ Houston, Texas
 https://aeopic.com
     `.trim();
 
+    const resendClient = getResend();
+
     // Send notification to team
-    const teamEmail = await resend.emails.send({
+    const teamEmail = await resendClient.emails.send({
       from: "Aeopic <noreply@aeopic.com>",
       to: process.env.TEAM_EMAIL || "contact@aeopic.com",
       subject: "New Project Inquiry: " + data.name + (data.company ? " (" + data.company + ")" : ""),
@@ -78,7 +88,7 @@ https://aeopic.com
     }
 
     // Send confirmation to submitter
-    const confirmEmail = await resend.emails.send({
+    const confirmEmail = await resendClient.emails.send({
       from: "Aeopic <noreply@aeopic.com>",
       to: data.email,
       subject: "We Got Your Message - Aeopic",
