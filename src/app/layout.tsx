@@ -1,23 +1,20 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Outfit, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, JetBrains_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
+// DM Sans - premium, modern, sophisticated (Google alternative to Satoshi)
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const outfit = Outfit({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
   subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${outfit.variable} ${jetbrainsMono.variable} font-body antialiased`}
+        className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <TooltipProvider>
           <div className="min-h-screen flex flex-col">{children}</div>

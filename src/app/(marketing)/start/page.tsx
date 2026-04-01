@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2, Mail, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { contactFormSchema, type ContactFormData } from "@/lib/validations";
+import { contactFormSchema, type ContactFormInput, type ContactFormData } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 
 const serviceOptions = [
@@ -59,7 +59,7 @@ export default function StartPage() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormInput>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       services: [],
@@ -71,10 +71,10 @@ export default function StartPage() {
       ? selectedServices.filter((s) => s !== value)
       : [...selectedServices, value];
     setSelectedServices(newServices);
-    setValue("services", newServices);
+    setValue("services", newServices, { shouldValidate: true });
   };
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormInput) => {
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/contact", {
@@ -95,6 +95,16 @@ export default function StartPage() {
     }
   };
 
+  const onError = (errors: any) => {
+    console.log("Form validation errors:", errors);
+    // Scroll to first error
+    const firstError = Object.keys(errors)[0];
+    const element = document.querySelector(`[name="${firstError}"]`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-white">
       <div className="container-site">
@@ -108,7 +118,7 @@ export default function StartPage() {
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8">
               {/* About You */}
               <div>
                 <h2 className="text-xl font-semibold mb-4">About You</h2>
@@ -157,22 +167,26 @@ export default function StartPage() {
                 <div className="space-y-4">
                   <div>
                     <Label>What do you need? *</Label>
-                    <div className="grid sm:grid-cols-2 gap-2 mt-2">
-                      {serviceOptions.map((option) => (
-                        <button
-                          key={option.value}
-                          type="button"
-                          onClick={() => toggleService(option.value)}
-                          className={cn(
-                            "p-3 text-left text-sm rounded-lg border transition-colors",
-                            selectedServices.includes(option.value)
-                              ? "border-primary bg-primary/5 text-primary"
-                              : "border-border hover:border-primary/50"
-                          )}
-                        >
-                          {option.label}
-                        </button>
-                      ))}
+                    <div className="grid sm:grid-cols-2 gap-2 mt-2 relative z-20">
+                      {serviceOptions.map((option) => {
+                        const isSelected = selectedServices.includes(option.value);
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => toggleService(option.value)}
+                            className={cn(
+                              "p-3 text-left text-sm rounded-lg border-2 transition-all cursor-pointer pointer-events-auto select-none flex items-center justify-between gap-2",
+                              isSelected
+                                ? "border-primary bg-primary text-white font-medium"
+                                : "border-gray-200 hover:border-primary/50 bg-white text-gray-700"
+                            )}
+                          >
+                            <span>{option.label}</span>
+                            {isSelected && <Check className="h-4 w-4 flex-shrink-0" />}
+                          </button>
+                        );
+                      })}
                     </div>
                     {errors.services && (
                       <p className="text-sm text-destructive mt-1">

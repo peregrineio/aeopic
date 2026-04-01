@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { HeroDashboard } from "./hero-dashboard";
 
 export function Hero() {
   return (
@@ -65,94 +66,102 @@ export function Hero() {
 
       {/* Main content */}
       <div className="container-wide relative z-10 py-20 md:py-28 lg:py-32">
-        <div className="max-w-5xl mx-auto">
-          {/* Eyebrow badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex justify-center lg:justify-start mb-8"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-glow">
-              <Sparkles className="w-4 h-4" />
-              <span className="eyebrow">Custom Software Studio</span>
-            </div>
-          </motion.div>
-
-          {/* Main headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="text-white text-center lg:text-left mb-6 lg:mb-8"
-          >
-            We Build the Software
-            <br />
-            <span className="text-gradient">Your Business</span>
-            <br />
-            Actually Needs
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-lg md:text-xl lg:text-2xl text-white/70 max-w-2xl text-center lg:text-left mx-auto lg:mx-0 mb-10 lg:mb-12 font-light leading-relaxed"
-          >
-            Custom web applications, AI-powered tools, marketing that converts,
-            and eCommerce that scales — built by engineers who ship.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.45 }}
-            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="cta-gradient hover:opacity-90 text-white border-0 px-8 py-7 text-base font-medium transition-all duration-300 group"
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left Column - Text Content */}
+          <div>
+            {/* Eyebrow badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex justify-center lg:justify-start mb-8"
             >
-              <Link href="/services" className="flex items-center gap-2">
-                See What We Build
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border border-white/20 text-white hover:bg-white/5 hover:border-white/40 bg-transparent px-8 py-7 text-base font-medium transition-all duration-300"
-            >
-              <Link href="/start">Start a Project</Link>
-            </Button>
-          </motion.div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-glow">
+                <Sparkles className="w-4 h-4" />
+                <span className="eyebrow">Custom Software Studio</span>
+              </div>
+            </motion.div>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-16 lg:mt-20 pt-8 border-t border-white/10"
-          >
-            <div className="flex flex-wrap justify-center lg:justify-start gap-8 lg:gap-12">
-              <div className="text-center lg:text-left">
-                <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">100%</p>
-                <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Code Ownership</p>
+            {/* Main headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="text-white text-center lg:text-left mb-6 lg:mb-8"
+            >
+              We Build the Software
+              <br />
+              <span className="text-gradient">Your Business</span>
+              <br />
+              Actually Needs
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="text-lg md:text-xl lg:text-2xl text-white/70 max-w-2xl text-center lg:text-left mx-auto lg:mx-0 mb-10 lg:mb-12 font-light leading-relaxed"
+            >
+              Custom web applications, AI-powered tools, marketing that converts,
+              and eCommerce that scales — built by engineers who ship.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+            >
+              <Button
+                asChild
+                size="lg"
+                className="cta-gradient hover:opacity-90 text-white border-0 px-8 py-7 text-base font-medium transition-all duration-300 group"
+              >
+                <Link href="/services" className="flex items-center gap-2">
+                  See What We Build
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border border-white/20 text-white hover:bg-white/5 hover:border-white/40 bg-transparent px-8 py-7 text-base font-medium transition-all duration-300"
+              >
+                <Link href="/start">Start a Project</Link>
+              </Button>
+            </motion.div>
+
+            {/* Trust indicators */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mt-12 lg:mt-16 pt-8 border-t border-white/10"
+            >
+              <div className="flex flex-wrap justify-center lg:justify-start gap-8 lg:gap-12">
+                <div className="text-center lg:text-left">
+                  <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">100%</p>
+                  <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Code Ownership</p>
+                </div>
+                <div className="text-center lg:text-left">
+                  <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">8-12</p>
+                  <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Weeks to Launch</p>
+                </div>
+                <div className="text-center lg:text-left">
+                  <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">Modern</p>
+                  <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Stack</p>
+                </div>
               </div>
-              <div className="text-center lg:text-left">
-                <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">8-12</p>
-                <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Weeks to Launch</p>
-              </div>
-              <div className="text-center lg:text-left">
-                <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">Modern</p>
-                <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Stack</p>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Right Column - Dashboard Card */}
+          <div className="hidden lg:block">
+            <HeroDashboard />
+          </div>
         </div>
       </div>
 

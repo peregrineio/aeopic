@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { Wrench, Brain, Layers, Hammer, Check } from "lucide-react";
+import { Wrench, Brain, Layers, Hammer, Check, X, Minus } from "lucide-react";
 
 const differentiators = [
   {
@@ -34,6 +34,16 @@ const differentiators = [
   },
 ];
 
+const comparisonData = [
+  { feature: "100% Code Ownership", aeopic: true, agency: false, nocode: false },
+  { feature: "No Vendor Lock-in", aeopic: true, agency: "partial", nocode: false },
+  { feature: "AI-Native Build", aeopic: true, agency: "partial", nocode: false },
+  { feature: "Direct Engineer Access", aeopic: true, agency: false, nocode: "na" },
+  { feature: "8–12 Week Launch", aeopic: true, agency: false, nocode: true },
+  { feature: "Custom Business Logic", aeopic: true, agency: true, nocode: false },
+  { feature: "App + Marketing", aeopic: true, agency: "partial", nocode: false },
+];
+
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -53,6 +63,99 @@ const itemVariants: Variants = {
     transition: { duration: 0.6 },
   },
 };
+
+function ComparisonIcon({ value }: { value: boolean | string }) {
+  if (value === true) {
+    return (
+      <div className="w-6 h-6 rounded-full bg-[#726AFF]/10 flex items-center justify-center">
+        <Check className="w-4 h-4 text-[#726AFF]" />
+      </div>
+    );
+  }
+  if (value === false) {
+    return (
+      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+        <X className="w-4 h-4 text-gray-300" />
+      </div>
+    );
+  }
+  if (value === "partial") {
+    return (
+      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+        <Minus className="w-4 h-4 text-gray-400" />
+      </div>
+    );
+  }
+  return <span className="text-[0.7rem] text-gray-400">N/A</span>;
+}
+
+function ComparisonTable() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      className="mt-16 md:mt-20"
+    >
+      <div className="bg-white shadow-md rounded-xl border border-gray-200 p-6 overflow-x-auto">
+        {/* Header */}
+        <p className="text-[0.75rem] uppercase tracking-wider text-gray-500 mb-6">
+          Aeopic vs. The Alternatives
+        </p>
+
+        {/* Table */}
+        <table className="w-full min-w-[400px]">
+          <thead>
+            <tr className="border-b border-gray-100">
+              <th className="text-left py-3 px-2 text-gray-600 text-sm font-normal w-[40%]">
+                Feature
+              </th>
+              <th className="text-center py-3 px-2 text-gray-900 text-sm font-bold">
+                Aeopic
+              </th>
+              <th className="text-center py-3 px-2 text-gray-400 text-sm font-normal">
+                Agency
+              </th>
+              <th className="text-center py-3 px-2 text-gray-400 text-sm font-normal">
+                No-Code
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparisonData.map((row, index) => (
+              <tr
+                key={row.feature}
+                className={`border-b border-gray-100 last:border-b-0 hover:bg-[#F6F7FB] transition-colors ${
+                  index % 2 === 0 ? "bg-gray-50/50" : ""
+                }`}
+              >
+                <td className="py-3 px-2 text-gray-600 text-sm">
+                  {row.feature}
+                </td>
+                <td className="py-3 px-2">
+                  <div className="flex justify-center">
+                    <ComparisonIcon value={row.aeopic} />
+                  </div>
+                </td>
+                <td className="py-3 px-2">
+                  <div className="flex justify-center">
+                    <ComparisonIcon value={row.agency} />
+                  </div>
+                </td>
+                <td className="py-3 px-2">
+                  <div className="flex justify-center">
+                    <ComparisonIcon value={row.nocode} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </motion.div>
+  );
+}
 
 export function WhyAeopic() {
   return (
@@ -149,6 +252,9 @@ export function WhyAeopic() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Comparison Table */}
+        <ComparisonTable />
       </div>
     </section>
   );

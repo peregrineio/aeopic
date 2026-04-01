@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
+import { StatsBar } from "@/components/home/stats-bar";
 import { ServiceCards } from "@/components/home/service-cards";
 import { WhoWeHelp } from "@/components/home/who-we-help";
 import { WhyAeopic } from "@/components/home/why-aeopic";
@@ -25,6 +26,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <StatsBar />
       <ServiceCards />
       <WhoWeHelp />
       <WhyAeopic />

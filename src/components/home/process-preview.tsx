@@ -51,6 +51,123 @@ const stepVariants: Variants = {
   },
 };
 
+function ProcessTimeline() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      className="mt-12 lg:mt-16"
+    >
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 overflow-x-auto">
+        {/* Header */}
+        <p className="text-[0.75rem] uppercase tracking-wider text-gray-500 mb-6">
+          Typical 10-Week Project Timeline
+        </p>
+
+        {/* Gantt Chart SVG */}
+        <svg viewBox="0 0 800 100" className="w-full h-auto min-w-[600px]">
+          {/* Week labels */}
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((week) => (
+            <text
+              key={week}
+              x={40 + (week - 1) * 72}
+              y="90"
+              textAnchor="middle"
+              fill="#6b7280"
+              fontSize="10"
+            >
+              Wk {week}
+            </text>
+          ))}
+
+          {/* Discovery bar (Week 1-2) */}
+          <rect
+            x="20"
+            y="8"
+            width="130"
+            height="16"
+            rx="5"
+            fill="#726AFF"
+          />
+          <text
+            x="85"
+            y="19"
+            textAnchor="middle"
+            fill="white"
+            fontSize="9"
+            fontWeight="500"
+          >
+            Discovery
+          </text>
+
+          {/* Blueprint bar (Week 1-3, overlapping) */}
+          <rect
+            x="20"
+            y="28"
+            width="200"
+            height="16"
+            rx="5"
+            fill="#a78bfa"
+            opacity="0.9"
+          />
+          <text
+            x="120"
+            y="39"
+            textAnchor="middle"
+            fill="white"
+            fontSize="9"
+            fontWeight="500"
+          >
+            Blueprint
+          </text>
+
+          {/* Build & Iterate bar (Week 3-10, longest) */}
+          <rect
+            x="164"
+            y="48"
+            width="560"
+            height="16"
+            rx="5"
+            fill="#8b5cf6"
+          />
+          <text
+            x="444"
+            y="59"
+            textAnchor="middle"
+            fill="white"
+            fontSize="9"
+            fontWeight="500"
+          >
+            Build & Iterate
+          </text>
+
+          {/* Launch bar (Week 10-12) */}
+          <rect
+            x="668"
+            y="68"
+            width="110"
+            height="16"
+            rx="5"
+            fill="#c4b5fd"
+          />
+          <text
+            x="723"
+            y="79"
+            textAnchor="middle"
+            fill="#1A1A1A"
+            fontSize="9"
+            fontWeight="500"
+          >
+            Launch
+          </text>
+        </svg>
+      </div>
+    </motion.div>
+  );
+}
+
 export function ProcessPreview() {
   return (
     <section className="section-padding mesh-gradient-dark relative overflow-hidden noise-overlay">
@@ -149,6 +266,9 @@ export function ProcessPreview() {
             ))}
           </div>
         </motion.div>
+
+        {/* Process Timeline */}
+        <ProcessTimeline />
 
         {/* CTA Link */}
         <motion.div

@@ -1,54 +1,113 @@
-import type { Metadata } from "next";
-import { AlertTriangle, TrendingUp, Shield, Zap, Key } from "lucide-react";
-import { ServiceHero } from "@/components/services/service-hero";
-import { SectionHeader } from "@/components/shared/section-header";
-import { WebAppsFeatures } from "@/components/services/webapps-features";
-import { FAQSection } from "@/components/shared/faq-section";
-import { CTASection } from "@/components/shared/cta-section";
-import { RelatedServices } from "@/components/services/related-services";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Custom Web Applications | Aeopic",
-  description:
-    "Platforms built around your workflow, not the other way around. Custom web applications for operations, customer portals, and internal tools.",
-};
+import {
+  Code2,
+  Database,
+  Shield,
+  Zap,
+  Users,
+  BarChart3,
+  MessageSquare,
+  Lightbulb,
+  Rocket,
+  Wrench,
+} from "lucide-react";
+import { ServicePageTemplate } from "@/components/services/service-page-template";
 
 const painPoints = [
-  "You're adapting your process to fit the tool",
-  "Data lives in 5 different places",
-  "You've outgrown spreadsheets but can't afford enterprise",
-  "Off-the-shelf doesn't handle your edge cases",
-];
-
-const businessBenefits = [
   {
-    icon: TrendingUp,
-    title: "More Customers, Less Effort",
-    color: "#38a169",
-    description:
-      "Your platform works 24/7 — taking bookings, capturing leads, and serving customers while you sleep. No more missed calls. No more lost opportunities.",
+    problem: "Juggling 5+ different tools that don't talk to each other",
+    solution: "One unified platform with everything connected — CRM, scheduling, invoicing, all in sync",
   },
   {
-    icon: Shield,
-    title: "Fewer Headaches, More Control",
+    problem: "Manual data entry eating up hours every week",
+    solution: "Automated workflows that move data where it needs to go, no copy-paste required",
+  },
+  {
+    problem: "No real-time visibility into business operations",
+    solution: "Live dashboards showing exactly what's happening across your entire business",
+  },
+  {
+    problem: "Paying monthly fees for software you don't fully own",
+    solution: "100% code ownership — no vendor lock-in, no surprise price hikes, yours forever",
+  },
+  {
+    problem: "Off-the-shelf solutions that don't fit your workflow",
+    solution: "Custom-built platforms designed around how YOUR business actually operates",
+  },
+  {
+    problem: "Scaling means breaking everything and starting over",
+    solution: "Architecture built for growth — handle 10x the load without rebuilding",
+  },
+];
+
+const capabilities = [
+  {
+    icon: Database,
+    title: "Operations Dashboard",
+    description: "Central command for your entire business. Jobs, customers, revenue — all in one view.",
     color: "#726AFF",
-    description:
-      "Everything in one place. No more juggling 5 different tools, spreadsheets, and sticky notes. One dashboard. One login. Full visibility.",
+  },
+  {
+    icon: Users,
+    title: "Customer Portal",
+    description: "Let customers book, pay, and track orders themselves. Less phone calls, happier clients.",
+    color: "#3B82F6",
+  },
+  {
+    icon: BarChart3,
+    title: "Real-Time Analytics",
+    description: "Know exactly what's working. Revenue trends, team performance, customer insights.",
+    color: "#10B981",
   },
   {
     icon: Zap,
-    title: "Operations That Scale",
-    color: "#f59e0b",
-    description:
-      "Built to grow with you. Whether you have 2 employees or 200, your platform handles the load without breaking down or slowing you down.",
+    title: "Automated Workflows",
+    description: "Set it and forget it. Invoices, reminders, follow-ups — all on autopilot.",
+    color: "#F59E0B",
   },
   {
-    icon: Key,
-    title: "Software You Own",
-    color: "#1e3a5f",
-    description:
-      "No vendor lock-in. No surprise price hikes. You own 100% of the code. It's yours forever, even if you stop working with us.",
+    icon: MessageSquare,
+    title: "Communication Hub",
+    description: "Email, SMS, chat — all customer conversations in one place with full history.",
+    color: "#8B5CF6",
   },
+  {
+    icon: Shield,
+    title: "Enterprise Security",
+    description: "Bank-level encryption, role-based access, audit logs. Your data stays yours.",
+    color: "#EF4444",
+  },
+];
+
+const processSteps = [
+  {
+    title: "Discovery",
+    description: "We map your current workflow, pain points, and goals",
+    icon: Lightbulb,
+  },
+  {
+    title: "Blueprint",
+    description: "Design the system architecture and user experience",
+    icon: Code2,
+  },
+  {
+    title: "Build",
+    description: "Develop in sprints with weekly demos and feedback",
+    icon: Wrench,
+  },
+  {
+    title: "Launch",
+    description: "Deploy, train your team, and provide ongoing support",
+    icon: Rocket,
+  },
+];
+
+const stats = [
+  { value: "40+", label: "Hours Saved Weekly", trend: "Per client average" },
+  { value: "85%", label: "Revenue Increase", trend: "First year" },
+  { value: "100%", label: "Code Ownership", trend: "Yours forever" },
+  { value: "24/7", label: "System Uptime", trend: "99.9% guarantee" },
 ];
 
 const faqs = [
@@ -81,94 +140,18 @@ const faqs = [
 
 export default function WebAppsPage() {
   return (
-    <>
-      <ServiceHero
-        eyebrow="Custom Development"
-        headline="Custom Web Applications"
-        subheadline="Platforms built around your workflow, not the other way around."
-      />
-
-      {/* The Problem */}
-      <section className="section-padding bg-white">
-        <div className="container-site">
-          <SectionHeader
-            headline="Generic Software Has Generic Limits"
-            centered
-          />
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {painPoints.map((point) => (
-              <div
-                key={point}
-                className="flex items-start gap-3 p-4 rounded-lg bg-destructive/5 border border-destructive/10"
-              >
-                <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
-                <p className="text-sm">{point}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What We Build */}
-      <section className="section-padding bg-[hsl(var(--neutral-bg))]">
-        <div className="container-site">
-          <SectionHeader
-            headline="Platforms That Fit Like They Were Made for You — Because They Were"
-            centered
-          />
-          <WebAppsFeatures />
-        </div>
-      </section>
-
-      {/* What This Means for Your Business */}
-      <section className="section-padding bg-[#F6F7FB]">
-        <div className="container-site">
-          <SectionHeader
-            headline="What This Means for Your Business"
-            centered
-          />
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {businessBenefits.map((benefit) => {
-              const Icon = benefit.icon;
-              return (
-                <div
-                  key={benefit.title}
-                  className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
-                  style={{ borderLeftColor: benefit.color, borderLeftWidth: "4px" }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                    style={{ backgroundColor: `${benefit.color}20` }}
-                  >
-                    <Icon className="h-6 w-6" style={{ color: benefit.color }} />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {benefit.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-          <p className="text-center text-muted-foreground text-sm mt-8">
-            Powered by modern, production-grade technology.
-          </p>
-        </div>
-      </section>
-
-      <FAQSection items={faqs} />
-
-      <RelatedServices currentService="web-apps" />
-
-      <CTASection
-        headline="Ready to Build Your Custom Platform?"
-        subheadline="Tell us what you need. We'll show you what's possible."
-        ctaText="Start Your Project"
-        ctaHref="/start"
-        variant="dark"
-      />
-    </>
+    <ServicePageTemplate
+      service="web-apps"
+      eyebrow="Custom Development"
+      headline="Custom Web Applications"
+      subheadline="Platforms built around your workflow, not the other way around. Full-stack systems designed to scale with your business."
+      painPoints={painPoints}
+      capabilities={capabilities}
+      processSteps={processSteps}
+      stats={stats}
+      faqs={faqs}
+      ctaHeadline="Ready to Build Your Custom Platform?"
+      ctaSubheadline="Tell us what you need. We'll show you what's possible."
+    />
   );
 }
