@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY || "");
+  }
+  return resend;
+}
+
 const TEAM_EMAIL = process.env.TEAM_EMAIL || "contact@aeopic.com";
 
 interface TranscriptMessage {
@@ -89,7 +98,7 @@ export async function POST(request: Request) {
     }
 
     // Send via Resend
-    await resend.emails.send({
+    await getResend().emails.send({
       from: "Aeopic <noreply@aeopic.com>",
       to: TEAM_EMAIL,
       subject: `Chat Conversation — aeopic.com${data.page}`,
