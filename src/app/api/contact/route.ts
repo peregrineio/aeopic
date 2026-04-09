@@ -5,9 +5,14 @@ import { contactFormSchema } from "@/lib/validations";
 // Lazy initialization to avoid build-time errors
 let resend: Resend | null = null;
 
-function getResend() {
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not configured - emails will be skipped");
+    return null;
+  }
   if (!resend) {
-    resend = new Resend(process.env.RESEND_API_KEY || "");
+    resend = new Resend(apiKey);
   }
   return resend;
 }
@@ -26,7 +31,24 @@ export async function POST(request: NextRequest) {
     };
     const services = data.services.map(s => serviceLabels[s] || s).join(", ");
 
-    const teamEmailBody = `
+    // Log the submission (always works, even without email)
+    console.log("=== NEW CONTACT FORM SUBMISSION ===");
+    console.log("Name:", data.name);
+    console.log("Email:", data.email);
+    console.log("Phone:", data.phone || "Not provided");
+    console.log("Company:", data.company || "Not provided");
+    console.log("Services:", services);
+    console.log("Project:", data.projectDescription);
+    console.log("Timeline:", data.timeline || "Not specified");
+    console.log("Budget:", data.budget || "Not specified");
+    console.log("Referral:", data.referralSource || "Not specified");
+    console.log("===================================");
+
+    const resendClient = getResend();
+
+    // Only attempt to send emails if Resend is configured
+    if (resendClient) {
+      const teamEmailBody = `
 New Project Inquiry from ${data.name}
 
 CONTACT INFORMATION
@@ -49,9 +71,9 @@ How they heard about us: ${data.referralSource || "Not specified"}
 
 ---
 Submitted from aeopic.com/start
-    `.trim();
+      `.trim();
 
-    const confirmationEmailBody = `
+      const confirmationEmailBody = `
 Hi ${data.name},
 
 Thanks for reaching out to Aeopic! We received your project inquiry and we're excited to learn more.
@@ -71,34 +93,40 @@ The Aeopic Team
 Aeopic | Custom Software Studio
 Houston, Texas
 https://aeopic.com
-    `.trim();
+      `.trim();
 
-    const resendClient = getResend();
+      try {
+        // Send notification to team
+        const teamEmail = await resendClient.emails.send({
+          from: "Aeopic <noreply@aeopic.com>",
+          to: process.env.TEAM_EMAIL || "contact@aeopic.com",
+          subject: "New Project Inquiry: " + data.name + (data.company ? " (" + data.company + ")" : ""),
+          text: teamEmailBody,
+        });
 
-    // Send notification to team
-    const teamEmail = await resendClient.emails.send({
-      from: "Aeopic <noreply@aeopic.com>",
-      to: process.env.TEAM_EMAIL || "contact@aeopic.com",
-      subject: "New Project Inquiry: " + data.name + (data.company ? " (" + data.company + ")" : ""),
-      text: teamEmailBody,
-    });
+        if (teamEmail.error) {
+          console.error("Failed to send team notification:", teamEmail.error);
+        }
 
-    if (teamEmail.error) {
-      console.error("Failed to send team notification:", teamEmail.error);
+        // Send confirmation to submitter
+        const confirmEmail = await resendClient.emails.send({
+          from: "Aeopic <noreply@aeopic.com>",
+          to: data.email,
+          subject: "We Got Your Message - Aeopic",
+          text: confirmationEmailBody,
+        });
+
+        if (confirmEmail.error) {
+          console.error("Failed to send confirmation:", confirmEmail.error);
+        }
+      } catch (emailError) {
+        // Log email error but don't fail the request
+        console.error("Email sending failed:", emailError);
+      }
     }
 
-    // Send confirmation to submitter
-    const confirmEmail = await resendClient.emails.send({
-      from: "Aeopic <noreply@aeopic.com>",
-      to: data.email,
-      subject: "We Got Your Message - Aeopic",
-      text: confirmationEmailBody,
-    });
-
-    if (confirmEmail.error) {
-      console.error("Failed to send confirmation:", confirmEmail.error);
-    }
-
+    // Always return success if validation passed
+    // The submission is logged even if emails fail
     return NextResponse.json({ success: true });
 
   } catch (error) {

@@ -4,6 +4,12 @@ import { Check, ArrowRight } from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
 import { CTASection } from "@/components/shared/cta-section";
 import { WhoWeHelp } from "@/components/home/who-we-help";
+import {
+  WebAppsMockup,
+  AIToolsMockup,
+  MarketingMockup,
+  EcommerceMockup,
+} from "@/components/services/service-mockups";
 
 export const metadata: Metadata = {
   title: "Services | Aeopic",
@@ -25,6 +31,7 @@ const services = [
       "Mobile-responsive, production-grade",
     ],
     href: "/services/web-apps",
+    mockup: "webapps",
   },
   {
     title: "AI-Powered Business Tools",
@@ -39,6 +46,7 @@ const services = [
       "Payment processing integration",
     ],
     href: "/services/ai-tools",
+    mockup: "ai",
   },
   {
     title: "Marketing That Moves the Needle",
@@ -53,6 +61,7 @@ const services = [
       "Paid advertising management",
     ],
     href: "/services/marketing",
+    mockup: "marketing",
   },
   {
     title: "eCommerce Built for Conversion",
@@ -67,8 +76,16 @@ const services = [
       "Analytics & conversion tracking",
     ],
     href: "/services/ecommerce",
+    mockup: "ecommerce",
   },
 ];
+
+const mockupComponents: Record<string, React.ReactNode> = {
+  webapps: <WebAppsMockup />,
+  ai: <AIToolsMockup />,
+  marketing: <MarketingMockup />,
+  ecommerce: <EcommerceMockup />,
+};
 
 export default function ServicesPage() {
   return (
@@ -124,12 +141,10 @@ export default function ServicesPage() {
                   </Link>
                 </div>
 
-                {/* Visual placeholder */}
-                <div
-                  className={`${
-                    index % 2 === 1 ? "lg:order-1" : ""
-                  } aspect-video bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20`}
-                />
+                {/* Service Mockup */}
+                <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
+                  {mockupComponents[service.mockup]}
+                </div>
               </div>
             </div>
           </section>

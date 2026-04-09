@@ -167,7 +167,7 @@ export default function StartPage() {
                 <div className="space-y-4">
                   <div>
                     <Label>What do you need? *</Label>
-                    <div className="grid sm:grid-cols-2 gap-2 mt-2 relative z-20">
+                    <div className="grid sm:grid-cols-2 gap-2 mt-2">
                       {serviceOptions.map((option) => {
                         const isSelected = selectedServices.includes(option.value);
                         return (
@@ -176,14 +176,14 @@ export default function StartPage() {
                             type="button"
                             onClick={() => toggleService(option.value)}
                             className={cn(
-                              "p-3 text-left text-sm rounded-lg border-2 transition-all cursor-pointer pointer-events-auto select-none flex items-center justify-between gap-2",
+                              "p-3 text-left text-sm rounded-lg border-2 transition-all cursor-pointer select-none flex items-center justify-between gap-2",
                               isSelected
-                                ? "border-primary bg-primary text-white font-medium"
-                                : "border-gray-200 hover:border-primary/50 bg-white text-gray-700"
+                                ? "border-[#726AFF] bg-[#726AFF] text-white font-medium shadow-md"
+                                : "border-gray-200 hover:border-[#726AFF]/50 bg-white text-gray-700"
                             )}
                           >
                             <span>{option.label}</span>
-                            {isSelected && <Check className="h-4 w-4 flex-shrink-0" />}
+                            {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-white" />}
                           </button>
                         );
                       })}
