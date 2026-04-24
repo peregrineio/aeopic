@@ -9,13 +9,16 @@ import { SocialProof } from "@/components/home/social-proof";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
-  title: "Aeopic | Custom Web Apps, AI Tools, Marketing & eCommerce",
+  title: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
   description:
-    "Customer-tailored web applications, AI-powered business tools, marketing services, and eCommerce solutions. Built by a team that gets it done.",
+    "Custom web apps, AI tools, marketing & eCommerce. Houston-based software studio. Remote-friendly.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Aeopic | Custom Web Apps, AI Tools, Marketing & eCommerce",
+    title: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
     description:
-      "Customer-tailored web applications, AI-powered business tools, marketing services, and eCommerce solutions.",
+      "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
     url: "https://aeopic.com",
     siteName: "Aeopic",
     type: "website",

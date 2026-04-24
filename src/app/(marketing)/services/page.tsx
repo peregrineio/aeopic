@@ -12,9 +12,12 @@ import {
 } from "@/components/services/service-mockups";
 
 export const metadata: Metadata = {
-  title: "Services | Aeopic",
+  title: "Services | Custom Software Development Houston",
   description:
-    "Custom web applications, AI-powered business tools, marketing & SEO, and eCommerce solutions — built by a team that gets it done.",
+    "Custom web apps, AI tools, marketing & SEO, eCommerce solutions. Houston software studio serving local businesses.",
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 const services = [
