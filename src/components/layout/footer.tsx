@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, ArrowRight, Mail, MapPin } from "lucide-react";
+import { Github, Linkedin, Twitter, ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 
 const services = [
   { label: "Custom Web Apps", href: "/services/web-apps" },
@@ -217,7 +217,7 @@ export function Footer() {
               </div>
             </motion.div>
 
-            {/* Location */}
+            {/* Contact / Location */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -225,11 +225,35 @@ export function Footer() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-white/40 mb-6">
-                Location
+                Contact
               </h3>
-              <div className="flex items-center gap-3 text-white/60">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span>Houston, Texas</span>
+              <div className="space-y-4">
+                <p className="font-semibold text-white">Aeopic</p>
+                <div className="flex items-start gap-3 text-white/60 text-sm">
+                  <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p>1919 Taylor St, Ste F</p>
+                    <p>Houston, TX 77007</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-white/60 text-sm">
+                  <Phone className="h-4 w-4 text-primary flex-shrink-0" />
+                  <a
+                    href="tel:+19799338032"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    (979) 933-8032
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 text-white/60 text-sm">
+                  <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                  <a
+                    href="mailto:contact@aeopic.com"
+                    className="hover:text-white transition-colors duration-200"
+                  >
+                    contact@aeopic.com
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>

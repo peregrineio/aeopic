@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { DM_Sans, JetBrains_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LocalBusinessSchema, OrganizationSchema } from "@/app/components/structured-data";
 import "./globals.css";
 
 // DM Sans - premium, modern, sophisticated (Google alternative to Satoshi)
@@ -18,24 +20,40 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://aeopic.com"),
+  alternates: {
+    canonical: "/",
+  },
   title: {
-    default: "Aeopic | Custom Software Development",
+    default: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
     template: "%s | Aeopic",
   },
   description:
-    "Customer-tailored web applications, AI-powered tools, marketing, and eCommerce solutions.",
+    "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png" }],
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "Aeopic | Custom Software Development",
+    title: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
     description:
-      "Customer-tailored web applications, AI-powered tools, marketing, and eCommerce solutions.",
+      "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
     url: "https://aeopic.com",
     siteName: "Aeopic",
     locale: "en_US",
     type: "website",
+    // Images handled by opengraph-image.tsx
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aeopic | AI Software Development Houston",
+    description:
+      "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
+    site: "@aeopic",
+    // Images handled by opengraph-image.tsx
+  },
+  verification: {
+    google: "PENDING_VERIFICATION_CODE",
   },
 };
 
@@ -49,6 +67,20 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-61GKHKPRVG"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-61GKHKPRVG');
+          `}
+        </Script>
+        <LocalBusinessSchema />
+        <OrganizationSchema />
         <TooltipProvider>
           <div className="min-h-screen flex flex-col">{children}</div>
         </TooltipProvider>

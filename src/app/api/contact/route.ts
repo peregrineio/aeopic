@@ -7,6 +7,7 @@ let resend: Resend | null = null;
 
 function getResend(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY;
+  console.log("RESEND_API_KEY configured:", apiKey ? `yes (${apiKey.substring(0, 8)}...)` : "NO");
   if (!apiKey) {
     console.warn("RESEND_API_KEY not configured - emails will be skipped");
     return null;
@@ -96,17 +97,26 @@ https://aeopic.com
       `.trim();
 
       try {
+        const teamEmailTo = process.env.TEAM_EMAIL || "contact@aeopic.com";
+        console.log("Sending team notification to:", teamEmailTo);
+
         // Send notification to team
         const teamEmail = await resendClient.emails.send({
           from: "Aeopic <noreply@aeopic.com>",
-          to: process.env.TEAM_EMAIL || "contact@aeopic.com",
+          to: teamEmailTo,
           subject: "New Project Inquiry: " + data.name + (data.company ? " (" + data.company + ")" : ""),
           text: teamEmailBody,
         });
 
+        console.log("Team email result:", JSON.stringify(teamEmail));
+
         if (teamEmail.error) {
           console.error("Failed to send team notification:", teamEmail.error);
+        } else {
+          console.log("Team email sent successfully, ID:", teamEmail.data?.id);
         }
+
+        console.log("Sending confirmation to:", data.email);
 
         // Send confirmation to submitter
         const confirmEmail = await resendClient.emails.send({
@@ -116,8 +126,12 @@ https://aeopic.com
           text: confirmationEmailBody,
         });
 
+        console.log("Confirmation email result:", JSON.stringify(confirmEmail));
+
         if (confirmEmail.error) {
           console.error("Failed to send confirmation:", confirmEmail.error);
+        } else {
+          console.log("Confirmation email sent successfully, ID:", confirmEmail.data?.id);
         }
       } catch (emailError) {
         // Log email error but don't fail the request
