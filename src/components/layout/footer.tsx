@@ -31,6 +31,16 @@ const company = [
   { label: "Get Started", href: "/contact" },
 ];
 
+const locations = [
+  { label: "College Station", href: "/locations/college-station" },
+  { label: "Bryan", href: "/locations/bryan" },
+  { label: "Manor", href: "/locations/manor" },
+  { label: "Montgomery County", href: "/locations/montgomery-county" },
+  { label: "Conroe", href: "/locations/conroe" },
+  { label: "Magnolia", href: "/locations/magnolia" },
+  { label: "Tomball", href: "/locations/tomball" },
+];
+
 const socialLinks = [
   { icon: Github, href: "#", label: "GitHub" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
@@ -116,7 +126,7 @@ export function Footer() {
 
         {/* Navigation Grid */}
         <div className="py-16 md:py-20 border-b border-white/10">
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8">
 
             {/* Services */}
             <motion.div
@@ -162,6 +172,31 @@ export function Footer() {
                     >
                       <span className="w-2 h-px bg-primary opacity-0 group-hover:opacity-100 group-hover:w-4 transition-all duration-200" />
                       <span>{industry.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Service Areas */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.075 }}
+            >
+              <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-white/40 mb-6">
+                Service Areas
+              </h3>
+              <ul className="space-y-3">
+                {locations.map((location) => (
+                  <li key={location.label}>
+                    <Link
+                      href={location.href}
+                      className="group flex items-center gap-2 text-white/60 hover:text-white transition-colors duration-200 text-sm"
+                    >
+                      <span className="w-2 h-px bg-primary opacity-0 group-hover:opacity-100 group-hover:w-4 transition-all duration-200" />
+                      <span>{location.label}</span>
                     </Link>
                   </li>
                 ))}

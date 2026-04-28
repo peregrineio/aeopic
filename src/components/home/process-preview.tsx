@@ -1,289 +1,179 @@
 "use client";
 
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Search, FileCode2, Rocket, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const steps = [
   {
-    icon: Search,
     number: "01",
     title: "Discovery",
-    description: "Tell us what you need. We listen, ask the right questions, and map your goals.",
+    description: "We listen. You talk. Together we map what success looks like for your business.",
+    weeks: "1–2",
   },
   {
-    icon: FileCode2,
     number: "02",
     title: "Blueprint",
-    description: "We design the architecture, UI, and workflows before writing a single line of code.",
+    description: "Architecture, interfaces, workflows — designed and approved before any code.",
+    weeks: "2–3",
   },
   {
-    icon: Zap,
     number: "03",
-    title: "Build & Iterate",
-    description: "We build fast, show you progress weekly, and refine based on your feedback.",
+    title: "Build",
+    description: "Weekly demos. Direct feedback. Rapid iteration until it's exactly right.",
+    weeks: "3–9",
   },
   {
-    icon: Rocket,
     number: "04",
-    title: "Launch & Grow",
-    description: "Go live with confidence. We stick around to optimize, maintain, and scale.",
+    title: "Launch",
+    description: "Go live with confidence. We stay to optimize, support, and scale.",
+    weeks: "10+",
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const stepVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
-
-function ProcessTimeline() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: 0.4 }}
-      className="mt-12 lg:mt-16"
-    >
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 overflow-x-auto">
-        {/* Header */}
-        <p className="text-[0.75rem] uppercase tracking-wider text-gray-500 mb-6">
-          Typical 10-Week Project Timeline
-        </p>
-
-        {/* Gantt Chart SVG */}
-        <svg viewBox="0 0 800 100" className="w-full h-auto min-w-[600px]">
-          {/* Week labels */}
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((week) => (
-            <text
-              key={week}
-              x={40 + (week - 1) * 72}
-              y="90"
-              textAnchor="middle"
-              fill="#6b7280"
-              fontSize="10"
-            >
-              Wk {week}
-            </text>
-          ))}
-
-          {/* Discovery bar (Week 1-2) */}
-          <rect
-            x="20"
-            y="8"
-            width="130"
-            height="16"
-            rx="5"
-            fill="#726AFF"
-          />
-          <text
-            x="85"
-            y="19"
-            textAnchor="middle"
-            fill="white"
-            fontSize="9"
-            fontWeight="500"
-          >
-            Discovery
-          </text>
-
-          {/* Blueprint bar (Week 1-3, overlapping) */}
-          <rect
-            x="20"
-            y="28"
-            width="200"
-            height="16"
-            rx="5"
-            fill="#a78bfa"
-            opacity="0.9"
-          />
-          <text
-            x="120"
-            y="39"
-            textAnchor="middle"
-            fill="white"
-            fontSize="9"
-            fontWeight="500"
-          >
-            Blueprint
-          </text>
-
-          {/* Build & Iterate bar (Week 3-10, longest) */}
-          <rect
-            x="164"
-            y="48"
-            width="560"
-            height="16"
-            rx="5"
-            fill="#8b5cf6"
-          />
-          <text
-            x="444"
-            y="59"
-            textAnchor="middle"
-            fill="white"
-            fontSize="9"
-            fontWeight="500"
-          >
-            Build & Iterate
-          </text>
-
-          {/* Launch bar (Week 10-12) */}
-          <rect
-            x="668"
-            y="68"
-            width="110"
-            height="16"
-            rx="5"
-            fill="#c4b5fd"
-          />
-          <text
-            x="723"
-            y="79"
-            textAnchor="middle"
-            fill="#1A1A1A"
-            fontSize="9"
-            fontWeight="500"
-          >
-            Launch
-          </text>
-        </svg>
-      </div>
-    </motion.div>
-  );
-}
-
 export function ProcessPreview() {
   return (
-    <section className="section-padding mesh-gradient-dark relative overflow-hidden noise-overlay">
-      {/* Dot grid pattern */}
-      <div className="absolute inset-0 dot-grid opacity-20" />
-
-      {/* Decorative gradient orbs */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-primary/10 blur-[100px]" />
-      <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-[hsl(260_80%_60%_/_0.1)] blur-[100px]" />
-
-      <div className="container-site relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-block text-white/90 tracking-[0.2em] uppercase text-sm font-semibold mb-4"
-          >
-            How We Work
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-white mb-5"
-          >
-            From Idea to Launch
-            <br className="hidden sm:block" />
-            <span className="text-gradient">in Weeks, Not Months</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-white/60 text-lg max-w-xl mx-auto"
-          >
-            A proven process that delivers quality software fast — without cutting corners.
-          </motion.p>
-        </div>
-
-        {/* Steps Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="relative"
+    <section className="relative py-32 md:py-40 bg-white overflow-hidden">
+      {/* Header */}
+      <div className="container-site mb-20 md:mb-28">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-[#726AFF] text-sm font-medium tracking-wide mb-4"
         >
-          {/* Connecting line (desktop) */}
-          <div className="hidden lg:block absolute top-[60px] left-[calc(12.5%+28px)] right-[calc(12.5%+28px)] h-px">
-            <div className="w-full h-full bg-gradient-to-r from-primary/40 via-primary/20 to-primary/40" />
-          </div>
+          How We Work
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0A0A0A] tracking-tight leading-[1.1]"
+        >
+          Idea to launch.
+          <br />
+          <span className="text-[#726AFF]">Weeks, not months.</span>
+        </motion.h2>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.number}
-                variants={stepVariants}
-                className="relative"
-              >
-                {/* Mobile/Tablet connecting line */}
-                {index < steps.length - 1 && (
-                  <div className="lg:hidden absolute left-7 top-[72px] w-px h-[calc(100%+32px)] bg-gradient-to-b from-primary/40 to-primary/10" />
-                )}
+      {/* Steps */}
+      <div className="container-site">
+        <div className="border-t border-[#E5E5E5]">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.number}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: index * 0.1 }}
+              className="group border-b border-[#E5E5E5] py-12 md:py-16 cursor-default"
+            >
+              <div className="grid grid-cols-12 gap-4 md:gap-8 items-start">
+                {/* Number */}
+                <div className="col-span-3 md:col-span-2">
+                  <span
+                    className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter transition-colors duration-300 group-hover:text-[#726AFF]"
+                    style={{
+                      color: '#E5E5E5',
+                      fontFamily: 'var(--font-heading), system-ui, sans-serif',
+                    }}
+                  >
+                    {step.number}
+                  </span>
+                </div>
 
-                <div className="glass-card p-6 lg:p-8 h-full text-center lg:text-left">
-                  {/* Step number and icon row */}
-                  <div className="flex flex-col items-center lg:items-start mb-6">
-                    {/* Icon circle */}
-                    <div className="relative mb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-                        <step.icon className="w-6 h-6 text-primary" />
-                      </div>
-                      {/* Step number badge */}
-                      <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-white text-xs font-mono font-bold flex items-center justify-center shadow-lg shadow-primary/30">
-                        {step.number}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-heading text-white mb-3">
+                {/* Title */}
+                <div className="col-span-9 md:col-span-3 flex items-center">
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#0A0A0A] group-hover:text-[#726AFF] transition-colors duration-300">
                     {step.title}
                   </h3>
+                </div>
 
-                  {/* Description */}
-                  <p className="text-white/60 text-sm leading-relaxed">
+                {/* Description */}
+                <div className="col-span-12 md:col-span-5 md:col-start-6">
+                  <p className="text-[#525252] text-lg leading-relaxed">
                     {step.description}
                   </p>
                 </div>
-              </motion.div>
+
+                {/* Weeks */}
+                <div className="col-span-12 md:col-span-2 md:text-right">
+                  <span className="text-sm text-[#A3A3A3]">
+                    Week {step.weeks}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Timeline visualization */}
+      <div className="container-site mt-20 md:mt-28">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative"
+        >
+          <p className="text-xs text-[#A3A3A3] uppercase tracking-wider mb-6">
+            Typical 10-week timeline
+          </p>
+
+          {/* Progress bar */}
+          <div className="relative h-2 bg-[#F5F5F5] rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: '100%' }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute inset-y-0 left-0 rounded-full"
+              style={{
+                background: 'linear-gradient(90deg, #726AFF 0%, #726AFF 20%, #9F97FF 20%, #9F97FF 30%, #B8B3FF 30%, #B8B3FF 90%, #D4D1FF 90%, #D4D1FF 100%)',
+              }}
+            />
+          </div>
+
+          {/* Week markers */}
+          <div className="flex justify-between mt-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((week) => (
+              <span key={week} className="text-xs text-[#A3A3A3]">
+                {week}
+              </span>
             ))}
           </div>
+
+          {/* Phase labels */}
+          <div className="flex mt-4 text-xs">
+            <div style={{ width: '20%' }} className="text-[#726AFF] font-medium">
+              Discovery
+            </div>
+            <div style={{ width: '10%' }} className="text-[#9F97FF] font-medium">
+              Blueprint
+            </div>
+            <div style={{ width: '60%' }} className="text-[#B8B3FF] font-medium">
+              Build & Iterate
+            </div>
+            <div style={{ width: '10%' }} className="text-[#D4D1FF] font-medium text-right">
+              Launch
+            </div>
+          </div>
         </motion.div>
+      </div>
 
-        {/* Process Timeline */}
-        <ProcessTimeline />
-
-        {/* CTA Link */}
+      {/* CTA */}
+      <div className="container-site mt-20">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.8 }}
-          className="text-center mt-12 lg:mt-16"
         >
           <Link
             href="/process"
-            className="group inline-flex items-center gap-2 text-[#726AFF] hover:text-white font-medium transition-colors"
+            className="group inline-flex items-center gap-3 text-[#0A0A0A] hover:text-[#726AFF] transition-colors"
           >
-            <span>See Our Full Process</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <span className="text-lg font-medium">Full process breakdown</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
       </div>

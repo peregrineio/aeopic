@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -16,6 +17,15 @@ import {
 } from "lucide-react";
 
 const industries = [
+  {
+    icon: Heart,
+    title: "Medical & Dental Clinics",
+    slug: "medical",
+    color: "#ef4444",
+    pain: "Patients are calling to book appointments that could be handled online in 30 seconds.",
+    solution:
+      "Patient portals with self-service booking, intake forms, appointment reminders, and secure messaging — all HIPAA-ready.",
+  },
   {
     icon: Thermometer,
     title: "HVAC & Home Services",
@@ -51,15 +61,6 @@ const industries = [
     pain: "You're managing routes on paper and customers can't see when you're coming.",
     solution:
       "Route optimization, customer portals with service history, automated reminders, and seasonal marketing campaigns that fill your schedule.",
-  },
-  {
-    icon: Heart,
-    title: "Medical & Dental Clinics",
-    slug: "medical",
-    color: "#ef4444",
-    pain: "Patients are calling to book appointments that could be handled online in 30 seconds.",
-    solution:
-      "Patient portals with self-service booking, intake forms, appointment reminders, and secure messaging — all HIPAA-ready.",
   },
   {
     icon: UtensilsCrossed,
@@ -99,12 +100,22 @@ const industries = [
   },
 ];
 
+// Duplicate for seamless infinite loop
+const duplicatedIndustries = [...industries, ...industries];
+
+// Card width + gap
+const cardWidth = 340;
+const gap = 24;
+const totalWidth = industries.length * (cardWidth + gap);
+
 export function WhoWeHelp() {
+  const [isPaused, setIsPaused] = useState(false);
+
   return (
-    <section className="py-20 md:py-28 bg-[#F6F7FB]">
+    <section className="py-20 md:py-28 bg-[#F6F7FB] overflow-hidden">
       <div className="container-site">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="max-w-2xl mb-12">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -129,26 +140,47 @@ export function WhoWeHelp() {
             transition={{ delay: 0.15 }}
             className="text-lg text-muted-foreground"
           >
-            Every business is different — but the challenges aren&apos;t. Here&apos;s
-            how we help businesses like yours.
+            Every business is different — but the challenges aren&apos;t.
+            Here&apos;s how we help businesses like yours.
           </motion.p>
         </div>
+      </div>
 
-        {/* Industry Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {industries.map((industry, index) => {
+      {/* Auto-scrolling Carousel */}
+      <div
+        className="relative"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Gradient masks for smooth edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#F6F7FB] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F6F7FB] to-transparent z-10 pointer-events-none" />
+
+        {/* Animated track */}
+        <motion.div
+          className="flex gap-6 pl-6"
+          animate={{
+            x: isPaused ? undefined : [0, -totalWidth],
+          }}
+          transition={{
+            x: {
+              duration: 40,
+              ease: "linear",
+              repeat: Infinity,
+            },
+          }}
+        >
+          {duplicatedIndustries.map((industry, index) => {
             const Icon = industry.icon;
             return (
-              <motion.div
-                key={industry.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
+              <div
+                key={`${industry.slug}-${index}`}
+                className="flex-shrink-0"
+                style={{ width: `${cardWidth}px` }}
               >
                 <Link
                   href={`/industries/${industry.slug}`}
-                  className="group relative block bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full"
+                  className="group relative block bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full min-h-[320px]"
                 >
                   {/* Animated left border on hover */}
                   <div
@@ -188,10 +220,28 @@ export function WhoWeHelp() {
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
-        </div>
+        </motion.div>
+      </div>
+
+      {/* View All Link */}
+      <div className="container-site">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mt-10"
+        >
+          <Link
+            href="/industries"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            View all industries
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0A0A0A;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      #root {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        background: linear-gradient(135deg, #0A0A0A 0%, #0F1226 100%);
+      }
+
+      /* Grid background */
+      .grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      /* Gradient orbs */
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+      }
+
+      .orb-1 {
+        width: 600px;
+        height: 600px;
+        background: #10B981;
+        top: -200px;
+        right: -100px;
+        opacity: 0;
+      }
+
+      .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: #726AFF;
+        bottom: -100px;
+        left: 20%;
+        opacity: 0;
+      }
+
+      /* Metrics container */
+      .metrics-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 100px;
+      }
+
+      /* Metric card */
+      .metric {
+        text-align: center;
+        opacity: 0;
+      }
+
+      .metric-value {
+        font-size: 160px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .metric-value .accent {
+        color: #10B981;
+      }
+
+      .metric-label {
+        font-size: 24px;
+        color: rgba(255,255,255,0.5);
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
+
+      /* Chart */
+      .chart-container {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1400px;
+        height: 220px;
+      }
+
+      .chart-line {
+        fill: none;
+        stroke: #10B981;
+        stroke-width: 4;
+        stroke-linecap: round;
+      }
+
+      .chart-fill {
+        fill: url(#chartGradient);
+        opacity: 0;
+      }
+
+      /* Floating elements */
+      .floating-stat {
+        position: absolute;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 24px 36px;
+        opacity: 0;
+        backdrop-filter: blur(10px);
+      }
+
+      .floating-stat .value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .floating-stat .label {
+        font-size: 14px;
+        color: rgba(255,255,255,0.4);
+        margin-top: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .stat-1 { top: 12%; left: 8%; }
+      .stat-2 { top: 18%; right: 12%; }
+      .stat-3 { bottom: 32%; left: 12%; }
+      .stat-4 { bottom: 28%; right: 8%; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Background -->
+      <div class="grid-bg"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+
+      <!-- Main metrics -->
+      <div class="metrics-container">
+        <div class="metric metric-1">
+          <div class="metric-value"><span class="accent">+</span>247%</div>
+          <div class="metric-label">Traffic Growth</div>
+        </div>
+        <div class="metric metric-2">
+          <div class="metric-value">3.2<span class="accent">x</span></div>
+          <div class="metric-label">Return on Ad Spend</div>
+        </div>
+        <div class="metric metric-3">
+          <div class="metric-value"><span class="accent">#</span>1</div>
+          <div class="metric-label">Local Rankings</div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-container">
+        <svg width="1400" height="220" viewBox="0 0 1400 220">
+          <defs>
+            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#10B981" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path class="chart-fill" d="M 0 200 Q 175 190, 350 170 T 700 120 T 1050 70 T 1400 30 L 1400 220 L 0 220 Z"/>
+          <path class="chart-line" d="M 0 200 Q 175 190, 350 170 T 700 120 T 1050 70 T 1400 30"/>
+        </svg>
+      </div>
+
+      <!-- Floating stats -->
+      <div class="floating-stat stat-1">
+        <div class="value">+64%</div>
+        <div class="label">Organic Traffic</div>
+      </div>
+      <div class="floating-stat stat-2">
+        <div class="value">847</div>
+        <div class="label">Leads Generated</div>
+      </div>
+      <div class="floating-stat stat-3">
+        <div class="value">12</div>
+        <div class="label">Keywords Ranking</div>
+      </div>
+      <div class="floating-stat stat-4">
+        <div class="value">4.8★</div>
+        <div class="label">Review Score</div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Orbs fade in with pulse
+      tl.to(".orb-1", { opacity: 0.4, duration: 1, ease: "power2.out" }, 0);
+      tl.to(".orb-2", { opacity: 0.3, duration: 1, ease: "power2.out" }, 0.3);
+
+      // Main metrics animate in
+      tl.from(".metric-1", { opacity: 0, y: 60, duration: 0.8, ease: "power3.out" }, 0.5);
+      tl.from(".metric-2", { opacity: 0, y: 60, duration: 0.8, ease: "power3.out" }, 0.7);
+      tl.from(".metric-3", { opacity: 0, y: 60, duration: 0.8, ease: "power3.out" }, 0.9);
+      tl.to(".metric-1", { opacity: 1 }, 0.5);
+      tl.to(".metric-2", { opacity: 1 }, 0.7);
+      tl.to(".metric-3", { opacity: 1 }, 0.9);
+
+      // Chart line draws
+      tl.from(".chart-line", {
+        strokeDasharray: "2000",
+        strokeDashoffset: 2000,
+        duration: 2,
+        ease: "power2.out"
+      }, 1.5);
+
+      // Chart fill fades in
+      tl.to(".chart-fill", { opacity: 1, duration: 1, ease: "power2.out" }, 2.5);
+
+      // Floating stats animate in
+      tl.to(".stat-1", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 2);
+      tl.from(".stat-1", { y: 30 }, 2);
+      tl.to(".stat-2", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 2.2);
+      tl.from(".stat-2", { y: 30 }, 2.2);
+      tl.to(".stat-3", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 2.4);
+      tl.from(".stat-3", { y: 30 }, 2.4);
+      tl.to(".stat-4", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 2.6);
+      tl.from(".stat-4", { y: 30 }, 2.6);
+
+      // Floating animation for stats (loop)
+      tl.to(".stat-1", { y: -15, duration: 2, ease: "sine.inOut", yoyo: true, repeat: -1 }, 4);
+      tl.to(".stat-2", { y: -12, duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: -1 }, 4.2);
+      tl.to(".stat-3", { y: -18, duration: 1.8, ease: "sine.inOut", yoyo: true, repeat: -1 }, 4.4);
+      tl.to(".stat-4", { y: -14, duration: 2.1, ease: "sine.inOut", yoyo: true, repeat: -1 }, 4.6);
+
+      // Orb pulse animation
+      tl.to(".orb-1", { scale: 1.1, opacity: 0.5, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 }, 3);
+      tl.to(".orb-2", { scale: 1.15, opacity: 0.4, duration: 3.5, ease: "sine.inOut", yoyo: true, repeat: -1 }, 3.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

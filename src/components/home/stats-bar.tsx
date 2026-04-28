@@ -1,52 +1,92 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Rocket, Shield, Code2, Unlock } from "lucide-react";
 
 const stats = [
   {
     value: "8–12",
     label: "Weeks avg. to launch",
+    icon: Rocket,
   },
   {
     value: "100%",
     label: "Code ownership, always",
+    icon: Shield,
   },
   {
     value: "10+",
     label: "Years combined engineering",
+    icon: Code2,
   },
   {
     value: "0",
     label: "Vendor lock-in, ever",
+    icon: Unlock,
   },
 ];
 
+// Duplicate for seamless loop
+const duplicatedStats = [...stats, ...stats, ...stats];
+
 export function StatsBar() {
+  const [isPaused, setIsPaused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <section className="bg-[#F6F7FB] border-y border-gray-200">
-      <div className="container-site">
+    <section className="bg-[#0A0A0A] border-y border-white/10 overflow-hidden">
+      <div
+        ref={containerRef}
+        className="relative py-6"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Gradient masks for smooth edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+
+        {/* Marquee track */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 lg:grid-cols-4"
+          className="flex gap-16 whitespace-nowrap"
+          animate={{
+            x: isPaused ? undefined : ["0%", "-33.333%"],
+          }}
+          transition={{
+            x: {
+              duration: 25,
+              ease: "linear",
+              repeat: Infinity,
+            },
+          }}
         >
-          {stats.map((stat, index) => (
-            <div
-              key={stat.value}
-              className={`py-10 text-center ${
-                index < stats.length - 1 ? "lg:border-r border-gray-200" : ""
-              } ${index % 2 === 0 ? "border-r border-gray-200 lg:border-r" : ""} ${
-                index < 2 ? "border-b border-gray-200 lg:border-b-0" : ""
-              }`}
-            >
-              <p className="text-[2.8rem] font-heading font-bold text-[#726AFF] leading-none mb-2">
-                {stat.value}
-              </p>
-              <p className="text-[0.85rem] text-gray-500">{stat.label}</p>
-            </div>
-          ))}
+          {duplicatedStats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <div
+                key={`${stat.value}-${index}`}
+                className="flex items-center gap-4 flex-shrink-0 px-4"
+              >
+                {/* Icon */}
+                <div className="w-10 h-10 flex items-center justify-center bg-[#726AFF]/10 rounded-lg">
+                  <Icon className="w-5 h-5 text-[#726AFF]" />
+                </div>
+
+                {/* Stat content */}
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                    {stat.value}
+                  </span>
+                  <span className="text-sm text-white/50 uppercase tracking-wider">
+                    {stat.label}
+                  </span>
+                </div>
+
+                {/* Separator dot */}
+                <div className="w-1.5 h-1.5 rounded-full bg-[#726AFF]/40 ml-8" />
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

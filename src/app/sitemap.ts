@@ -3,6 +3,24 @@ import { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://aeopic.com";
 
+  // Location pages for local SEO
+  const locations = [
+    "college-station",
+    "bryan",
+    "manor",
+    "montgomery-county",
+    "conroe",
+    "magnolia",
+    "tomball",
+  ];
+
+  const locationEntries: MetadataRoute.Sitemap = locations.map((location) => ({
+    url: `${baseUrl}/locations/${location}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -10,6 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    {
+      url: `${baseUrl}/locations`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...locationEntries,
     {
       url: `${baseUrl}/services`,
       lastModified: new Date(),

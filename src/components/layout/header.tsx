@@ -22,6 +22,7 @@ import {
   Car,
   SprayCan,
   ArrowRight,
+  MapPin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,17 @@ const industryIcons: Record<string, React.ElementType> = {
   "Law Offices": Scale,
   "Auto & Detailing": Car,
   "Cleaning & Pest Control": SprayCan,
+};
+
+// Icon mapping for locations (all use MapPin)
+const locationIcons: Record<string, React.ElementType> = {
+  "College Station": MapPin,
+  "Bryan": MapPin,
+  "Manor": MapPin,
+  "Montgomery County": MapPin,
+  "Conroe": MapPin,
+  "Magnolia": MapPin,
+  "Tomball": MapPin,
 };
 
 // Brand colors
@@ -195,12 +207,16 @@ export function Header() {
   // Render dropdown content based on type
   const renderDropdownContent = (
     link: (typeof navLinks)[0],
-    isServices: boolean
+    dropdownType: "services" | "industries" | "locations"
   ) => {
-    const icons = isServices ? serviceIcons : industryIcons;
+    const icons = dropdownType === "services"
+      ? serviceIcons
+      : dropdownType === "locations"
+        ? locationIcons
+        : industryIcons;
     const children = link.children || [];
 
-    if (isServices) {
+    if (dropdownType === "services") {
       // Services: 2x2 grid with larger cards
       return (
         <motion.div
@@ -286,6 +302,104 @@ export function Header() {
               >
                 <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
                   View all services
+                </span>
+                <ArrowRight
+                  className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all"
+                />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      );
+    }
+
+    // Locations: 2-column grid
+    if (dropdownType === "locations") {
+      return (
+        <motion.div
+          variants={dropdownVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
+          style={{ width: "420px" }}
+        >
+          <div
+            className="rounded-2xl border border-gray-200/80 shadow-xl overflow-hidden"
+            style={{
+              background: `linear-gradient(135deg, white 0%, ${brand.purpleBg} 100%)`,
+              boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
+            }}
+          >
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
+                Service Areas
+              </p>
+              <span
+                className="text-[0.6rem] px-2 py-1 rounded-full font-medium"
+                style={{
+                  background: brand.purpleBg,
+                  color: brand.primary,
+                }}
+              >
+                Texas
+              </span>
+            </div>
+
+            {/* 2-column grid */}
+            <div className="grid grid-cols-2 gap-1 p-2">
+              {children.map((child) => {
+                return (
+                  <motion.div key={child.label} variants={dropdownItemVariants}>
+                    <Link
+                      href={child.href}
+                      onClick={() => setActiveDropdown(null)}
+                      className="group flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
+                      style={{
+                        boxShadow: "0 0 0 0 transparent",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = "0 0 0 0 transparent";
+                      }}
+                    >
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
+                        style={{
+                          background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
+                        }}
+                      >
+                        <MapPin
+                          className="w-4 h-4 transition-colors duration-200"
+                          style={{ color: brand.primary }}
+                        />
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-700 group-hover:text-[#726AFF] transition-colors block">
+                          {child.label}
+                        </span>
+                        <span className="text-[0.65rem] text-gray-400">
+                          {child.description}
+                        </span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Footer CTA */}
+            <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
+              <Link
+                href="/locations"
+                onClick={() => setActiveDropdown(null)}
+                className="group flex items-center justify-between text-sm"
+              >
+                <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
+                  View all service areas
                 </span>
                 <ArrowRight
                   className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all"
@@ -463,6 +577,10 @@ export function Header() {
                           renderDropdownContent(
                             link,
                             link.label === "Services"
+                              ? "services"
+                              : link.label === "Locations"
+                                ? "locations"
+                                : "industries"
                           )}
                       </AnimatePresence>
                     </div>

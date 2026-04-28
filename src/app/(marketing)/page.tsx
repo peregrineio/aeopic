@@ -5,7 +5,6 @@ import { ServiceCards } from "@/components/home/service-cards";
 import { WhoWeHelp } from "@/components/home/who-we-help";
 import { WhyAeopic } from "@/components/home/why-aeopic";
 import { ProcessPreview } from "@/components/home/process-preview";
-import { SocialProof } from "@/components/home/social-proof";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
@@ -34,7 +33,6 @@ export default function HomePage() {
       <WhoWeHelp />
       <WhyAeopic />
       <ProcessPreview />
-      <SocialProof />
       <FinalCTA />
     </>
   );
