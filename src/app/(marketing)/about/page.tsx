@@ -716,6 +716,14 @@ function TechStackSection() {
 // HOUSTON SECTION
 // ============================================================================
 
+const stars = Array.from({ length: 20 }, (_, i) => ({
+  left: [14.2, 82.1, 45.6, 91.3, 27.8, 63.4, 8.7, 55.9, 73.2, 36.5, 95.1, 3.8, 68.4, 19.6, 50.3, 84.7, 41.2, 76.9, 22.5, 60.8][i],
+  top: [23.4, 8.1, 45.2, 12.7, 38.9, 51.3, 5.6, 33.8, 18.4, 42.1, 27.6, 55.2, 14.9, 48.3, 31.7, 3.5, 52.8, 20.1, 39.4, 10.6][i],
+  opacity: [0.5, 0.8, 0.4, 0.9, 0.6, 0.7, 0.3, 0.85, 0.55, 0.95, 0.45, 0.75, 0.65, 0.35, 0.88, 0.42, 0.72, 0.58, 0.92, 0.48][i],
+  duration: [3.2, 2.8, 3.6, 2.4, 3.9, 2.1, 3.4, 2.7, 3.1, 2.5, 3.8, 2.3, 3.5, 2.9, 3.3, 2.6, 3.7, 2.2, 3.0, 2.85][i],
+  delay: [0.4, 1.2, 0.8, 1.6, 0.2, 1.9, 0.6, 1.4, 1.0, 0.3, 1.7, 0.5, 1.1, 0.9, 1.5, 0.7, 1.8, 0.1, 1.3, 0.55][i],
+}));
+
 function HoustonSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -789,18 +797,18 @@ function HoustonSection() {
               className="rounded-3xl p-8 relative overflow-hidden"
               style={{ background: `linear-gradient(135deg, ${brand.dark} 0%, #2d2640 100%)` }}
             >
-              {/* Stars */}
-              {[...Array(20)].map((_, i) => (
+              {/* Stars — static positions to avoid SSR hydration mismatch */}
+              {stars.map((star, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-1 h-1 bg-white rounded-full"
                   style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 60}%`,
-                    opacity: 0.3 + Math.random() * 0.7,
+                    left: `${star.left}%`,
+                    top: `${star.top}%`,
+                    opacity: star.opacity,
                   }}
                   animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: Math.random() * 2 }}
+                  transition={{ duration: star.duration, repeat: Infinity, delay: star.delay }}
                 />
               ))}
 

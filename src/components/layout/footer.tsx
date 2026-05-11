@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Twitter, ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { ChamberBadge } from "./chamber-badge";
 
 const services = [
   { label: "Custom Web Apps", href: "/services/web-apps" },
@@ -292,6 +293,14 @@ export function Footer() {
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Chamber Membership Badge */}
+        <div className="py-8 border-b border-white/10 flex flex-col items-center gap-3">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+            Member Of
+          </p>
+          <ChamberBadge />
         </div>
 
         {/* Bottom Bar */}
