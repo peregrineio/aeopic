@@ -11,7 +11,6 @@ import {
   ArrowRight,
   MessageSquare,
   Layers,
-  Code2,
   BarChart3,
   CheckCircle2,
   Clock,
@@ -36,7 +35,7 @@ const brand = {
 
 function ProcessHero() {
   return (
-    <section className="relative min-h-[80vh] flex items-center overflow-hidden">
+    <section className="relative flex items-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         {/* Base gradient */}
@@ -60,61 +59,9 @@ function ProcessHero() {
           <rect width="100%" height="100%" fill="url(#heroGrid)" />
         </svg>
 
-        {/* Floating timeline preview */}
-        <motion.div
-          className="absolute top-1/2 right-[10%] -translate-y-1/2 hidden xl:block"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          <svg width="120" height="400" viewBox="0 0 120 400">
-            {/* Vertical line */}
-            <motion.line
-              x1="60"
-              y1="20"
-              x2="60"
-              y2="380"
-              stroke={brand.lavender}
-              strokeWidth="2"
-              strokeDasharray="8 4"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, delay: 0.8 }}
-            />
-            {/* Phase dots */}
-            {[0, 1, 2, 3].map((i) => (
-              <motion.g key={i}>
-                <motion.circle
-                  cx="60"
-                  cy={50 + i * 110}
-                  r="16"
-                  fill="white"
-                  stroke={brand.primary}
-                  strokeWidth="2"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.4, delay: 1 + i * 0.2 }}
-                />
-                <motion.text
-                  x="60"
-                  y={55 + i * 110}
-                  textAnchor="middle"
-                  fill={brand.primary}
-                  fontSize="14"
-                  fontWeight="600"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 1.2 + i * 0.2 }}
-                >
-                  {i + 1}
-                </motion.text>
-              </motion.g>
-            ))}
-          </svg>
-        </motion.div>
       </div>
 
-      <div className="container-site relative z-10 py-20">
+      <div className="container-site relative z-10 pt-32 pb-20">
         <div className="max-w-3xl">
           {/* Eyebrow */}
           <motion.div
@@ -187,25 +134,6 @@ function ProcessHero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 rounded-full border-2 border-gray-300 flex items-start justify-center p-2"
-        >
-          <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-gray-400"
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
@@ -979,20 +907,6 @@ export default function ProcessPage() {
   return (
     <main>
       <ProcessHero />
-
-      {/* Timeline connector */}
-      <div className="relative py-8">
-        <div className="absolute left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
-        <motion.div
-          className="relative z-10 mx-auto w-12 h-12 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center"
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <Code2 className="w-5 h-5" style={{ color: brand.primary }} />
-        </motion.div>
-      </div>
 
       {/* Phase sections */}
       {phases.map((phase, index) => (
