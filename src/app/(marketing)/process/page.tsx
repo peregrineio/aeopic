@@ -62,13 +62,13 @@ function ProcessHero() {
       </div>
 
       <div className="container-site relative z-10 pt-32 pb-20">
-        <div className="max-w-3xl">
+        <div className="max-w-3xl mx-auto text-center">
           {/* Eyebrow */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex items-center gap-3 mb-6"
+            className="flex items-center justify-center gap-3 mb-6"
           >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
