@@ -251,6 +251,12 @@ export function Footer() {
                   </a>
                 ))}
               </div>
+              <div className="mt-6">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/40 mb-3">
+                  Member Of
+                </p>
+                <ChamberBadge />
+              </div>
             </motion.div>
 
             {/* Contact / Location */}
@@ -293,14 +299,6 @@ export function Footer() {
               </div>
             </motion.div>
           </div>
-        </div>
-
-        {/* Chamber Membership Badge */}
-        <div className="py-8 border-b border-white/10 flex flex-col items-center gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
-            Member Of
-          </p>
-          <ChamberBadge />
         </div>
 
         {/* Bottom Bar */}
