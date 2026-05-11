@@ -308,10 +308,21 @@ export function Footer() {
             </Link>
           </motion.div>
 
-          {/* Copyright */}
-          <p className="text-sm text-white/30">
-            &copy; {new Date().getFullYear()} Aeopic. All rights reserved.
-          </p>
+          {/* Legal Links + Copyright */}
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-4 text-sm text-white/40">
+              <Link href="/privacy" className="hover:text-white/60 transition-colors duration-200">
+                Privacy Policy
+              </Link>
+              <span className="text-white/20">|</span>
+              <Link href="/terms" className="hover:text-white/60 transition-colors duration-200">
+                Terms of Service
+              </Link>
+            </div>
+            <p className="text-sm text-white/30">
+              &copy; {new Date().getFullYear()} Aeopic. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
