@@ -19,7 +19,7 @@ export function ChamberBadge() {
               {
                 member: 11092,
                 styleTemplate:
-                  "#@id{text-align:center;position:relative;padding:0;margin:0}#@id *{margin:0;padding:0}#@id .mn-widget-member-name{display:none}#@id .mn-widget-member-logo{max-width:100%;display:block}",
+                  "#@id{text-align:center;position:relative;padding:0;margin:0}#@id .mn-widget-member-name{display:none}#@id .mn-widget-member-text{display:none}#@id .mn-widget-member-logo{max-width:100%;display:block}",
               }
             ).create();
           }
