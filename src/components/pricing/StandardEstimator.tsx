@@ -22,77 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { estimatorSchema, type EstimatorFormInput } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 
-interface PriceRange {
-  min: number;
-  max: number;
-}
 
-const BASE_RANGES: Record<string, PriceRange> = {
-  "web-app": { min: 8000, max: 30000 },
-  "mobile-app": { min: 15000, max: 50000 },
-  platform: { min: 20000, max: 60000 },
-  marketing: { min: 3000, max: 12000 },
-  "not-sure": { min: 5000, max: 50000 },
-};
-
-const COMPLEXITY_MULTIPLIERS: Record<string, { min: number; max: number }> = {
-  mvp: { min: 0.5, max: 0.7 },
-  custom: { min: 0.8, max: 1.0 },
-  enterprise: { min: 1.2, max: 1.8 },
-};
-
-const FEATURE_COSTS: Record<string, PriceRange> = {
-  "User Authentication": { min: 1000, max: 3000 },
-  "Payment Processing": { min: 2000, max: 5000 },
-  "Admin Dashboard": { min: 3000, max: 6000 },
-  "API Integrations": { min: 2000, max: 4000 },
-  "Real-Time Features": { min: 3000, max: 6000 },
-  "AI / Automation": { min: 4000, max: 8000 },
-  "Analytics & Reporting": { min: 2000, max: 4000 },
-  "Customer Portal": { min: 3000, max: 6000 },
-  "Booking / Scheduling": { min: 2000, max: 4000 },
-  "CRM / Lead Management": { min: 3000, max: 5000 },
-  "Email & Notifications": { min: 1000, max: 3000 },
-};
-
-function calculatePriceRange(
-  projectType: string,
-  complexity: string,
-  features: string[]
-): PriceRange | null {
-  if (!projectType) return null;
-
-  const base = BASE_RANGES[projectType];
-  if (!base) return null;
-
-  let min = base.min;
-  let max = base.max;
-
-  if (complexity && COMPLEXITY_MULTIPLIERS[complexity]) {
-    const mult = COMPLEXITY_MULTIPLIERS[complexity];
-    min = Math.round((min * mult.min) / 1000) * 1000;
-    max = Math.round((max * mult.max) / 1000) * 1000;
-  }
-
-  for (const feature of features) {
-    const cost = FEATURE_COSTS[feature];
-    if (cost) {
-      min += cost.min;
-      max += cost.max;
-    }
-  }
-
-  max = Math.min(max, 150000);
-  if (min >= max) min = Math.round((max * 0.7) / 1000) * 1000;
-
-  return { min, max };
-}
-
-const formatPrice = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-}).format;
 
 interface TypeOption {
   value: string;
@@ -174,7 +104,7 @@ const slideVariants = {
 
 export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedComplexity, setSelectedComplexity] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -215,8 +145,8 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
 
   function nextStep() {
     setStepError("");
-    if (currentStep === 0 && !selectedType) {
-      setStepError("Please select a project type");
+    if (currentStep === 0 && selectedTypes.length === 0) {
+      setStepError("Please select at least one project type");
       return;
     }
     if (currentStep === 1 && !selectedComplexity) {
@@ -248,9 +178,6 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
           phone: data.phone || undefined,
           company: data.company || undefined,
           description: data.description || undefined,
-          estimatedRange: priceRange
-            ? `${formatPrice(priceRange.min)} – ${formatPrice(priceRange.max)}`
-            : undefined,
           source: "pricing-estimator",
         }),
       });
@@ -268,7 +195,6 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
   };
 
   const recommendation = getRecommendation(selectedComplexity);
-  const priceRange = calculatePriceRange(selectedType, selectedComplexity, selectedFeatures);
 
   if (isComplete) {
     return (
@@ -417,42 +343,6 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
             </div>
           </div>
 
-          {/* Dynamic price range bar */}
-          <AnimatePresence>
-            {priceRange && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-5 mb-8"
-              >
-                <p className="text-xs text-white/40 uppercase tracking-wider font-mono mb-3">
-                  Estimated Investment
-                </p>
-                <div className="relative h-2 rounded-full bg-white/[0.06] mb-3">
-                  <motion.div
-                    className="absolute top-0 left-0 h-2 rounded-full bg-gradient-to-r from-[#726AFF] to-[#BD93F9]"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(priceRange.max / 150000) * 100}%` }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-                </div>
-                <div className="flex items-baseline justify-between">
-                  <span className="text-white text-lg md:text-2xl font-heading font-bold">
-                    {formatPrice(priceRange.min)}
-                  </span>
-                  <span className="text-white text-lg md:text-2xl font-heading font-bold">
-                    {formatPrice(priceRange.max)}
-                  </span>
-                </div>
-                <p className="text-xs text-white/30 mt-2">
-                  Based on your selections
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           {stepError && (
             <p className="text-center text-[#FCA5A5] text-sm mb-6 font-mono" aria-live="polite">
               {stepError}
@@ -474,28 +364,36 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
               {currentStep === 0 && (
                 <fieldset ref={stepRef} tabIndex={-1} className="outline-none">
                   <legend className="sr-only">{stepLabels[0]}</legend>
-                  <div role="radiogroup" aria-label="Project type" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                  <div role="group" aria-label="Project type — select all that apply" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                     {projectTypeOptions.map((opt) => {
                       const Icon = opt.icon;
-                      const isSelected = selectedType === opt.value;
+                      const isSelected = selectedTypes.includes(opt.value);
                       return (
                         <button
                           key={opt.value}
                           type="button"
-                          role="radio"
+                          role="checkbox"
                           aria-checked={isSelected}
                           onClick={() => {
-                            setSelectedType(opt.value);
-                            setValue("projectType", opt.value);
+                            const updated = isSelected
+                              ? selectedTypes.filter((t) => t !== opt.value)
+                              : [...selectedTypes, opt.value];
+                            setSelectedTypes(updated);
+                            setValue("projectType", updated.join(", "));
                             setStepError("");
                           }}
                           className={cn(
-                            "p-5 rounded-xl cursor-pointer transition-all duration-200 text-center min-h-[120px] flex flex-col items-center justify-center focus-visible:outline-2 focus-visible:outline-[#726AFF] focus-visible:outline-offset-2",
+                            "relative p-5 rounded-xl cursor-pointer transition-all duration-200 text-center min-h-[120px] flex flex-col items-center justify-center focus-visible:outline-2 focus-visible:outline-[#726AFF] focus-visible:outline-offset-2",
                             isSelected
                               ? "bg-[#726AFF]/[0.08] border border-[#726AFF]/60 ring-1 ring-[#726AFF]/20"
                               : "bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/[0.15]"
                           )}
                         >
+                          {isSelected && (
+                            <div className="absolute top-2 right-2">
+                              <Check className="h-3.5 w-3.5 text-[#726AFF]" />
+                            </div>
+                          )}
                           <Icon
                             className={cn(
                               "w-7 h-7 mb-3 transition-colors",
@@ -512,6 +410,11 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
                       );
                     })}
                   </div>
+                  <p className="text-white/30 text-xs mt-4 font-mono">
+                    {selectedTypes.length > 0
+                      ? `${selectedTypes.length} selected`
+                      : "Select all that apply"}
+                  </p>
                 </fieldset>
               )}
 
@@ -614,8 +517,8 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
                     </p>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-white/60 text-sm">Project</span>
-                      <span className="text-white font-semibold text-sm">
-                        {projectTypeOptions.find((o) => o.value === selectedType)?.label}
+                      <span className="text-white font-semibold text-sm text-right">
+                        {selectedTypes.map((t) => projectTypeOptions.find((o) => o.value === t)?.label).join(", ")}
                       </span>
                     </div>
                     {selectedComplexity && (
@@ -643,18 +546,6 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
                             {f}
                           </div>
                         ))}
-                      </div>
-                    )}
-                    {priceRange && (
-                      <div className="mt-4 pt-4 border-t border-white/[0.06]">
-                        <div className="flex items-baseline justify-between">
-                          <span className="text-white/40 text-xs uppercase tracking-wider font-mono">
-                            Range
-                          </span>
-                          <span className="text-white font-heading font-bold text-lg">
-                            {formatPrice(priceRange.min)} – {formatPrice(priceRange.max)}
-                          </span>
-                        </div>
                       </div>
                     )}
                   </div>
