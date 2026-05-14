@@ -1,0 +1,64 @@
+---
+title: "Authentication Done Right: From Magic Links to OAuth"
+description: "Email and password isn't enough anymore. Here's how we handle auth for every client project — and which method works for which use case."
+date: 2026-04-04
+category: engineering
+author: sam
+tags: [auth, supabase, security, technical]
+featured: false
+draft: false
+---
+
+Authentication is one of those things that seems simple until you actually build it. "Just add a login page" turns into password hashing, session management, token refresh, password reset flows, account verification emails, rate limiting, and brute force protection. And that's before you consider which authentication method to use in the first place.
+
+We've implemented auth on every platform we've built. Here's what we've learned about which method works for which situation — and why email plus password alone isn't enough anymore.
+
+## Why Email + Password Isn't Enough
+
+Email and password is the default. Every user understands it. Every developer has built it. It's the lowest common denominator of authentication.
+
+It's also the weakest. Users reuse passwords across services. They choose passwords that are easy to guess. They write them on sticky notes. And when one service gets breached, every service sharing that password is compromised.
+
+Even with strong password requirements and hashing, you're still building a system that depends on the user's ability to create and remember a unique, complex password. History shows they won't.
+
+We never ship a project with email and password as the only option. It's always combined with at least one other method that doesn't rely on the user remembering a secret.
+
+## Magic Links: The Good and the Tricky
+
+Magic links are our default for most consumer-facing products. The user enters their email, receives a link, clicks it, and they're in. No password to remember, no credentials to steal, no reset flow to build.
+
+The user experience is genuinely better. No friction from forgotten passwords. No "your password must contain one uppercase letter, one number, one symbol, and the name of your childhood pet." Just an email, a click, and you're authenticated.
+
+But magic links have edge cases. Email delivery isn't instant — some providers delay messages by 30 seconds or more, which feels like an eternity when you're trying to log in. Corporate email filters sometimes flag magic link emails as phishing. And if the user opens the link on a different device than where they initiated the login, the session context can break.
+
+We handle these by setting generous expiration times on the links, providing clear messaging about checking spam folders, and falling back to a one-time code option when link-click detection is unreliable. The tradeoffs are worth it for the security improvement over passwords.
+
+<InlineCTA />
+
+## OAuth: When Your Users Already Have Accounts
+
+Social OAuth — primarily Google and Apple sign-in — makes sense when your users definitely have one of those accounts. For a consumer product, that's almost everyone. For a B2B tool used by a specific industry, it might be nobody.
+
+The advantage is zero friction. The user clicks "Sign in with Google," authorizes the app, and they're authenticated. No new account to create, no new password to manage. The auth provider handles security, and you get a verified email address without sending a verification email.
+
+We use Google OAuth as a secondary option on most projects. It's a convenience for users who prefer it, not a replacement for magic links or email-based auth. The implementation with Supabase is straightforward — enable the provider, configure the OAuth credentials, and handle the redirect.
+
+The gotcha with OAuth is account linking. If a user signs up with their email via magic link, then later tries to sign in with Google using the same email, you need to handle that gracefully. Supabase handles this merging automatically in most cases, but it's something to test thoroughly.
+
+## Multi-Tenant Auth: The Hard Problem
+
+Multi-tenant authentication is where things get genuinely complex. When a user might belong to multiple organizations — like an accountant who manages books for three different companies — the auth system needs to handle organization context on top of user identity.
+
+The user logs in once but needs to switch between organizations. Each organization has different data, different permissions, and different team members. The same user might be an admin in one organization and a viewer in another.
+
+We solve this with Supabase custom claims embedded in the JWT token. When a user logs in, we determine their active organization and encode it into their session. When they switch organizations, we refresh the token with the new context. Row-Level Security policies then use the organization claim to filter data automatically.
+
+This approach keeps the authorization logic in the database rather than scattered across API endpoints. The user's organization context follows them through every request, and the database enforces data isolation regardless of how the request was made.
+
+## Our Default Stack
+
+For most projects, our auth setup looks the same. Supabase Auth handles the heavy lifting — user management, token issuance, session refresh, and provider integration. Magic links are the primary method. Google OAuth is available as a secondary option. Email and password exists as a fallback but isn't prominently featured.
+
+This stack handles 90% of use cases out of the box. For the remaining 10% — multi-tenant, custom roles, complex permission hierarchies — we build on top of Supabase's foundation rather than replacing it.
+
+The goal isn't to build the most sophisticated auth system. It's to build one that your users don't have to think about. The best authentication is the kind where the user barely notices it happened.

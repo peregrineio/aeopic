@@ -107,7 +107,7 @@ Here's what happens next:
 2. We'll schedule a strategy call to discuss scope and investment
 3. You'll receive a detailed proposal within 48 hours of our call
 
-If you have any questions in the meantime, feel free to reply to this email or reach us at admin@aeopic.com.
+If you have any questions in the meantime, feel free to reply to this email or reach us at contact@aeopic.com.
 
 Talk soon,
 The Aeopic Team
@@ -209,7 +209,7 @@ Here's what happens next:
 2. We'll schedule a discovery call with you (about 30 minutes)
 3. We'll send you a detailed quote within 48 hours of our call
 
-If you have any questions in the meantime, feel free to reply to this email or reach us at admin@aeopic.com.
+If you have any questions in the meantime, feel free to reply to this email or reach us at contact@aeopic.com.
 
 Talk soon,
 The Aeopic Team

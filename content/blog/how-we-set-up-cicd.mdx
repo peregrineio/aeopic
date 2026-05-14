@@ -1,0 +1,56 @@
+---
+title: "How We Set Up CI/CD for Every Client Project"
+description: "Our deployment pipeline from first commit to production. GitHub, Vercel preview deployments, and zero-downtime deploys."
+date: 2026-04-28
+category: engineering
+author: theron
+tags: [devops, vercel, github, ci-cd, deployment]
+featured: false
+draft: false
+---
+
+Every project we build follows the same deployment pipeline. It doesn't matter if it's a five-page marketing site or a multi-tenant platform with real-time features — the process is identical. That consistency is intentional.
+
+When your deployment process is the same every time, there's no guesswork. No "how do we deploy this one again?" conversations. No FTP credentials saved in someone's notes app. Just push to main and it's live.
+
+Here's exactly how it works.
+
+## The Pipeline
+
+Every project starts with a GitHub repository. We use a branching model that's simple enough to explain in one sentence: `main` is production, feature branches are for everything else.
+
+When a developer pushes to any branch, three things happen automatically. First, TypeScript runs a type check. If there are type errors, the build fails and nobody finds out about it in production. Second, the Next.js build runs. This catches everything from broken imports to invalid page configurations. Third, Vercel creates a preview deployment with a unique URL.
+
+That third step changed everything for us.
+
+Branch protection rules prevent anyone from pushing directly to `main`. Every change goes through a pull request. The PR gets reviewed, the preview URL gets checked, and only then does it merge. When it merges, Vercel automatically deploys to production.
+
+No SSH keys. No build scripts. No "it works on my machine."
+
+## Preview URLs Changed Everything
+
+Before preview deployments, the client review process was painful. We'd build something, take screenshots, put them in a slide deck, hop on a call, and walk through static images of a dynamic application. The client would say "looks good" because they couldn't actually interact with anything. Then we'd deploy and they'd find issues immediately.
+
+Preview URLs fixed this completely. When we push a feature branch, Vercel generates a unique URL — something like `feature-new-dashboard-abc123.vercel.app`. We send that link to the client. They open it on their phone, their laptop, their tablet. They click around, test forms, try to break things. They give feedback on the real thing, not a screenshot of it.
+
+This single change cut our revision cycles in half. Clients catch issues earlier because they're testing real software, not imagining it. And when they approve a preview URL, we know the production deploy will match what they saw.
+
+<InlineCTA />
+
+## Environment Variables Without the Pain
+
+One of the more mundane parts of deployment is environment variable management. API keys, database URLs, third-party service credentials — every project has them, and getting them wrong ruins your day.
+
+We use Vercel's environment variable system exclusively. Each project has three environments: development, preview, and production. A Stripe test key goes in development and preview. The live key goes in production only. The database URL points to a staging database in preview and the production database in production.
+
+This separation means a developer testing locally can never accidentally charge a real credit card or corrupt production data. The environment boundaries are built into the infrastructure, not enforced by human discipline.
+
+We never commit secrets to the repository. Not even in `.env.example` files with placeholder values. If it's secret, it lives in Vercel's dashboard and nowhere else.
+
+## Why Zero-Downtime Matters
+
+The old way of deploying a website involved taking it offline for a few minutes while the new version uploaded. For a marketing site, that's annoying. For a platform where users are actively working — managing invoices, booking appointments, processing payments — it's unacceptable.
+
+Vercel's deployment model is atomic. The new version of the site is built and deployed to the edge network while the old version continues serving traffic. Once the new version is fully ready, traffic switches over instantly. There's no moment where a user sees a broken page, a 500 error, or a loading screen.
+
+We've deployed production changes during business hours with active users and they never noticed. That's the standard every deployment pipeline should meet. If your current setup requires a maintenance window, it's time for a better pipeline.

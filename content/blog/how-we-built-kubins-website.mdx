@@ -1,0 +1,70 @@
+---
+title: "How We Built Kubin Automotive's Website in 2 Weeks"
+description: "A 3rd-generation family auto shop needed an online presence that matched their reputation. Here's how we built it."
+date: 2026-05-10
+category: case-study
+author: sam
+tags: [case-study, static-site, vercel, small-business]
+featured: false
+draft: false
+---
+
+Kubin Automotive is a 3rd-generation family auto shop in Bryan, Texas. They've built their reputation the old-fashioned way — quality work, fair prices, and relationships that span decades. But in 2026, reputation alone doesn't fill the bays. You need to show up when someone Googles "auto repair near me."
+
+They didn't have a website. Not a bad one — zero. Every potential customer who searched online found their competitors instead.
+
+## The Situation
+
+When we first talked to the Kubins, the picture was clear. They had a loyal customer base built entirely through word-of-mouth and Aggie community ties. But the shop was invisible online. No Google Business Profile optimization. No way for a new customer to check reviews, see the shop, or even find the address without calling.
+
+Meanwhile, chain auto shops and newer competitors were ranking for every local search term. The Kubins were losing business they didn't even know existed.
+
+The constraint? They're a working shop. They don't have time for a six-month web project. They needed something fast, professional, and low-maintenance.
+
+## Our Approach
+
+We made a deliberate decision to keep this simple. Not every project needs a React framework, a database, or a CMS. For a local [auto service business](/industries/auto), the priority is speed — both page load speed and time to launch.
+
+We chose static HTML and CSS. No JavaScript framework. No build tools. No dependencies to update. The site loads in under a second and costs nothing to host on Vercel.
+
+<Callout type="insight">
+Not every project needs a full React framework. For a local business that just needs to show up in search and look professional, static HTML wins on speed, cost, and simplicity. The best technology choice is the one that matches the actual problem.
+</Callout>
+
+The design centered on what drives conversions for a local auto shop: a hero section with a video background showing the actual shop, prominent phone number and address, service descriptions that match what people search for, and mobile optimization (because most local searches happen on phones).
+
+We leaned into the Aggie branding that defines the Bryan-College Station community. The Kubins are Aggies, their customers are Aggies, and the site reflects that identity without being a cliche about it.
+
+<InlineCTA heading="Need a website for your business?" body="We build sites that actually drive customers — not just look pretty." href="/services/web-apps" label="See Our Web App Services" />
+
+## The Build
+
+The entire build took twelve working days from first conversation to live site. Here's what that looked like:
+
+**Days 1-2: Discovery and design.** We visited the shop, shot video and photos, mapped out the service offerings, and drafted a single-page layout.
+
+**Days 3-7: Build.** Static HTML structure, responsive CSS, video background optimization (compressed to under 5MB for fast mobile loading), Google Maps embed, and structured data for local SEO.
+
+**Days 8-10: Content and polish.** Service descriptions written around actual search terms people use. Schema markup for local business. Google Business Profile connection.
+
+**Days 11-12: Review, revisions, and launch.** The Kubins reviewed on their phones (the right device to test on), we made adjustments, and pushed to production.
+
+## The Technical Details
+
+Hosting on Vercel gives us automatic SSL, global CDN, and zero server management. The site is served from edge nodes closest to the visitor — which for a Bryan, Texas auto shop means most requests resolve from a Houston or Dallas datacenter in under 50ms.
+
+We added structured data (JSON-LD) for the local business schema, which helps Google understand the business type, location, hours, and services. This is the kind of invisible work that directly impacts whether you show up in the local pack.
+
+The video background was the trickiest part. We compressed it aggressively, set it to autoplay muted (required by browsers), and added a poster frame so there's no white flash on load. On mobile, we swap the video for a static image to save bandwidth.
+
+## The Result
+
+The site went live in under two weeks. The Kubins now have a professional online presence that matches the quality of their work. New customers can find them through search, check their services, and call directly from the site.
+
+<MetricCounter before={0} after={14} unit=" days" label="Time to Launch" improvement="From zero to live in 2 weeks" />
+
+More importantly, they own it outright. No monthly website subscription. No CMS login to forget. No plugin updates to ignore until the site breaks. Just a fast, static site that does its job.
+
+The lesson here is one we come back to on every project: start with the client's actual problem, not with the technology you want to use. The Kubins didn't need a web application. They needed to show up on Google and look professional when someone found them. We built exactly that — nothing more, nothing less.
+
+If your business is invisible online and you're losing customers you don't even know about, [that's worth a conversation](/start).

@@ -2,6 +2,7 @@ export { PricingHero } from "./PricingHero";
 export { ValueAnchor } from "./ValueAnchor";
 export { ProjectTypes } from "./ProjectTypes";
 export { ProjectEstimator } from "./ProjectEstimator";
+export { StandardEstimator } from "./StandardEstimator";
 export { CaseStudies } from "./CaseStudies";
 export { CostOfWaiting } from "./CostOfWaiting";
 export { TeamSection } from "./TeamSection";

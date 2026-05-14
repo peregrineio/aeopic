@@ -40,5 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# velite
+.velite
+
 # Large uncompressed video files
 public/videos/herobackgroundbg.mp4

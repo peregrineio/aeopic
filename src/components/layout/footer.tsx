@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { Github, Instagram, Facebook, ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { ChamberBadge } from "./chamber-badge";
 
 const services = [
@@ -43,9 +43,9 @@ const locations = [
 ];
 
 const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "https://www.instagram.com/aeopic/", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61570783958665", label: "Facebook" },
+  { icon: Github, href: "https://github.com/OfficialAeopic", label: "GitHub" },
 ];
 
 export function Footer() {

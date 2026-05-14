@@ -72,7 +72,7 @@ export default function ConroePage() {
                 name: "Texas",
               },
             },
-            email: "admin@aeopic.com",
+            email: "contact@aeopic.com",
             priceRange: "$$",
             serviceArea: {
               "@type": "GeoCircle",

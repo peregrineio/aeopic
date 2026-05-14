@@ -164,7 +164,7 @@ export default function LocationsPage() {
                 </div>
               </div>
               <p className="text-sm text-[#A3A3A3]">
-                admin@aeopic.com • Response within 24 hours
+                contact@aeopic.com • Response within 24 hours
               </p>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function LocationsPage() {
               "@type": "City",
               name: loc.city,
             })),
-            email: "admin@aeopic.com",
+            email: "contact@aeopic.com",
             priceRange: "$$",
           }),
         }}

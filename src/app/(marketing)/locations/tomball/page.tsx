@@ -72,7 +72,7 @@ export default function TomballPage() {
                 name: "Texas",
               },
             },
-            email: "admin@aeopic.com",
+            email: "contact@aeopic.com",
             priceRange: "$$",
             serviceArea: {
               "@type": "GeoCircle",

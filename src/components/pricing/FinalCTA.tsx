@@ -54,11 +54,11 @@ export function FinalCTA() {
 
           <div className="mt-8">
             <a
-              href="mailto:admin@aeopic.com"
+              href="mailto:contact@aeopic.com"
               className="text-white/40 inline-flex items-center gap-2 hover:text-white/70 transition-colors email-glow"
             >
               <Mail className="h-4 w-4" />
-              admin@aeopic.com
+              contact@aeopic.com
             </a>
           </div>
 

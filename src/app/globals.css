@@ -995,3 +995,30 @@ html {
 .font-display {
   font-family: var(--font-display), Georgia, serif;
 }
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Terminal cursor blink */
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Blog prompt blink — plays twice then stays solid */
+@keyframes prompt-blink {
+  0%, 50% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.prompt-blink {
+  animation: prompt-blink 1s ease forwards;
+  animation-iteration-count: 2;
+}

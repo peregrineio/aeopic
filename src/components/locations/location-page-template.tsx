@@ -289,10 +289,10 @@ export function LocationPageTemplate({
                       style={{ color: brand.primary }}
                     />
                     <a
-                      href="mailto:admin@aeopic.com"
+                      href="mailto:contact@aeopic.com"
                       className="text-[#0A0A0A] hover:underline"
                     >
-                      admin@aeopic.com
+                      contact@aeopic.com
                     </a>
                   </div>
                   <div className="flex items-center gap-4">

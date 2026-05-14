@@ -1,0 +1,66 @@
+---
+title: "Supabase Row-Level Security: What It Is and Why Your Data Needs It"
+description: "Your backend code isn't enough to protect customer data. Here's how Row-Level Security works and why we use it on every project."
+date: 2026-04-16
+category: engineering
+author: sam
+tags: [supabase, security, rls, database, technical]
+featured: false
+draft: false
+---
+
+If you're building a web application that stores customer data — which is almost every web application — you need to think about who can see what. Most developers handle this in their backend code. Check if the user is logged in, verify they own the data, then return it.
+
+That works until it doesn't. One missed check, one API endpoint without proper validation, one junior developer who forgets the authorization middleware — and suddenly Company A can see Company B's invoices.
+
+Row-Level Security prevents that class of bug entirely. It's the single most important security feature we use, and it's built into every project we deploy.
+
+## The Problem with Backend-Only Security
+
+Traditional authorization works like a bouncer at a door. Your API code checks credentials before letting requests through. "Are you logged in? Do you belong to this organization? Okay, here's the data."
+
+The problem is that every door needs its own bouncer. Every API endpoint, every query, every data access path needs to check permissions. And in a real application, there are dozens of doors.
+
+Miss one and the data leaks. An API endpoint that returns all records without filtering by organization. A dashboard query that forgot the WHERE clause. A new feature built in a hurry that skips the permission check because "we'll add it later."
+
+These aren't theoretical risks. Data exposure from missing authorization checks is one of the most common security vulnerabilities in web applications. It's not exotic — it's forgetting to add one line of code.
+
+## How Row-Level Security Works
+
+Row-Level Security moves authorization from the application layer to the database layer. Instead of your code deciding who can see what, the database itself enforces the rules.
+
+You define policies directly on your database tables. A policy is essentially a rule that says "this user can only see rows where the organization_id matches their organization." Every query against that table — regardless of where it comes from — is automatically filtered.
+
+Think of it like a filter built into the table itself. When User A queries the invoices table, they only see invoices belonging to their company. When User B queries the same table, they only see theirs. The database handles it automatically. Your application code doesn't need to remember to add the filter — it's always there.
+
+This means even if a developer writes a query that selects all rows from the table, the database only returns the rows that user is allowed to see. The security boundary can't be bypassed by application bugs.
+
+<InlineCTA />
+
+## A Real Example
+
+Say you're building a platform where multiple HVAC companies manage their service appointments. Company A and Company B both use the same application, stored in the same database.
+
+Without RLS, the appointments table contains everyone's data. Your backend code filters by company_id on every query. One forgotten filter and Company A sees Company B's customer names, addresses, and appointment notes.
+
+With RLS, the policy looks something like this conceptually: "A user can only SELECT rows from appointments WHERE the company_id matches the company_id in their authentication token." Now it doesn't matter if a developer writes `SELECT * FROM appointments` — the database silently adds the company filter. Company A physically cannot access Company B's rows.
+
+The same applies to INSERT, UPDATE, and DELETE operations. A user can't modify or delete rows belonging to another company. The database enforces it at every level.
+
+## Setting It Up
+
+In Supabase, enabling RLS is a single toggle on each table. Once enabled, the table returns zero rows by default — you have to explicitly create policies that grant access.
+
+A typical policy for a multi-tenant app looks like: allow users to see rows where the organization_id column matches the organization stored in their JWT token. Supabase provides helper functions that extract claims from the authentication token, making it straightforward to reference the logged-in user's context.
+
+We create policies for each operation type. SELECT policies control who can read data. INSERT policies control who can create new rows (and can enforce that the organization_id matches). UPDATE policies restrict which rows a user can modify. DELETE policies control which rows can be removed.
+
+The result is a permission system that's declarative, auditable, and impossible to accidentally bypass.
+
+## Why We Use It on Every Project
+
+Every project we build at Aeopic has RLS enabled from day one. Not just the ones with sensitive data — all of them. The cost of adding it is low. The cost of not having it is a data breach.
+
+It's defense in depth. Your application code should still check permissions. Your API should still validate requests. But RLS is the safety net that catches everything else. Even if every other layer fails, the database won't expose data it shouldn't.
+
+When we hand a project off, the security posture doesn't depend on every future developer remembering every authorization check. The database remembers for them. That's the kind of guarantee you want protecting your customers' data.

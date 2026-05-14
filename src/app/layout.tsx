@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://aeopic.com"),
   alternates: {
     canonical: "/",
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
   title: {
     default: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",

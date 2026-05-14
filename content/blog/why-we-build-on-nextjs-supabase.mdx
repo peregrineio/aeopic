@@ -1,0 +1,102 @@
+---
+title: "Why We Build Everything on Next.js + Supabase"
+description: "Our tech stack isn't an accident. Here's why we chose Next.js and Supabase for every client project — and when you shouldn't."
+date: 2026-05-08
+category: engineering
+author: sam
+tags: [next-js, supabase, tech-stack, architecture]
+featured: false
+draft: false
+---
+
+Every agency has a stack. Some use WordPress. Some use Ruby on Rails. Some cobble together a different set of tools for every project and spend half their time context-switching between ecosystems. We don't do any of that. We build everything on Next.js and Supabase — and that decision has paid off on every single client project.
+
+This isn't a fanboy post. It's an engineering decision with specific tradeoffs we've thought through. Here's the reasoning.
+
+## The Problem with WordPress
+
+WordPress powers roughly 40% of the web, and for content sites, blogs, and simple marketing pages, it's a reasonable choice. But the moment a client needs something custom — a dashboard, a booking system, a client portal, a CRM — WordPress becomes the wrong tool.
+
+You end up fighting the platform. Custom post types instead of real database tables. Plugins that conflict with each other. A PHP backend that doesn't speak the same language as your modern frontend. And security patches that never end because the attack surface is massive.
+
+We've inherited WordPress projects from other agencies. The pattern is always the same: a tangle of plugins, a theme that's been hacked to do things it was never designed for, and a client who can't get changes made without breaking something else.
+
+## Why Next.js
+
+Next.js gives us the full spectrum. Static pages for marketing content. Server-rendered pages for dynamic data. API routes for backend logic. All in one codebase, all in TypeScript, all deployable to Vercel with zero infrastructure management.
+
+The specific features that matter for client work:
+
+**Server Components** mean the client's browser downloads less JavaScript. Pages load faster. Google ranks them higher. Users convert better. This isn't theoretical — we measure it on every build.
+
+**The App Router** gives us file-based routing that maps directly to how clients think about their site structure. Need a `/dashboard/invoices/[id]` page? Create the folder. Done.
+
+**TypeScript everywhere** means bugs get caught at build time, not in production. When we hand a project to a client's future dev team, the types serve as documentation that can't go stale.
+
+**Vercel deployment** means every pull request gets a preview URL. Clients can review changes before they go live. No staging server to maintain. No "it works on my machine."
+
+## Why Supabase
+
+Supabase is an open-source Firebase alternative built on Postgres. That last part is the key: it's a real relational database, not a document store you'll outgrow.
+
+Here's what a typical data query looks like in our client projects:
+
+```typescript
+const { data: invoices } = await supabase
+  .from("invoices")
+  .select(`
+    id,
+    amount,
+    status,
+    due_date,
+    client:clients(name, email)
+  `)
+  .eq("organization_id", orgId)
+  .order("due_date", { ascending: false });
+```
+
+That's a join across two tables with filtering and sorting, returned as typed TypeScript objects. No ORM setup. No migration runner configuration. No GraphQL schema to maintain.
+
+The features that matter:
+
+**Row Level Security** means we write the access rules once in SQL, and they apply everywhere — API calls, direct database access, real-time subscriptions. A user can only see their own data, enforced at the database level, not in application code.
+
+**Auth built in** with email/password, magic links, OAuth providers, and phone auth. We don't configure Passport.js or Auth0 or roll our own. It's there, it works, and it integrates with RLS.
+
+**Real-time subscriptions** let us build features like live activity feeds and collaborative dashboards without WebSocket boilerplate.
+
+**The client owns everything.** The database is Postgres. If they want to leave Supabase tomorrow, they export their data and connect to any Postgres host. No proprietary format. No lock-in. We've explained this to every client on day one, and it's always a relief — especially for the ones who've been burned by platforms that held their data hostage.
+
+## The Full Stack in Practice
+
+Here's how these pieces fit together in a real client project. This is roughly the architecture of every platform we build — a chamber of commerce operations platform, a carpet cleaning CRM, a lawn care management system. Same bones, different skin.
+
+The frontend (Next.js) handles routing, rendering, and client interaction. Server components fetch data directly from Supabase without an API layer for simple reads. API routes handle mutations, integrations (Stripe, Twilio, Resend), and business logic that needs server-side execution.
+
+Supabase handles auth, data storage, file storage, and real-time updates. Edge functions handle webhook processing and scheduled tasks.
+
+Vercel handles deployment, CDN, SSL, and preview environments. GitHub handles version control and CI.
+
+That's it. No Kubernetes. No Docker. No infrastructure team. Our [process](/process) is built around shipping, not configuring servers.
+
+## When Not to Use This Stack
+
+We're honest about the tradeoffs. This stack isn't right for everything.
+
+<Callout type="tip">
+If your project is a simple content site with non-technical editors who need to update pages weekly, a CMS like WordPress or Sanity might be the better call. Our stack shines when the project is a custom application — dashboards, portals, booking systems, CRMs — where the interface IS the product.
+</Callout>
+
+**High-frequency trading or sub-millisecond latency** — you need something closer to the metal. Go, Rust, or C++.
+
+**Mobile-native apps** — React Native works, but if you need deep device integration, native Swift/Kotlin is the right call. We focus on web.
+
+**Legacy system integration** — if the client runs on SAP or Oracle, the stack still works, but the integration layer becomes the hard part and the framework matters less.
+
+## The Compounding Advantage
+
+The real payoff isn't in any single project. It's in the compounding expertise across projects. Every dashboard we build makes the next dashboard faster. Every RLS policy we write makes the next auth system tighter. Every Stripe integration makes the next billing flow smoother.
+
+Our developers don't context-switch between PHP on Monday and Python on Tuesday. They go deep on one stack and build genuine expertise. That expertise translates directly to faster delivery, fewer bugs, and better architecture for our clients.
+
+When you hire us, you're not just getting developers — you're getting a team that has solved your exact problem before, in the exact same technology, for a similar business. That's the advantage of choosing a stack and committing to it.
