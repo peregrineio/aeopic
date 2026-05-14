@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Aeopic",
   description: "Customer-tailored web applications, AI-powered tools, marketing, and eCommerce solutions.",
   url: "https://aeopic.com",
-  email: "contact@aeopic.com",
+  email: "admin@aeopic.com",
   links: {
     // twitter: "",
     // github: "",
@@ -48,9 +48,8 @@ export const navLinks = [
       { label: "Tomball", href: "/locations/tomball", description: "Northwest Houston" },
     ],
   },
-  { label: "Healthcare", href: "/industries/medical" },
   { label: "Process", href: "/process" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Your Project", href: "/pricing" },
 ];
 
 export const footerLinks = {
@@ -84,7 +83,7 @@ export const footerLinks = {
     { label: "About", href: "/about" },
     { label: "Process", href: "/process" },
     { label: "Work", href: "/work" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Your Project", href: "/pricing" },
     { label: "Get Started", href: "/start" },
   ],
 };

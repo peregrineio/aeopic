@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { DM_Sans, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Syne } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalBusinessSchema, OrganizationSchema } from "@/app/components/structured-data";
 import "./globals.css";
@@ -10,6 +10,13 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -65,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-61GKHKPRVG"

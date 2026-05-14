@@ -1,0 +1,9 @@
+export { PricingHero } from "./PricingHero";
+export { ValueAnchor } from "./ValueAnchor";
+export { ProjectTypes } from "./ProjectTypes";
+export { ProjectEstimator } from "./ProjectEstimator";
+export { CaseStudies } from "./CaseStudies";
+export { CostOfWaiting } from "./CostOfWaiting";
+export { TeamSection } from "./TeamSection";
+export { TechStack } from "./TechStack";
+export { FinalCTA } from "./FinalCTA";
