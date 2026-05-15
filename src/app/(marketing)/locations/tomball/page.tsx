@@ -1,23 +1,17 @@
 import { Metadata } from "next";
 import { LocationPageTemplate } from "@/components/locations/location-page-template";
+import { getLocationData } from "@/lib/locations";
+
+const locationData = getLocationData("tomball")!;
 
 export const metadata: Metadata = {
-  title: "Web Design & Marketing in Tomball, TX | Aeopic",
-  description:
-    "Custom web applications, AI tools, and marketing services for Tomball businesses. Serving northwest Houston with modern software solutions.",
-  keywords: [
-    "web design Tomball TX",
-    "marketing Tomball Texas",
-    "web development Tomball",
-    "SEO Tomball TX",
-    "custom software Tomball",
-    "northwest Houston web design",
-  ],
+  title: locationData.seo.title,
+  description: locationData.seo.description,
+  keywords: locationData.seo.keywords,
   openGraph: {
-    title: "Web Design & Marketing in Tomball, TX | Aeopic",
-    description:
-      "Custom web applications, AI tools, and marketing services for Tomball businesses.",
-    url: "https://aeopic.com/locations/tomball",
+    title: locationData.seo.title,
+    description: locationData.seo.description,
+    url: locationData.seo.ogUrl,
     siteName: "Aeopic",
     type: "website",
   },
@@ -26,36 +20,17 @@ export const metadata: Metadata = {
 export default function TomballPage() {
   return (
     <>
-      <LocationPageTemplate
-        city="Tomball"
-        slug="tomball"
-        region="Northwest Houston"
-        heroHeadline="Web Design & Marketing in Tomball"
-        heroSubheadline="Custom software solutions for Tomball's business community. Where small-town values meet big-city opportunity."
-        localDescription="Tomball has maintained its historic charm while evolving into a thriving business hub in northwest Houston. From the bustling downtown to the growing commercial corridors, Tomball businesses need digital solutions that help them compete. Aeopic builds custom web applications, runs local SEO campaigns, and creates targeted marketing strategies for Tomball service providers, retailers, and professional services. We understand the balance between community connection and business growth that makes Tomball special."
-        nearbyAreas={[
-          "Magnolia",
-          "Spring",
-          "Cypress",
-          "The Woodlands",
-          "Klein",
-          "Champions",
-          "Willowbrook",
-          "Jersey Village",
-        ]}
-      />
+      <LocationPageTemplate data={locationData} />
 
-      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            name: "Aeopic - Tomball",
-            description:
-              "Custom web applications and marketing services for Tomball, TX businesses",
-            url: "https://aeopic.com/locations/tomball",
+            name: `Aeopic - ${locationData.city}`,
+            description: locationData.seo.description,
+            url: locationData.seo.ogUrl,
             address: {
               "@type": "PostalAddress",
               streetAddress: "1919 Taylor St Ste F",
@@ -66,23 +41,18 @@ export default function TomballPage() {
             },
             areaServed: {
               "@type": "City",
-              name: "Tomball",
+              name: locationData.city,
               containedInPlace: {
                 "@type": "State",
                 name: "Texas",
               },
             },
-            email: "contact@aeopic.com",
-            priceRange: "$$",
-            serviceArea: {
-              "@type": "GeoCircle",
-              geoMidpoint: {
-                "@type": "GeoCoordinates",
-                latitude: 30.0972,
-                longitude: -95.6161,
-              },
-              geoRadius: "50000",
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: locationData.seo.geoLat,
+              longitude: locationData.seo.geoLng,
             },
+            email: "contact@aeopic.com",
           }),
         }}
       />
