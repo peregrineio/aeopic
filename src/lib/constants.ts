@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Aeopic",
-  description: "Customer-tailored web applications, AI-powered tools, marketing, and eCommerce solutions.",
+  description: "Customer-tailored web applications, AI integrated operating systems, marketing, and eCommerce solutions.",
   url: "https://aeopic.com",
   email: "contact@aeopic.com",
   links: {
@@ -16,7 +16,7 @@ export const navLinks = [
     href: "/services",
     children: [
       { label: "Custom Web Apps", href: "/services/web-apps", description: "Platforms built for your workflow" },
-      { label: "AI-Powered Tools", href: "/services/ai-tools", description: "Smart automation & support systems" },
+      { label: "AI Integrated Operating Systems", href: "/services/ai-tools", description: "Smart automation & support systems" },
       { label: "Marketing & SEO", href: "/services/marketing", description: "Get found, get chosen, get results" },
       { label: "eCommerce", href: "/services/ecommerce", description: "Sell products, subscriptions & services" },
     ],
@@ -29,6 +29,7 @@ export const navLinks = [
       { label: "Plumbing & Electrical", href: "/industries/plumbing-electrical", description: "Local SEO, scheduling & reviews" },
       { label: "Contractors & Remodeling", href: "/industries/contractors", description: "Portfolio sites, CRM & lead tracking" },
       { label: "Lawn Care & Landscaping", href: "/industries/lawn-care", description: "Route optimization & customer management" },
+      { label: "Medical & Dental", href: "/industries/medical", description: "Patient portals & HIPAA compliance" },
       { label: "Restaurants", href: "/industries/restaurants", description: "Online ordering & reservations" },
       { label: "Law Offices", href: "/industries/law", description: "Client portals & case management" },
       { label: "Auto & Detailing", href: "/industries/auto", description: "Booking & service notifications" },
@@ -50,13 +51,14 @@ export const navLinks = [
   },
   { label: "Process", href: "/process" },
   { label: "Your Project", href: "/pricing" },
+  { label: "Security", href: "/security" },
   { label: "Blog", href: "/blog" },
 ];
 
 export const footerLinks = {
   services: [
     { label: "Custom Web Apps", href: "/services/web-apps" },
-    { label: "AI-Powered Tools", href: "/services/ai-tools" },
+    { label: "AI Integrated Operating Systems", href: "/services/ai-tools" },
     { label: "Marketing & SEO", href: "/services/marketing" },
     { label: "eCommerce", href: "/services/ecommerce" },
   ],

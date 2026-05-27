@@ -4,7 +4,7 @@ export function LocalBusinessSchema() {
     "@type": "LocalBusiness",
     "@id": "https://aeopic.com",
     "name": "Aeopic",
-    "description": "Custom software development, AI-powered tools, marketing services, and eCommerce solutions in Houston, TX",
+    "description": "Custom software development, AI integrated operating systems, marketing services, and eCommerce solutions in Houston, TX",
     "url": "https://aeopic.com",
     "telephone": "+1-979-933-8032",
     "email": "contact@aeopic.com",

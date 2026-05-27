@@ -19,7 +19,7 @@ function getResend(): Resend | null {
 
 const serviceLabels: Record<string, string> = {
   "web-app": "Custom Web Application",
-  "ai-tools": "AI-Powered Tools",
+  "ai-tools": "AI Integrated Operating Systems",
   "marketing": "Marketing & SEO",
   "ecommerce": "eCommerce Platform",
   "not-sure": "Not Sure Yet",

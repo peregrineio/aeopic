@@ -73,7 +73,7 @@ export function TechStack() {
           transition={{ delay: 0.4 }}
           className="mt-14 text-center font-heading font-bold text-xl md:text-2xl text-gradient"
         >
-          Open source. No vendor lock-in. You own every line of code.
+          Open source. Built entirely on open-source frameworks. You own every line of code we build for you.
         </motion.p>
       </div>
     </section>

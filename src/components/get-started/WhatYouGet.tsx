@@ -19,7 +19,7 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     description: "Smart automation that saves you hours every week.",
     color: "blue",
   },
@@ -37,8 +37,8 @@ const features = [
   },
   {
     icon: Key,
-    title: "100% Code Ownership",
-    description: "Your code. Your data. Yours forever.",
+    title: "Full Code Ownership",
+    description: "Your code. Your data. Delivered to you upon completion.",
     color: "purple",
   },
   {

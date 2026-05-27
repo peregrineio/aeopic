@@ -828,7 +828,7 @@ export function LocationPageTemplate({ data }: LocationPageTemplateProps) {
               transition={{ delay: 0.5 }}
               className="text-white/40 text-sm mt-10 font-mono"
             >
-              No obligation · Response within 24 hours · 100% code ownership
+              No obligation · Response within 24 hours · Full code ownership
             </motion.p>
           </div>
         </div>

@@ -229,7 +229,7 @@ const services = [
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     description:
       "Smart systems that actually work. Ticket automation, knowledge bases, customer support that scales.",
     href: "/services/ai-tools",

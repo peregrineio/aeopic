@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const features = [
   { icon: Code2, title: "Custom Platform", description: "Built for your exact workflow", size: "normal" },
-  { icon: Sparkles, title: "AI-Powered", description: "Smart automation that saves hours", size: "normal" },
+  { icon: Sparkles, title: "AI Integrated", description: "Smart automation that saves hours", size: "normal" },
   { icon: TrendingUp, title: "Marketing & SEO", description: "Get found by customers", size: "wide" },
   { icon: Calendar, title: "Online Booking", description: "Customers book and pay 24/7", size: "normal" },
   { icon: Key, title: "You Own It", description: "Your code, your data, forever", size: "normal" },

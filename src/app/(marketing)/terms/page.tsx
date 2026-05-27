@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
           Terms of Service
         </h1>
         <p className="text-muted-foreground text-sm mb-12">
-          Effective Date: May 9, 2026
+          Effective Date: May 27, 2026
         </p>
 
         {/* 1. Acceptance of Terms */}
@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
         {/* 2. Services */}
         <h2 className="text-xl font-semibold mt-10 mb-4">2. Services</h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
-          Aeopic provides custom web application development, AI-powered tools,
+          Aeopic provides custom web application development, AI integrated operating systems,
           digital marketing, eCommerce solutions, and social media management
           for businesses.
         </p>
@@ -132,8 +132,75 @@ export default function TermsOfServicePage() {
           subject to their respective terms and privacy policies.
         </p>
 
-        {/* 9. Termination */}
-        <h2 className="text-xl font-semibold mt-10 mb-4">9. Termination</h2>
+        {/* 9. Artificial Intelligence in Services */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">
+          9. Artificial Intelligence in Services
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          Certain Aeopic services may incorporate artificial intelligence
+          technology. Where AI is used in the creation of deliverables, Aeopic
+          will disclose this to the client. AI-generated outputs are reviewed by
+          our team before delivery and are covered by the same quality and
+          ownership terms as all other deliverables.
+        </p>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          Clients retain the right to request that AI not be used in the
+          production of their deliverables. Such requests should be made in
+          writing and may affect project timelines and pricing as specified in
+          the applicable SLA.
+        </p>
+
+        {/* 10. Data Processing */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">
+          10. Data Processing
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          When Aeopic processes personal data on behalf of a client, the terms
+          of processing are governed by our{" "}
+          <a href="/legal/dpa" className="text-primary hover:underline">
+            Data Processing Agreement
+          </a>
+          , which is incorporated as an exhibit to the applicable SLA. The DPA
+          addresses data security obligations, breach notification procedures,
+          subprocessor management, and data subject rights assistance.
+        </p>
+
+        {/* 11. Subprocessors */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">
+          11. Subprocessors
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          Aeopic uses third-party service providers (subprocessors) to deliver
+          its services, including hosting, database, payment processing,
+          communications, and AI providers. A current list of subprocessors is
+          maintained at{" "}
+          <a
+            href="/legal/subprocessors"
+            className="text-primary hover:underline"
+          >
+            aeopic.com/legal/subprocessors
+          </a>
+          . Clients with an active DPA will receive written notice before any
+          new subprocessor is engaged.
+        </p>
+
+        {/* 12. Privacy and Data Rights */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">
+          12. Privacy and Data Rights
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          Our collection and use of personal data is governed by our{" "}
+          <a href="/privacy" className="text-primary hover:underline">
+            Privacy Policy
+          </a>
+          , which describes your rights under the Texas Data Privacy and
+          Security Act (TDPSA), including the right to access, correct, delete,
+          and port your personal data. By using our services, you acknowledge
+          that you have reviewed our Privacy Policy.
+        </p>
+
+        {/* 13. Termination */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">13. Termination</h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
           Either party may terminate services in accordance with the terms of
           their SLA. We reserve the right to suspend or terminate access to our
@@ -142,9 +209,9 @@ export default function TermsOfServicePage() {
           and governing law shall survive.
         </p>
 
-        {/* 10. Governing Law */}
+        {/* 14. Governing Law */}
         <h2 className="text-xl font-semibold mt-10 mb-4">
-          10. Governing Law
+          14. Governing Law
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
           These Terms are governed by and construed in accordance with the laws
@@ -153,9 +220,9 @@ export default function TermsOfServicePage() {
           or federal courts located in Harris County, Texas.
         </p>
 
-        {/* 11. Changes to These Terms */}
+        {/* 15. Changes to These Terms */}
         <h2 className="text-xl font-semibold mt-10 mb-4">
-          11. Changes to These Terms
+          15. Changes to These Terms
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
           We may update these Terms from time to time. Changes will be posted on
@@ -164,8 +231,8 @@ export default function TermsOfServicePage() {
           updated Terms.
         </p>
 
-        {/* 12. Contact Us */}
-        <h2 className="text-xl font-semibold mt-10 mb-4">12. Contact Us</h2>
+        {/* 16. Contact Us */}
+        <h2 className="text-xl font-semibold mt-10 mb-4">16. Contact Us</h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
           If you have questions about these Terms of Service, contact us:
         </p>

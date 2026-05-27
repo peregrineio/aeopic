@@ -14,8 +14,8 @@ const faqs = [
     a: "Most projects launch in 8-12 weeks. We use agile sprints with weekly demos so you see progress every step of the way.",
   },
   {
-    q: "What does '100% code ownership' mean?",
-    a: "You own everything we build - the code, the designs, the data. No proprietary lock-in, no licensing fees, no surprises.",
+    q: "Do I own the code you build?",
+    a: "You own everything we build for you. The code, the design, the data. Upon full payment per your Service Level Agreement, complete ownership transfers to you. No proprietary frameworks. Any developer can maintain your codebase.",
   },
   {
     q: "Do you offer ongoing support?",

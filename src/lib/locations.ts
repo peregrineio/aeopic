@@ -146,7 +146,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Automated scheduling, smart follow-ups, and chatbots that handle the overflow when growth outpaces your team.",
         href: "/services/ai-tools",
@@ -294,7 +294,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Smart booking, automated follow-ups, and AI assistants that handle the game-day rush and the summer quiet.",
         href: "/services/ai-tools",
@@ -444,7 +444,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Smart systems that handle the complexity of serving a county this diverse.",
         href: "/services/ai-tools",
@@ -595,7 +595,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Smart scheduling and automated follow-ups for businesses that are busiest when the festivals hit.",
         href: "/services/ai-tools",
@@ -744,7 +744,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Bilingual chatbots, automated booking, and smart follow-ups for a community that operates in two languages.",
         href: "/services/ai-tools",
@@ -895,7 +895,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Smart booking and lead capture for businesses whose customers are making decisions from their truck, not a desktop.",
         href: "/services/ai-tools",
@@ -1046,7 +1046,7 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/web-apps",
       },
       {
-        title: "AI-Powered Tools",
+        title: "AI Integrated Operating Systems",
         description:
           "Automated lead capture for a city where every new resident is a potential first-time customer.",
         href: "/services/ai-tools",

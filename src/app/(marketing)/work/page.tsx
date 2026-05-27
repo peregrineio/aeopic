@@ -148,7 +148,7 @@ function WorkHero() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Operations platforms, customer portals, marketing websites, and AI-powered tools —
+            Operations platforms, customer portals, marketing websites, and AI integrated operating systems —
             custom-built software that transforms how businesses operate.
           </motion.p>
 
@@ -163,7 +163,7 @@ function WorkHero() {
               { icon: LayoutDashboard, label: "Operations Platforms" },
               { icon: Users, label: "Customer Portals" },
               { icon: Globe, label: "Marketing Websites" },
-              { icon: Sparkles, label: "AI-Powered Tools" },
+              { icon: Sparkles, label: "AI Integrated Operating Systems" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -892,7 +892,7 @@ const capabilities: CapabilityData[] = [
   {
     id: "ai",
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     subtitle: "Smart Automation",
     description: "Intelligent customer support, ticket automation, and knowledge bases that learn and improve over time.",
     features: ["AI chat support", "Ticket automation", "Knowledge base", "Smart routing", "Sentiment analysis"],
@@ -1006,7 +1006,7 @@ function StatsSection() {
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   const stats = [
-    { value: "100%", label: "Code Ownership", description: "You own everything we build" },
+    { value: "Full", label: "Code Ownership", description: "You own everything we build for you" },
     { value: "8-12", label: "Weeks to Launch", description: "Average project timeline" },
     { value: "24/7", label: "Uptime", description: "Your platform never sleeps" },
     { value: "10+", label: "Years Experience", description: "Combined engineering expertise" },
@@ -1114,7 +1114,7 @@ function WorkCTA() {
           </h2>
           <p className="text-xl text-gray-600 mb-10 leading-relaxed">
             Whether you need an operations platform, customer portal, marketing website,
-            or AI-powered tools — let&apos;s build something worth showing off.
+            or AI integrated operating systems — let&apos;s build something worth showing off.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

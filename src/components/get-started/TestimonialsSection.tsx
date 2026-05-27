@@ -20,7 +20,7 @@ const testimonials = [
   },
   {
     quote:
-      "The fact that we own 100% of the code is what sold us. No vendor lock-in, no surprise price hikes.",
+      "Having full ownership of our platform gives us the freedom to scale on our own terms. The open-source stack means we're never locked in.",
     name: "CEO",
     industry: "Growing Business",
     initials: "GB",

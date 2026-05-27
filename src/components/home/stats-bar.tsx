@@ -12,7 +12,7 @@ const stats = [
   },
   {
     value: "100%",
-    label: "Code ownership, always",
+    label: "Code ownership, upon completion",
     icon: Shield,
   },
   {
@@ -22,7 +22,7 @@ const stats = [
   },
   {
     value: "0",
-    label: "Vendor lock-in, ever",
+    label: "Proprietary frameworks",
     icon: Unlock,
   },
 ];

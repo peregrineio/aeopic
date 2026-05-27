@@ -5,7 +5,7 @@ import { Shield, Clock, CheckCircle2 } from "lucide-react";
 import { WizardForm } from "./WizardForm";
 
 const trustPills = [
-  { icon: Shield, label: "100% Code Ownership" },
+  { icon: Shield, label: "Full Code Ownership" },
   { icon: Clock, label: "Respond in 24 Hours" },
   { icon: CheckCircle2, label: "No Obligation" },
 ];

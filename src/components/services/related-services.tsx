@@ -19,7 +19,7 @@ const allServices = [
   {
     slug: "ai-tools" as ServiceSlug,
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     description:
       "Smart systems that learn your business and make your team more efficient.",
     href: "/services/ai-tools",

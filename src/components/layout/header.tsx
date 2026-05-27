@@ -23,6 +23,9 @@ import {
   SprayCan,
   ArrowRight,
   MapPin,
+  LogIn,
+  Monitor,
+  Users,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -32,7 +35,7 @@ import { navLinks } from "@/lib/constants";
 // Icon mapping for services
 const serviceIcons: Record<string, React.ElementType> = {
   "Custom Web Apps": LayoutDashboard,
-  "AI-Powered Tools": Bot,
+  "AI Integrated Operating Systems": Bot,
   "Marketing & SEO": Megaphone,
   eCommerce: ShoppingCart,
 };
@@ -76,6 +79,7 @@ export function Header() {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [loginOpen, setLoginOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -620,7 +624,95 @@ export function Header() {
             </nav>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Login Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setLoginOpen(true)}
+                onMouseLeave={() => setLoginOpen(false)}
+              >
+                <button
+                  className={cn(
+                    "flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                    isScrolled
+                      ? "text-gray-600 hover:text-[#726AFF] hover:bg-gray-50"
+                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  <LogIn className="w-4 h-4" />
+                  Login
+                  <ChevronDown
+                    className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-200",
+                      loginOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {loginOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 pt-2"
+                      style={{ width: "240px" }}
+                    >
+                      <div
+                        className="rounded-xl border border-gray-200/80 shadow-xl overflow-hidden bg-white"
+                        style={{
+                          boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15)`,
+                        }}
+                      >
+                        <a
+                          href="https://ops.aeopic.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                        >
+                          <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center"
+                            style={{
+                              background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
+                            }}
+                          >
+                            <Monitor className="w-4 h-4" style={{ color: brand.primary }} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900 group-hover:text-[#726AFF] transition-colors">
+                              Operations Platform
+                            </p>
+                            <p className="text-xs text-gray-400">ops.aeopic.com</p>
+                          </div>
+                        </a>
+                        <a
+                          href="https://portal.aeopic.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors border-t border-gray-100"
+                        >
+                          <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center"
+                            style={{
+                              background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
+                            }}
+                          >
+                            <Users className="w-4 h-4" style={{ color: brand.primary }} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900 group-hover:text-[#726AFF] transition-colors">
+                              Customer Portal
+                            </p>
+                            <p className="text-xs text-gray-400">portal.aeopic.com</p>
+                          </div>
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <Button
                 asChild
                 className="cta-gradient hover:opacity-90 text-white border-0 shadow-lg shadow-[#726AFF]/20 hover:shadow-xl hover:shadow-[#726AFF]/30 transition-all duration-300"
@@ -785,7 +877,7 @@ export function Header() {
                 ))}
               </nav>
 
-              {/* Bottom: CTA and Contact Info */}
+              {/* Bottom: Login + CTA and Contact Info */}
               <motion.div
                 custom={navLinks.length + 2}
                 variants={menuItemVariants}
@@ -794,6 +886,28 @@ export function Header() {
                 exit="exit"
                 className="space-y-4"
               >
+                {/* Login Links */}
+                <div className="flex gap-3">
+                  <a
+                    href="https://ops.aeopic.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium text-white/70 rounded-lg border border-white/10 hover:border-[#726AFF]/50 hover:text-white transition-all"
+                  >
+                    <Monitor className="w-4 h-4" />
+                    Operations
+                  </a>
+                  <a
+                    href="https://portal.aeopic.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium text-white/70 rounded-lg border border-white/10 hover:border-[#726AFF]/50 hover:text-white transition-all"
+                  >
+                    <Users className="w-4 h-4" />
+                    Portal
+                  </a>
+                </div>
+
                 <Link
                   href="/start"
                   onClick={closeMenu}

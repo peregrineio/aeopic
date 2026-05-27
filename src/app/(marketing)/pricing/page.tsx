@@ -38,7 +38,7 @@ const faqs = [
   {
     question: "Do I own the code?",
     answer:
-      "Yes, 100%. Every line of code, every design asset, every database — it's yours. We don't hold your business hostage with proprietary lock-in. You can take the codebase to any developer at any time.",
+      "You own everything we build for you. The code, the design, the data. Upon full payment per your Service Level Agreement, complete ownership transfers to you. During your project, you have a full working license. No proprietary frameworks. Any developer can maintain your codebase.",
   },
   {
     question: "How do I know this is worth the investment?",

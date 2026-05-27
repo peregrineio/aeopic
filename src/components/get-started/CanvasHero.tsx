@@ -124,7 +124,7 @@ export function CanvasHero() {
               >
                 {[
                   { value: "24", suffix: "hr", label: "Response Time" },
-                  { value: "100", suffix: "%", label: "Code Ownership" },
+                  { value: "Full", suffix: "", label: "Code Ownership" },
                   { value: "8-12", suffix: "wk", label: "Launch Time" },
                 ].map((stat, index) => (
                   <motion.div

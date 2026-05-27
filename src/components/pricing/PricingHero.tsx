@@ -79,7 +79,7 @@ export function PricingHero() {
               </p>
             </div>
             <div className="pricing-card-dark p-5 w-[200px]">
-              <p className="pricing-eyebrow mb-2">Vendor lock-in</p>
+              <p className="pricing-eyebrow mb-2">Proprietary code</p>
               <p className="text-white text-2xl font-heading font-bold tracking-[-0.03em]">
                 Zero
               </p>

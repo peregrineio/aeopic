@@ -21,7 +21,7 @@ export const faqPatterns: FAQPattern[] = [
     id: "services",
     keywords: ["services", "what do you do", "what do you build", "offer", "capabilities", "help", "build"],
     response:
-      "We build four things for local businesses:\n\n• **Custom Web Apps** — CRMs, portals, dashboards\n• **AI-Powered Tools** — Smart automation & support\n• **Marketing & SEO** — Get found online\n• **eCommerce** — Sell products & services\n\nWhich one interests you? Or **[see all our services](/services)**.",
+      "We build four things for local businesses:\n\n• **Custom Web Apps** — CRMs, portals, dashboards\n• **AI Integrated Operating Systems** — Smart automation & support\n• **Marketing & SEO** — Get found online\n• **eCommerce** — Sell products & services\n\nWhich one interests you? Or **[see all our services](/services)**.",
     quickReplies: ["Custom Web Apps", "AI Tools", "Marketing", "eCommerce"],
   },
   {
@@ -75,7 +75,7 @@ export const faqPatterns: FAQPattern[] = [
     id: "ownership",
     keywords: ["own", "ownership", "code", "vendor", "lock-in", "proprietary", "mine", "keep"],
     response:
-      "Yes — you own **100% of everything** we build. The code, the design, the data — it's all yours. No vendor lock-in, no proprietary platforms.\n\nEven if you stop working with us, you keep everything. Any developer can maintain it.",
+      "You own everything we build for you. The code, the design, the data. Ownership transfers upon completion of your engagement per your SLA terms. No proprietary frameworks. Any developer can maintain it.",
     quickReplies: ["Get started", "How much?"],
   },
   {
@@ -105,7 +105,7 @@ export const faqPatterns: FAQPattern[] = [
       "support",
     ],
     response:
-      "We build **AI-powered business tools** — smart ticket systems, knowledge bases, customer support chat, and automated workflows.\n\nOur AI tools learn YOUR business, not generic patterns.\n\n**[Learn more about AI Tools](/services/ai-tools)**",
+      "We build **AI integrated operating systems** — smart ticket systems, knowledge bases, customer support chat, and automated workflows.\n\nOur systems learn YOUR business, not generic patterns.\n\n**[Learn more about AI Tools](/services/ai-tools)**",
     quickReplies: ["How much?", "Get started", "Is my data safe?"],
   },
   {
@@ -163,10 +163,24 @@ export const faqPatterns: FAQPattern[] = [
   },
   {
     id: "data-security",
-    keywords: ["data", "security", "safe", "secure", "privacy", "hipaa", "encrypt", "protection"],
+    keywords: ["data", "security", "safe", "secure", "hipaa", "encrypt", "protection", "soc", "iso"],
     response:
-      "Your data stays yours. We use end-to-end encryption, role-based access controls, and enterprise-level security practices.\n\nYour data is never shared with anyone and never used to train AI models. For medical clients, we build HIPAA-ready systems.",
-    quickReplies: ["Get started", "What do you build?"],
+      "Your data stays yours. We build on SOC 2 Type II and ISO 27001-certified infrastructure. End-to-end encryption, role-based access controls, and zero data retention options for sensitive workloads.\n\nYour data is never used to train AI models. For healthcare clients, HIPAA compliance is built into every build.\n\n**[View our subprocessor list](/legal/subprocessors)**",
+    quickReplies: ["Get started", "Privacy policy", "What do you build?"],
+  },
+  {
+    id: "privacy",
+    keywords: ["privacy", "tdpsa", "data rights", "opt out", "delete my data", "personal data", "privacy policy", "gdpr"],
+    response:
+      "We take privacy seriously. Our **[Privacy Policy](/privacy)** details your rights under the Texas Data Privacy and Security Act (TDPSA), including the right to access, correct, delete, and port your data.\n\nWe also publish a **[Data Processing Agreement](/legal/dpa)** and maintain a transparent **[subprocessor list](/legal/subprocessors)**.\n\nFor privacy questions, email privacy@aeopic.com.",
+    quickReplies: ["Get started", "Data security", "What do you build?"],
+  },
+  {
+    id: "subprocessors",
+    keywords: ["subprocessor", "who handles", "third party", "vendors", "stripe", "supabase", "vercel", "anthropic"],
+    response:
+      "We maintain a transparent list of every third-party service that handles data on our behalf. Current subprocessors include Supabase, Vercel, Stripe, Twilio, Resend, and Anthropic — all with independently audited security programs.\n\n**[View the full subprocessor list](/legal/subprocessors)**",
+    quickReplies: ["Privacy policy", "Data security", "Get started"],
   },
   {
     id: "thanks",

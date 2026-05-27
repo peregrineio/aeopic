@@ -7,7 +7,7 @@ import { ChamberBadge } from "./chamber-badge";
 
 const services = [
   { label: "Custom Web Apps", href: "/services/web-apps" },
-  { label: "AI-Powered Tools", href: "/services/ai-tools" },
+  { label: "AI Integrated Operating Systems", href: "/services/ai-tools" },
   { label: "Marketing & SEO", href: "/services/marketing" },
   { label: "eCommerce", href: "/services/ecommerce" },
 ];
@@ -29,6 +29,7 @@ const company = [
   { label: "Process", href: "/process" },
   { label: "Work", href: "/work" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Security", href: "/security" },
   { label: "Get Started", href: "/contact" },
 ];
 
@@ -324,6 +325,14 @@ export function Footer() {
               <span className="text-white/20">|</span>
               <Link href="/terms" className="hover:text-white/60 transition-colors duration-200">
                 Terms of Service
+              </Link>
+              <span className="text-white/20">|</span>
+              <Link href="/legal/dpa" className="hover:text-white/60 transition-colors duration-200">
+                DPA
+              </Link>
+              <span className="text-white/20">|</span>
+              <Link href="/legal/subprocessors" className="hover:text-white/60 transition-colors duration-200">
+                Subprocessors
               </Link>
             </div>
             <p className="text-sm text-white/30">

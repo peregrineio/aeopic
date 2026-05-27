@@ -40,7 +40,7 @@ const capabilities = [
     id: "06",
     title: "Enterprise Security",
     description:
-      "Your data stays yours. On-premise deployment, end-to-end encryption, full compliance built in.",
+      "Your data stays yours. End-to-end encryption, SOC 2-certified infrastructure, and zero data retention options for sensitive workloads.",
   },
 ];
 
@@ -56,7 +56,7 @@ const stats = [
 const faqs = [
   {
     q: "Is my data safe?",
-    a: "Your data never leaves your control. We offer on-premise deployment, private cloud options, and enterprise-grade encryption. Nothing is used to train external models.",
+    a: "Your data stays protected by SOC 2-certified infrastructure, end-to-end encryption, and zero data retention options for sensitive workloads. Nothing is used to train external models.",
   },
   {
     q: "How accurate is the AI?",
@@ -372,17 +372,17 @@ export default function AIToolsPage() {
                     Your data never leaves your control.
                   </h3>
                   <p className="text-white/40 leading-relaxed">
-                    On-premise deployment options. Private cloud configurations.
-                    End-to-end encryption. SOC 2 compliance. Your data is never
-                    used to train external models.
+                    Built on SOC 2 Type II and ISO 27001-certified
+                    infrastructure. End-to-end encryption. Zero data retention
+                    available. Your data is never used to train external models.
                   </p>
                 </div>
                 <div className="space-y-6">
                   {[
-                    "On-premise deployment",
+                    "SOC 2 Type II-certified infrastructure",
                     "End-to-end encryption",
-                    "SOC 2 compliant",
-                    "HIPAA ready",
+                    "ISO 27001 + ISO 42001 certified AI provider",
+                    "Zero data retention available",
                     "Your data stays yours",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
@@ -394,6 +394,61 @@ export default function AIToolsPage() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* AI Governance */}
+      <section className="py-32 md:py-40 border-t border-white/5">
+        <div className="container-site">
+          <div className="max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-[#726AFF] text-sm font-medium tracking-widest uppercase mb-6">
+                AI Governance
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-8">
+                How we build responsibly.
+              </h2>
+            </motion.div>
+
+            <div className="space-y-8">
+              {[
+                {
+                  title: "What AI we use",
+                  text: "We build on Anthropic Claude for text and conversation capabilities. Anthropic holds SOC 2 Type II, ISO 27001, and ISO 42001 (AI management systems) certifications.",
+                },
+                {
+                  title: "What data goes into AI processing",
+                  text: "Only the prompts and context necessary to generate responses. We do not send entire databases or customer lists. Data sent via the API is not used to train models, and zero data retention is available for sensitive workloads.",
+                },
+                {
+                  title: "What AI does not do",
+                  text: "AI does not make autonomous decisions about your customers or their data. It does not process sensitive personal information without explicit consent. All AI features can be configured or disabled per your requirements.",
+                },
+                {
+                  title: "Human oversight",
+                  text: "Every AI system we build includes human-in-the-loop design. AI assists and accelerates — it does not replace human judgment on critical decisions.",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="border-l-2 border-[#726AFF]/30 pl-6"
+                >
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/40 leading-relaxed">{item.text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

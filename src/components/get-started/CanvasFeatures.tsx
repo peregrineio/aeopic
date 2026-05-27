@@ -12,7 +12,7 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     description: "Smart automation that learns and adapts. Save hours every week with intelligent workflows.",
   },
   {
@@ -27,8 +27,8 @@ const features = [
   },
   {
     icon: Key,
-    title: "100% Ownership",
-    description: "Your code. Your data. Your platform. No vendor lock-in. Take it anywhere, anytime.",
+    title: "Full Ownership",
+    description: "Your code. Your data. Your platform. Built on open-source technology. Take it anywhere, anytime.",
   },
   {
     icon: Headphones,

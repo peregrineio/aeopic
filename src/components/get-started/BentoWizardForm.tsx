@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 
 const serviceOptions = [
   { value: "web-app", label: "Custom Web Application" },
-  { value: "ai-tools", label: "AI-Powered Tools" },
+  { value: "ai-tools", label: "AI Integrated Operating Systems" },
   { value: "marketing", label: "Marketing & SEO" },
   { value: "ecommerce", label: "eCommerce Platform" },
   { value: "not-sure", label: "Not Sure Yet" },

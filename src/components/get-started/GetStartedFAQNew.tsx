@@ -22,7 +22,7 @@ const faqs = [
   {
     question: "Do I own the code?",
     answer:
-      "Yes - 100%. You own everything we build. The code, the design, the data - it's all yours. No vendor lock-in, no proprietary platforms. Even if you stop working with us, you keep everything.",
+      "You own everything we build for you. The code, the design, the data. Upon full payment per your Service Level Agreement, complete ownership transfers to you. During your project, you have a full working license. No proprietary frameworks. Any developer can maintain your codebase.",
   },
   {
     question: "What if I need changes after launch?",

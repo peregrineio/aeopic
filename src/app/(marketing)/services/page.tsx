@@ -37,12 +37,12 @@ const services = [
     mockup: "webapps",
   },
   {
-    title: "AI-Powered Business Tools",
+    title: "AI Integrated Operating Systems",
     description:
       "Smart tools that learn your business and make your team more efficient. We design systems where AI is a core layer, not an afterthought.",
     features: [
       "Ticket management systems",
-      "AI-powered knowledge bases",
+      "AI integrated knowledge bases",
       "Customer service chat & phone support",
       "Intelligent routing & automation",
       "Natural language search",
@@ -96,7 +96,7 @@ export default function ServicesPage() {
       <ServiceHero
         eyebrow="Our Services"
         headline="What We Build"
-        subheadline="From custom platforms to AI-powered tools to full marketing campaigns — we build the technology stack that makes your business run."
+        subheadline="From custom platforms to AI integrated operating systems to full marketing campaigns — we build the technology stack that makes your business run."
       />
 
       {/* Service Blocks */}

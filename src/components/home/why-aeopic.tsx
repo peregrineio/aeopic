@@ -9,7 +9,7 @@ const differentiators = [
     title: "Built Custom, Not Configured",
     description:
       "We write code for your business. No dragging and dropping into someone else's template.",
-    points: ["Your workflow, your rules", "No vendor lock-in", "100% code ownership"],
+    points: ["Your workflow, your rules", "Built on open-source technology", "Full code ownership upon completion"],
   },
   {
     icon: Brain,
@@ -35,8 +35,8 @@ const differentiators = [
 ];
 
 const comparisonData = [
-  { feature: "100% Code Ownership", aeopic: true, agency: false, nocode: false },
-  { feature: "No Vendor Lock-in", aeopic: true, agency: "partial", nocode: false },
+  { feature: "Full Code Ownership", aeopic: true, agency: false, nocode: false },
+  { feature: "Open-Source Stack", aeopic: true, agency: "partial", nocode: false },
   { feature: "AI-Native Build", aeopic: true, agency: "partial", nocode: false },
   { feature: "Direct Engineer Access", aeopic: true, agency: false, nocode: "na" },
   { feature: "8–12 Week Launch", aeopic: true, agency: false, nocode: true },

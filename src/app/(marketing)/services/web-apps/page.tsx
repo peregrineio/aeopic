@@ -81,7 +81,7 @@ const faqs = [
   {
     question: "Do I own the code?",
     answer:
-      "Yes, 100%. You own everything we build. The code, the design, the infrastructure — it's all yours.",
+      "You own everything we build for you. The code, the design, the data. Upon full payment per your Service Level Agreement, complete ownership transfers to you. No proprietary frameworks. Any developer can maintain your codebase.",
   },
   {
     question: "What if I need changes after launch?",
@@ -172,7 +172,7 @@ export default function WebAppsPage() {
                 className="text-xl text-white/50 leading-relaxed max-w-lg mb-10 font-mono"
               >
                 Custom platforms designed around your workflow. Full-stack
-                systems that scale. 100% code ownership.
+                systems that scale. Full code ownership.
               </motion.p>
 
               {/* CTA */}
@@ -333,7 +333,7 @@ export default function WebAppsPage() {
                 <div className="flex items-center gap-2 font-mono text-sm">
                   <span className="text-[#10B981]">*</span>
                   <span className="text-white font-bold">0</span>
-                  <span className="text-white/40">vendor lock-in</span>
+                  <span className="text-white/40">proprietary code</span>
                 </div>
                 <span className="text-white/20">|</span>
               </div>

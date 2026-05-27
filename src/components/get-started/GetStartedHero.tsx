@@ -110,7 +110,7 @@ export function GetStartedHero() {
           >
             {[
               "Houston-Based",
-              "100% Code Ownership",
+              "Full Code Ownership",
               "Respond in 24 Hours",
               "No Obligation",
             ].map((badge, index) => (

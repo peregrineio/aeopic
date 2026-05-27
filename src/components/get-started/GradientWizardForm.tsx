@@ -11,7 +11,7 @@ import { contactFormSchema, type ContactFormInput } from "@/lib/validations";
 
 const serviceOptions = [
   { value: "web-app", label: "Custom Web App" },
-  { value: "ai-tools", label: "AI-Powered Tools" },
+  { value: "ai-tools", label: "AI Integrated Operating Systems" },
   { value: "marketing", label: "Marketing & SEO" },
   { value: "ecommerce", label: "eCommerce" },
   { value: "not-sure", label: "Not Sure Yet" },

@@ -24,7 +24,7 @@ const industries = [
     color: "#ef4444",
     pain: "Patients are calling to book appointments that could be handled online in 30 seconds.",
     solution:
-      "Patient portals with self-service booking, intake forms, appointment reminders, and secure messaging — all HIPAA-ready.",
+      "Patient portals with self-service booking, intake forms, appointment reminders, and secure messaging — HIPAA compliance built into every healthcare build.",
   },
   {
     icon: Thermometer,

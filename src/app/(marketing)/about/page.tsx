@@ -133,7 +133,7 @@ function AboutHero() {
           >
             {[
               { value: "10+", label: "Years Combined Experience" },
-              { value: "100%", label: "Code Ownership" },
+              { value: "Full", label: "Code Ownership" },
               { value: "Houston", label: "Based & Proud" },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-center gap-3">

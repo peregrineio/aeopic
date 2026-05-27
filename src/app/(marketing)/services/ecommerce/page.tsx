@@ -107,7 +107,7 @@ const processSteps = [
 
 const stats = [
   { value: "$0", label: "Monthly Fees", trend: "No platform costs" },
-  { value: "100%", label: "Ownership", trend: "Your code, forever" },
+  { value: "Full", label: "Ownership", trend: "Your code, upon completion" },
   { value: "+42%", label: "Conversion Rate", trend: "vs template stores" },
   { value: "< 2s", label: "Page Load", trend: "Performance optimized" },
 ];

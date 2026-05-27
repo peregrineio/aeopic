@@ -84,7 +84,7 @@ export default function PlumbingElectricalPage() {
       stats={[
         { value: "3x", label: "More Google Visibility" },
         { value: "Auto", label: "Review Requests" },
-        { value: "100%", label: "Code Ownership" },
+        { value: "Full", label: "Code Ownership" },
       ]}
       cta={{
         headline: "Ready to Get Found Online?",

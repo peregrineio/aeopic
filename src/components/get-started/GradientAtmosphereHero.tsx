@@ -115,11 +115,11 @@ export function GradientAtmosphereHero() {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold text-lg">
-                    100% Code Ownership
+                    Full Code Ownership
                   </h3>
                   <p className="text-white/50 text-sm mt-1">
-                    Your code, your data, yours forever. No lock-in, no
-                    licensing.
+                    Your code, your data, delivered to you. No proprietary
+                    frameworks, no licensing.
                   </p>
                 </div>
               </div>

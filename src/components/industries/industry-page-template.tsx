@@ -560,7 +560,7 @@ export function IndustryPageTemplate({
               transition={{ delay: 0.5 }}
               className="text-white/25 text-sm mt-12 font-mono"
             >
-              No obligation · Response within 24 hours · 100% code ownership
+              No obligation · Response within 24 hours · Full code ownership
             </motion.p>
           </div>
         </div>

@@ -28,7 +28,7 @@ const capabilities = [
     number: "04",
     title: "Patient Portal",
     description:
-      "Secure access to appointments, documents, and messaging. Everything in one place. HIPAA-compliant from day one.",
+      "Secure access to appointments, documents, and messaging. Everything in one place. HIPAA compliance built into every healthcare build.",
   },
 ];
 
@@ -94,8 +94,8 @@ export default function MedicalPage() {
               className="text-xl md:text-2xl text-white/70 leading-relaxed max-w-2xl mb-12"
             >
               Custom software for medical and dental practices. Online booking,
-              digital intake, automated reminders, patient portals — all
-              HIPAA-ready.
+              digital intake, automated reminders, patient portals — HIPAA
+              compliance built into every healthcare build.
             </motion.p>
 
             {/* CTAs */}
@@ -288,9 +288,9 @@ export default function MedicalPage() {
               viewport={{ once: true }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0A0A0A] tracking-tight leading-[1.1] mb-8"
             >
-              HIPAA-compliant
+              HIPAA compliance
               <br />
-              <span className="text-[#A3A3A3]">from the first line of code.</span>
+              <span className="text-[#A3A3A3]">built into every healthcare build.</span>
             </motion.h2>
 
             <motion.p
@@ -308,8 +308,94 @@ export default function MedicalPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Vendor Certifications */}
       <section className="py-24 md:py-32 bg-[#FAFAFA]">
+        <div className="container-site">
+          <div className="max-w-3xl mx-auto">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-[#726AFF] text-sm font-medium tracking-wide mb-6 text-center"
+            >
+              Infrastructure You Can Trust
+            </motion.p>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-[#0A0A0A] tracking-tight leading-[1.1] mb-8 text-center"
+            >
+              Built on certified, audited infrastructure.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-[#525252] leading-relaxed mb-12 text-center"
+            >
+              Every layer of your healthcare platform runs on independently
+              audited providers with enterprise-grade compliance programs.
+            </motion.p>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "SOC 2 Type II",
+                  detail: "Supabase, Vercel, Stripe, Anthropic",
+                },
+                {
+                  label: "ISO 27001 + ISO 42001",
+                  detail: "Anthropic (AI processing)",
+                },
+                {
+                  label: "HIPAA BAA Available",
+                  detail: "Anthropic, Supabase, Twilio",
+                },
+                {
+                  label: "Zero Data Retention",
+                  detail: "Available for sensitive AI workloads",
+                },
+              ].map((cert, i) => (
+                <motion.div
+                  key={cert.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white border border-[#E5E5E5] rounded-lg p-6"
+                >
+                  <p className="font-semibold text-[#0A0A0A] mb-1">
+                    {cert.label}
+                  </p>
+                  <p className="text-sm text-[#737373]">{cert.detail}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mt-8"
+            >
+              <Link
+                href="/security"
+                className="text-[#726AFF] text-sm font-medium hover:underline inline-flex items-center gap-2"
+              >
+                View our full security overview
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 md:py-32 bg-white">
         <div className="container-site">
           <div className="max-w-3xl">
             <motion.p

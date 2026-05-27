@@ -18,7 +18,7 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Tools",
+    title: "AI Integrated Operating Systems",
     description: "Smart automation that saves you hours every week. Let technology work for you.",
   },
   {
@@ -33,8 +33,8 @@ const features = [
   },
   {
     icon: Key,
-    title: "100% Code Ownership",
-    description: "Your code. Your data. Yours forever. No vendor lock-in.",
+    title: "Full Code Ownership",
+    description: "Your code. Your data. Delivered to you upon completion. Open-source stack.",
   },
   {
     icon: Headphones,
