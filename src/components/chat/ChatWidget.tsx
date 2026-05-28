@@ -15,7 +15,7 @@ const GREETING_MESSAGE: Message = {
   id: "greeting",
   role: "bot",
   content:
-    "Hey there! 👋 I'm the Aeopic assistant. Got questions about our services, pricing, or process? I'm here to help!\n\nOr if you're ready, **[get your free consultation here](/get-started)**!",
+    "Hey there! 👋 I'm the Aeopic assistant. Got questions about our services, pricing, or process? I'm here to help!\n\nOr if you're ready, [get your free consultation here](/start)!",
   timestamp: new Date(),
   quickReplies: [
     "What do you build?",
