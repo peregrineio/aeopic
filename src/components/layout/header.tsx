@@ -22,7 +22,6 @@ import {
   Car,
   SprayCan,
   ArrowRight,
-  MapPin,
   LogIn,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,7 +29,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/constants";
 
-// Icon mapping for services
 const serviceIcons: Record<string, React.ElementType> = {
   "Custom Web Apps": LayoutDashboard,
   "AI Integrated Operating Systems": Bot,
@@ -38,7 +36,6 @@ const serviceIcons: Record<string, React.ElementType> = {
   eCommerce: ShoppingCart,
 };
 
-// Icon mapping for industries
 const industryIcons: Record<string, React.ElementType> = {
   "HVAC & Home Services": Thermometer,
   "Plumbing & Electrical": Wrench,
@@ -51,18 +48,6 @@ const industryIcons: Record<string, React.ElementType> = {
   "Cleaning & Pest Control": SprayCan,
 };
 
-// Icon mapping for locations (all use MapPin)
-const locationIcons: Record<string, React.ElementType> = {
-  "College Station": MapPin,
-  "Bryan": MapPin,
-  "Manor": MapPin,
-  "Montgomery County": MapPin,
-  "Conroe": MapPin,
-  "Magnolia": MapPin,
-  "Tomball": MapPin,
-};
-
-// Brand colors
 const brand = {
   primary: "#726AFF",
   primarySoft: "#8B5CF6",
@@ -76,19 +61,14 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle body overflow when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -100,7 +80,6 @@ export function Header() {
     };
   }, [isMenuOpen]);
 
-  // Handle escape key to close menu
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -108,7 +87,6 @@ export function Header() {
         setActiveDropdown(null);
       }
     };
-
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isMenuOpen]);
@@ -167,13 +145,8 @@ export function Header() {
     },
   };
 
-  // Dropdown animation variants
   const dropdownVariants = {
-    hidden: {
-      opacity: 0,
-      y: 8,
-      scale: 0.98,
-    },
+    hidden: { opacity: 0, y: 8, scale: 0.98 },
     visible: {
       opacity: 1,
       y: 0,
@@ -205,20 +178,15 @@ export function Header() {
     },
   };
 
-  // Render dropdown content based on type
   const renderDropdownContent = (
     link: (typeof navLinks)[0],
-    dropdownType: "services" | "industries" | "locations"
+    dropdownType: "services" | "industries"
   ) => {
-    const icons = dropdownType === "services"
-      ? serviceIcons
-      : dropdownType === "locations"
-        ? locationIcons
-        : industryIcons;
+    const icons =
+      dropdownType === "services" ? serviceIcons : industryIcons;
     const children = link.children || [];
 
     if (dropdownType === "services") {
-      // Services: 2x2 grid with larger cards
       return (
         <motion.div
           variants={dropdownVariants}
@@ -235,14 +203,11 @@ export function Header() {
               boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
             }}
           >
-            {/* Header */}
             <div className="px-6 py-4 border-b border-gray-100">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
                 Our Services
               </p>
             </div>
-
-            {/* Grid */}
             <div className="grid grid-cols-2 gap-1 p-2">
               {children.map((child) => {
                 const Icon = icons[child.label] || LayoutDashboard;
@@ -252,15 +217,12 @@ export function Header() {
                       href={child.href}
                       onClick={() => setActiveDropdown(null)}
                       className="group flex items-start gap-4 p-4 rounded-xl transition-all duration-200 hover:bg-white"
-                      style={{
-                        boxShadow: "0 0 0 0 transparent",
-                      }}
+                      style={{ boxShadow: "0 0 0 0 transparent" }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow =
-                          "0 0 0 0 transparent";
+                        e.currentTarget.style.boxShadow = "0 0 0 0 transparent";
                       }}
                     >
                       <div
@@ -293,8 +255,6 @@ export function Header() {
                 );
               })}
             </div>
-
-            {/* Footer CTA */}
             <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
               <Link
                 href="/services"
@@ -304,107 +264,7 @@ export function Header() {
                 <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
                   View all services
                 </span>
-                <ArrowRight
-                  className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all"
-                />
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      );
-    }
-
-    // Locations: 2-column grid
-    if (dropdownType === "locations") {
-      return (
-        <motion.div
-          variants={dropdownVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-          style={{ width: "420px" }}
-        >
-          <div
-            className="rounded-2xl border border-gray-200/80 shadow-xl overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, white 0%, ${brand.purpleBg} 100%)`,
-              boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
-            }}
-          >
-            {/* Header */}
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
-                Service Areas
-              </p>
-              <span
-                className="text-[0.6rem] px-2 py-1 rounded-full font-medium"
-                style={{
-                  background: brand.purpleBg,
-                  color: brand.primary,
-                }}
-              >
-                Texas
-              </span>
-            </div>
-
-            {/* 2-column grid */}
-            <div className="grid grid-cols-2 gap-1 p-2">
-              {children.map((child) => {
-                return (
-                  <motion.div key={child.label} variants={dropdownItemVariants}>
-                    <Link
-                      href={child.href}
-                      onClick={() => setActiveDropdown(null)}
-                      className="group flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
-                      style={{
-                        boxShadow: "0 0 0 0 transparent",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = "0 0 0 0 transparent";
-                      }}
-                    >
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
-                        style={{
-                          background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
-                        }}
-                      >
-                        <MapPin
-                          className="w-4 h-4 transition-colors duration-200"
-                          style={{ color: brand.primary }}
-                        />
-                      </div>
-                      <div>
-                        <span className="text-sm font-medium text-gray-700 group-hover:text-[#726AFF] transition-colors block">
-                          {child.label}
-                        </span>
-                        <span className="text-[0.65rem] text-gray-400">
-                          {child.description}
-                        </span>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Footer CTA */}
-            <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
-              <Link
-                href="/locations"
-                onClick={() => setActiveDropdown(null)}
-                className="group flex items-center justify-between text-sm"
-              >
-                <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
-                  View all service areas
-                </span>
-                <ArrowRight
-                  className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all"
-                />
+                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all" />
               </Link>
             </div>
           </div>
@@ -429,23 +289,17 @@ export function Header() {
             boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
           }}
         >
-          {/* Header */}
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
               Industries We Serve
             </p>
             <span
               className="text-[0.6rem] px-2 py-1 rounded-full font-medium"
-              style={{
-                background: brand.purpleBg,
-                color: brand.primary,
-              }}
+              style={{ background: brand.purpleBg, color: brand.primary }}
             >
               9 Specializations
             </span>
           </div>
-
-          {/* 3-column grid */}
           <div className="grid grid-cols-3 gap-1 p-2">
             {children.map((child) => {
               const Icon = icons[child.label] || Wrench;
@@ -455,9 +309,7 @@ export function Header() {
                     href={child.href}
                     onClick={() => setActiveDropdown(null)}
                     className="group flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
-                    style={{
-                      boxShadow: "0 0 0 0 transparent",
-                    }}
+                    style={{ boxShadow: "0 0 0 0 transparent" }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
                     }}
@@ -484,8 +336,6 @@ export function Header() {
               );
             })}
           </div>
-
-          {/* Footer CTA */}
           <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
             <Link
               href="/industries"
@@ -495,9 +345,7 @@ export function Header() {
               <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
                 Explore all industries
               </span>
-              <ArrowRight
-                className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all"
-              />
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all" />
             </Link>
           </div>
         </div>
@@ -511,14 +359,19 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
+            ? "bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-black/[0.04]"
             : isHomePage
               ? "bg-transparent"
               : "bg-[#0F1226]"
         )}
       >
-        <div className="container-site">
-          <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div
+            className={cn(
+              "flex items-center justify-between transition-all duration-300",
+              isScrolled ? "h-14" : "h-16 md:h-20"
+            )}
+          >
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               <Image
@@ -526,124 +379,100 @@ export function Header() {
                 alt="Aeopic"
                 width={480}
                 height={128}
-                className="h-32 w-auto"
+                className={cn(
+                  "w-auto transition-all duration-300",
+                  isScrolled ? "h-16" : "h-20 md:h-28"
+                )}
                 priority
               />
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              <div className="flex items-center gap-1">
-                {navLinks.map((link) =>
-                  link.children ? (
-                    <div
-                      key={link.label}
-                      className="relative"
-                      onMouseEnter={() => setActiveDropdown(link.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                    >
-                      <button
-                        className={cn(
-                          "group relative flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors",
-                          isScrolled
-                            ? "text-gray-700 hover:text-[#726AFF]"
-                            : "text-white/90 hover:text-white",
-                          isActive(link.href) && "text-[#726AFF]",
-                          activeDropdown === link.label &&
-                            (isScrolled ? "text-[#726AFF]" : "text-white")
-                        )}
-                      >
-                        {link.label}
-                        <ChevronDown
-                          className={cn(
-                            "w-4 h-4 transition-transform duration-200",
-                            activeDropdown === link.label && "rotate-180"
-                          )}
-                        />
-
-                        {/* Animated underline */}
-                        <motion.span
-                          className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full"
-                          style={{ background: brand.primary }}
-                          initial={{ scaleX: 0 }}
-                          animate={{
-                            scaleX: activeDropdown === link.label ? 1 : 0,
-                          }}
-                          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        />
-                      </button>
-
-                      <AnimatePresence>
-                        {activeDropdown === link.label &&
-                          renderDropdownContent(
-                            link,
-                            link.label === "Services"
-                              ? "services"
-                              : link.label === "Locations"
-                                ? "locations"
-                                : "industries"
-                          )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      key={link.label}
-                      href={link.href}
+            <nav className="hidden lg:flex items-center gap-0.5">
+              {navLinks.map((link) =>
+                link.children ? (
+                  <div
+                    key={link.label}
+                    className="relative"
+                    onMouseEnter={() => setActiveDropdown(link.label)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <button
                       className={cn(
-                        "relative px-4 py-2 text-sm font-medium transition-colors",
+                        "flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200",
                         isScrolled
-                          ? "text-gray-700 hover:text-[#726AFF]"
-                          : "text-white/90 hover:text-white",
-                        isActive(link.href) && "text-[#726AFF]"
+                          ? "text-gray-600 hover:text-gray-900 hover:bg-black/[0.04]"
+                          : "text-white/75 hover:text-white hover:bg-white/[0.08]",
+                        isActive(link.href) && "text-[#726AFF]",
+                        activeDropdown === link.label &&
+                          (isScrolled
+                            ? "text-gray-900 bg-black/[0.04]"
+                            : "text-white bg-white/[0.08]")
                       )}
-                      onMouseEnter={() => setHoveredLink(link.label)}
-                      onMouseLeave={() => setHoveredLink(null)}
                     >
                       {link.label}
-
-                      {/* Animated underline for regular links */}
-                      <motion.span
-                        className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full"
-                        style={{ background: brand.primary }}
-                        initial={{ scaleX: 0 }}
-                        animate={{
-                          scaleX:
-                            hoveredLink === link.label || isActive(link.href)
-                              ? 1
-                              : 0,
-                        }}
-                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                      <ChevronDown
+                        className={cn(
+                          "w-3.5 h-3.5 transition-transform duration-200",
+                          activeDropdown === link.label && "rotate-180"
+                        )}
                       />
-                    </Link>
-                  )
-                )}
-              </div>
+                    </button>
+
+                    <AnimatePresence>
+                      {activeDropdown === link.label &&
+                        renderDropdownContent(
+                          link,
+                          link.label === "Services" ? "services" : "industries"
+                        )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={cn(
+                      "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200",
+                      isScrolled
+                        ? "text-gray-600 hover:text-gray-900 hover:bg-black/[0.04]"
+                        : "text-white/75 hover:text-white hover:bg-white/[0.08]",
+                      isActive(link.href) && "text-[#726AFF]"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
             </nav>
 
-            {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-3">
-              {/* Client Portal Login */}
+            {/* Desktop: Login icon + CTA */}
+            <div className="hidden lg:flex items-center gap-2">
               <a
                 href="https://portal.aeopic.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Client Portal"
                 className={cn(
-                  "flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                  "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
                   isScrolled
-                    ? "text-gray-600 hover:text-[#726AFF] hover:bg-gray-50"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                    ? "text-gray-400 hover:text-[#726AFF] hover:bg-black/[0.04]"
+                    : "text-white/40 hover:text-white hover:bg-white/[0.08]"
                 )}
               >
-                <LogIn className="w-4 h-4" />
-                Client Login
+                <LogIn className="w-[18px] h-[18px]" />
               </a>
-
-              <Button
-                asChild
-                className="cta-gradient hover:opacity-90 text-white border-0 shadow-lg shadow-[#726AFF]/20 hover:shadow-xl hover:shadow-[#726AFF]/30 transition-all duration-300"
+              <div
+                className={cn(
+                  "w-px h-5",
+                  isScrolled ? "bg-gray-200" : "bg-white/15"
+                )}
+              />
+              <Link
+                href="/start"
+                className="bg-[#726AFF] text-white text-[13px] font-semibold px-5 py-2 rounded-xl hover:bg-[#5B54D6] transition-all duration-200 shadow-sm shadow-[#726AFF]/20"
               >
-                <Link href="/start">Get Started</Link>
-              </Button>
+                Get Started
+              </Link>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -652,9 +481,7 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMenuOpen(true)}
-                className={cn(
-                  isScrolled ? "text-foreground" : "text-white"
-                )}
+                className={cn(isScrolled ? "text-foreground" : "text-white")}
                 aria-label="Open menu"
               >
                 <Menu className="h-6 w-6" />
@@ -675,14 +502,11 @@ export function Header() {
             variants={overlayVariants}
             transition={{ duration: 0.2 }}
           >
-            {/* Background with gradient orb */}
             <div className="absolute inset-0 bg-[#0F1226]">
-              {/* Subtle purple glow orb */}
               <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-[#726AFF]/10 blur-[120px] pointer-events-none" />
               <div className="absolute bottom-1/4 right-0 w-[300px] h-[300px] rounded-full bg-[#726AFF]/5 blur-[100px] pointer-events-none" />
             </div>
 
-            {/* Content */}
             <div className="relative h-full flex flex-col px-6 py-6">
               {/* Header: Logo and Close */}
               <motion.div
@@ -710,7 +534,7 @@ export function Header() {
                 </Button>
               </motion.div>
 
-              {/* Navigation Links - Centered */}
+              {/* Navigation Links */}
               <nav className="flex-1 flex flex-col justify-center items-center space-y-6 overflow-y-auto py-8">
                 {navLinks.map((link, index) => (
                   <motion.div
@@ -802,7 +626,7 @@ export function Header() {
                 ))}
               </nav>
 
-              {/* Bottom: Login + CTA and Contact Info */}
+              {/* Bottom: CTA + Contact */}
               <motion.div
                 custom={navLinks.length + 2}
                 variants={menuItemVariants}
@@ -811,32 +635,29 @@ export function Header() {
                 exit="exit"
                 className="space-y-4"
               >
-                {/* Client Portal Login */}
+                <Link
+                  href="/start"
+                  onClick={closeMenu}
+                  className="block w-full py-4 text-center text-lg font-semibold text-white rounded-xl cta-gradient hover:opacity-90 transition-opacity shadow-lg shadow-[#726AFF]/30"
+                >
+                  Get Started
+                </Link>
                 <a
                   href="https://portal.aeopic.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-white/70 rounded-lg border border-white/10 hover:border-[#726AFF]/50 hover:text-white transition-all"
+                  className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-white/50 hover:text-white/80 transition-colors"
                 >
                   <LogIn className="w-4 h-4" />
-                  Client Login
+                  Client Portal
                 </a>
-
-                <Link
-                  href="/start"
-                  onClick={closeMenu}
-                  className="block w-full py-4 text-center text-lg font-semibold text-white rounded-lg cta-gradient hover:opacity-90 transition-opacity shadow-lg shadow-[#726AFF]/30"
-                >
-                  Get Started
-                </Link>
                 <div className="text-center space-y-1">
                   <a
                     href="mailto:contact@aeopic.com"
-                    className="block text-sm text-white/50 hover:text-white/70 transition-colors"
+                    className="block text-sm text-white/40 hover:text-white/60 transition-colors"
                   >
                     contact@aeopic.com
                   </a>
-                  <p className="text-sm text-white/40">Houston, Texas</p>
                 </div>
               </motion.div>
             </div>

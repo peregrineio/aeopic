@@ -36,21 +36,8 @@ export const navLinks = [
       { label: "Cleaning & Pest Control", href: "/industries/cleaning", description: "Recurring service & review generation" },
     ],
   },
-  {
-    label: "Locations",
-    href: "/locations",
-    children: [
-      { label: "College Station", href: "/locations/college-station", description: "Brazos Valley" },
-      { label: "Bryan", href: "/locations/bryan", description: "Brazos Valley" },
-      { label: "Manor", href: "/locations/manor", description: "Austin Metro" },
-      { label: "Montgomery County", href: "/locations/montgomery-county", description: "Greater Houston" },
-      { label: "Conroe", href: "/locations/conroe", description: "Montgomery County" },
-      { label: "Magnolia", href: "/locations/magnolia", description: "Montgomery County" },
-      { label: "Tomball", href: "/locations/tomball", description: "Northwest Houston" },
-    ],
-  },
   { label: "Process", href: "/process" },
-  { label: "Your Project", href: "/pricing" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Security", href: "/security" },
   { label: "Blog", href: "/blog" },
 ];
@@ -87,7 +74,7 @@ export const footerLinks = {
     { label: "Process", href: "/process" },
     { label: "Work", href: "/work" },
     { label: "Blog", href: "/blog" },
-    { label: "Your Project", href: "/pricing" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Get Started", href: "/start" },
   ],
 };
