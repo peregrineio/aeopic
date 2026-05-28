@@ -114,7 +114,7 @@ The Aeopic Team
 
 ---
 Aeopic | Custom Software Studio
-Houston, Texas
+1919 Taylor St, Ste F, Houston, TX 77007
 https://aeopic.com
         `.trim();
 
@@ -216,7 +216,7 @@ The Aeopic Team
 
 ---
 Aeopic | Custom Software Studio
-Houston, Texas
+1919 Taylor St, Ste F, Houston, TX 77007
 https://aeopic.com
       `.trim();
 

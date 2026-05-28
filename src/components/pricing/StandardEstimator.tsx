@@ -108,6 +108,7 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
   const [selectedComplexity, setSelectedComplexity] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [direction, setDirection] = useState(1);
   const [stepError, setStepError] = useState("");
@@ -621,9 +622,22 @@ export function StandardEstimator({ onComplete }: StandardEstimatorProps) {
                         placeholder="Tell us about your project"
                       />
                     </div>
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="est-consent"
+                        checked={consentChecked}
+                        onChange={(e) => setConsentChecked(e.target.checked)}
+                        className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 accent-[#726AFF]"
+                      />
+                      <label htmlFor="est-consent" className="text-[11px] leading-relaxed text-white/40">
+                        By submitting, you consent to Aeopic LLC contacting you by email or phone about your inquiry. Message and data rates may apply. You can opt out at any time.{" "}
+                        <a href="/privacy" className="text-[#726AFF] hover:underline">Privacy Policy</a>
+                      </label>
+                    </div>
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !consentChecked}
                       className="cta-gradient text-white font-semibold px-8 py-4 rounded-xl w-full flex items-center justify-center gap-2 disabled:opacity-40 text-base hover:shadow-lg hover:shadow-[#726AFF]/30 transition-all"
                     >
                       {isSubmitting ? (

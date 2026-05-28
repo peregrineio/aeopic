@@ -53,6 +53,7 @@ export default function StartPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   const {
     register,
@@ -286,10 +287,24 @@ export default function StartPage() {
                 </div>
               </div>
 
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  checked={consentChecked}
+                  onChange={(e) => setConsentChecked(e.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 accent-[#726AFF]"
+                />
+                <label htmlFor="consent" className="text-xs leading-relaxed text-muted-foreground">
+                  By submitting, you consent to Aeopic LLC contacting you by email or phone about your inquiry. Message and data rates may apply. You can opt out at any time.{" "}
+                  <a href="/privacy" className="text-[#726AFF] hover:underline">Privacy Policy</a>
+                </label>
+              </div>
+
               <Button
                 type="submit"
                 size="lg"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !consentChecked}
                 className="w-full sm:w-auto cta-gradient text-white hover:opacity-90 px-8"
               >
                 {isSubmitting ? (

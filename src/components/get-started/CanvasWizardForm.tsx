@@ -43,6 +43,7 @@ export function CanvasWizardForm() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
   const totalSteps = 3;
 
   const {
@@ -372,26 +373,41 @@ export function CanvasWizardForm() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </motion.button>
         ) : (
-          <motion.button
-            type="submit"
-            disabled={isSubmitting}
-            whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-            whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-            className="group relative flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#726AFF] to-[#9333EA] text-white font-semibold shadow-lg shadow-[#726AFF]/25 hover:shadow-xl hover:shadow-[#726AFF]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer overflow-hidden"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Sending...</span>
-              </>
-            ) : (
-              <>
-                <span className="relative z-10">Submit</span>
-                <Check className="w-4 h-4 relative z-10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              </>
-            )}
-          </motion.button>
+          <div className="flex flex-col gap-3 items-end">
+            <div className="flex items-start gap-3 max-w-md">
+              <input
+                type="checkbox"
+                id="canvas-consent"
+                checked={consentChecked}
+                onChange={(e) => setConsentChecked(e.target.checked)}
+                className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 accent-[#726AFF]"
+              />
+              <label htmlFor="canvas-consent" className="text-[11px] leading-relaxed text-white/50">
+                By submitting, you consent to Aeopic LLC contacting you by email or phone about your inquiry. Message and data rates may apply. You can opt out at any time.{" "}
+                <a href="/privacy" className="text-[#726AFF] hover:underline">Privacy Policy</a>
+              </label>
+            </div>
+            <motion.button
+              type="submit"
+              disabled={isSubmitting || !consentChecked}
+              whileHover={{ scale: isSubmitting || !consentChecked ? 1 : 1.02 }}
+              whileTap={{ scale: isSubmitting || !consentChecked ? 1 : 0.98 }}
+              className="group relative flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#726AFF] to-[#9333EA] text-white font-semibold shadow-lg shadow-[#726AFF]/25 hover:shadow-xl hover:shadow-[#726AFF]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer overflow-hidden"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <span className="relative z-10">Submit</span>
+                  <Check className="w-4 h-4 relative z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                </>
+              )}
+            </motion.button>
+          </div>
         )}
       </div>
     </form>

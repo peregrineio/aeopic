@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { DM_Sans, JetBrains_Mono, Syne } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalBusinessSchema, OrganizationSchema } from "@/app/components/structured-data";
+import { CookieConsentProvider } from "@/components/cookie-consent";
 import "./globals.css";
 
 // DM Sans - premium, modern, sophisticated (Google alternative to Satoshi)
@@ -77,18 +77,7 @@ export default function RootLayout({
       <body
         className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-61GKHKPRVG"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-61GKHKPRVG');
-          `}
-        </Script>
+        <CookieConsentProvider />
         <LocalBusinessSchema />
         <OrganizationSchema />
         <TooltipProvider>

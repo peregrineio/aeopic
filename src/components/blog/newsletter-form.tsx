@@ -84,6 +84,10 @@ export function NewsletterForm() {
       {status === "error" && (
         <p className="text-red-400 text-xs mt-2">{errorMsg}</p>
       )}
+      <p className="text-white/30 text-[10px] mt-3 leading-relaxed">
+        By subscribing, you consent to receive email communications from Aeopic LLC. You can unsubscribe at any time.{" "}
+        <a href="/privacy" className="text-[#726AFF] hover:underline">Privacy Policy</a>
+      </p>
     </div>
   );
 }
