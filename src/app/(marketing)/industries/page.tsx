@@ -10,6 +10,7 @@ import {
   Scale,
   Car,
   Shield,
+  Building2,
   ArrowRight,
 } from "lucide-react";
 import { ServiceHero } from "@/components/services/service-hero";
@@ -93,6 +94,14 @@ const industries = [
     color: "#38a169",
     description: "Recurring service & review generation",
     pain: "You've got 5-star reviews but no website. Customers are finding your competitors.",
+  },
+  {
+    icon: Building2,
+    title: "Chambers of Commerce",
+    slug: "chambers-of-commerce",
+    color: "#7C3AED",
+    description: "Member management, events & analytics",
+    pain: "You're paying $5,000+/year for software that looks like 2005 and can't tell you your retention rate.",
   },
 ];
 

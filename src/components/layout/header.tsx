@@ -21,6 +21,7 @@ import {
   Scale,
   Car,
   SprayCan,
+  Building2,
   ArrowRight,
   LogIn,
 } from "lucide-react";
@@ -46,6 +47,7 @@ const industryIcons: Record<string, React.ElementType> = {
   "Law Offices": Scale,
   "Auto & Detailing": Car,
   "Cleaning & Pest Control": SprayCan,
+  "Chambers of Commerce": Building2,
 };
 
 const brand = {
@@ -56,12 +58,36 @@ const brand = {
   purpleBg: "#F5F3FF",
 };
 
+const refIndustryMap: Record<string, { label: string; href: string }> = {
+  "chambers-of-commerce": { label: "Chambers of Commerce", href: "/industries/chambers-of-commerce" },
+  "hvac": { label: "HVAC", href: "/industries/hvac" },
+  "plumbing-electrical": { label: "Plumbing & Electrical", href: "/industries/plumbing-electrical" },
+  "contractors": { label: "Contractors", href: "/industries/contractors" },
+  "lawn-care": { label: "Lawn Care", href: "/industries/lawn-care" },
+  "medical": { label: "Medical & Dental", href: "/industries/medical" },
+  "restaurants": { label: "Restaurants", href: "/industries/restaurants" },
+  "law": { label: "Law Offices", href: "/industries/law" },
+  "auto": { label: "Auto & Detailing", href: "/industries/auto" },
+  "cleaning": { label: "Cleaning", href: "/industries/cleaning" },
+};
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [refIndustry, setRefIndustry] = useState<{ label: string; href: string } | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const match = document.cookie.match(/(?:^|; )aeopic-ref=([^;]*)/);
+    if (match) {
+      const slug = decodeURIComponent(match[1]);
+      if (refIndustryMap[slug]) {
+        setRefIndustry(refIndustryMap[slug]);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -297,7 +323,7 @@ export function Header() {
               className="text-[0.6rem] px-2 py-1 rounded-full font-medium"
               style={{ background: brand.purpleBg, color: brand.primary }}
             >
-              9 Specializations
+              10 Specializations
             </span>
           </div>
           <div className="grid grid-cols-3 gap-1 p-2">
@@ -442,6 +468,20 @@ export function Header() {
                     {link.label}
                   </Link>
                 )
+              )}
+              {refIndustry && (
+                <Link
+                  href={refIndustry.href}
+                  className={cn(
+                    "px-3 py-1.5 text-[13px] font-semibold rounded-lg transition-all duration-200 border",
+                    isScrolled
+                      ? "text-[#726AFF] border-[#726AFF]/30 hover:bg-[#726AFF]/5"
+                      : "text-white border-white/30 hover:bg-white/[0.08]",
+                    isActive(refIndustry.href) && "bg-[#726AFF]/10 border-[#726AFF]/50"
+                  )}
+                >
+                  {refIndustry.label}
+                </Link>
               )}
             </nav>
 

@@ -19,6 +19,7 @@ const allIndustries = [
   { slug: "law", title: "Law Offices", color: "#1e3a5f" },
   { slug: "auto", title: "Auto & Detailing", color: "#0ea5e9" },
   { slug: "cleaning", title: "Cleaning & Pest Control", color: "#10b981" },
+  { slug: "chambers-of-commerce", title: "Chambers of Commerce", color: "#7C3AED" },
 ];
 
 export interface IndustryPageProps {
@@ -28,6 +29,7 @@ export interface IndustryPageProps {
   color: string;
   heroHeadline: string;
   heroSubheadline: string;
+  heroImage?: string;
   painPoints: { problem: string; solution: string }[];
   features: { icon: LucideIcon; title: string; description: string }[];
   stats: { value: string; label: string }[];
@@ -41,6 +43,7 @@ export function IndustryPageTemplate({
   color,
   heroHeadline,
   heroSubheadline,
+  heroImage,
   painPoints,
   features,
   stats,
@@ -56,6 +59,15 @@ export function IndustryPageTemplate({
           HERO — "Field Intelligence" dark editorial
       ═══════════════════════════════════════════════════════════════ */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0A0A14]">
+        {heroImage && (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${heroImage})` }}
+            />
+            <div className="absolute inset-0 bg-[#0A0A14]/60" />
+          </>
+        )}
         {/* Grid texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"

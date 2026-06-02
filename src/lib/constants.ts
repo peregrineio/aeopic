@@ -34,6 +34,7 @@ export const navLinks = [
       { label: "Law Offices", href: "/industries/law", description: "Client portals & case management" },
       { label: "Auto & Detailing", href: "/industries/auto", description: "Booking & service notifications" },
       { label: "Cleaning & Pest Control", href: "/industries/cleaning", description: "Recurring service & review generation" },
+      { label: "Chambers of Commerce", href: "/industries/chambers-of-commerce", description: "Member management, events & analytics" },
     ],
   },
   { label: "Process", href: "/process" },
@@ -59,6 +60,7 @@ export const footerLinks = {
     { label: "Law Offices", href: "/industries/law" },
     { label: "Auto & Detailing", href: "/industries/auto" },
     { label: "Cleaning & Pest Control", href: "/industries/cleaning" },
+    { label: "Chambers of Commerce", href: "/industries/chambers-of-commerce" },
   ],
   locations: [
     { label: "College Station", href: "/locations/college-station" },
