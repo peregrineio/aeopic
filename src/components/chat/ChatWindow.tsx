@@ -36,11 +36,13 @@ export const ChatWindow = forwardRef<HTMLDivElement, ChatWindowProps>(
             role="dialog"
             aria-label="Chat with Aeopic"
           >
-            {/* Header */}
+            {/* Header — honest status, no fake "human online" dot */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-gray-900">Aeopic</span>
-                <span className="w-2 h-2 rounded-full bg-green-500" />
+              <div className="flex flex-col">
+                <span className="font-bold text-gray-900">Aeopic Assistant</span>
+                <span className="text-[11px] text-gray-500">
+                  Instant answers · human follow-up within 24h
+                </span>
               </div>
               <button
                 onClick={onClose}
@@ -54,6 +56,7 @@ export const ChatWindow = forwardRef<HTMLDivElement, ChatWindowProps>(
             {/* Messages area */}
             <div
               ref={messageContainerRef}
+              aria-live="polite"
               className="flex-1 overflow-y-auto p-4 space-y-4"
             >
               {children}
@@ -61,6 +64,11 @@ export const ChatWindow = forwardRef<HTMLDivElement, ChatWindowProps>(
 
             {/* Input area */}
             {inputArea}
+
+            {/* Trust line — the bot is the demo */}
+            <p className="px-4 pb-2 text-[10px] text-gray-400 text-center bg-white">
+              Runs 100% in your browser — no data leaves this page until you share it.
+            </p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -22,8 +22,9 @@ function parseMessageContent(content: string): React.ReactNode[] {
   let lastIndex = 0;
   let keyIndex = 0;
 
-  // Combined regex for bold and links
-  const regex = /(\*\*(.+?)\*\*)|(\[(.+?)\]\((.+?)\))/g;
+  // Combined regex: bold-wrapped links must match before plain bold,
+  // or **[text](url)** renders as literal brackets
+  const regex = /(\*\*\[(.+?)\]\((.+?)\)\*\*)|(\*\*(.+?)\*\*)|(\[(.+?)\]\((.+?)\))/g;
   let match;
 
   while ((match = regex.exec(content)) !== null) {
@@ -32,17 +33,17 @@ function parseMessageContent(content: string): React.ReactNode[] {
       parts.push(content.slice(lastIndex, match.index));
     }
 
-    if (match[1]) {
+    if (match[4]) {
       // Bold text: **text**
       parts.push(
         <strong key={`bold-${keyIndex++}`} className="font-semibold">
-          {match[2]}
+          {match[5]}
         </strong>
       );
-    } else if (match[3]) {
-      // Link: [text](url)
-      const linkText = match[4];
-      const linkUrl = match[5];
+    } else if (match[1] || match[6]) {
+      // Link: [text](url) — optionally bold-wrapped
+      const linkText = match[1] ? match[2] : match[7];
+      const linkUrl = match[1] ? match[3] : match[8];
       const isInternal = linkUrl.startsWith("/");
 
       if (isInternal) {

@@ -8,37 +8,45 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { QuickReplies } from "./QuickReplies";
 import { TypingIndicator } from "./TypingIndicator";
-import { Message } from "@/lib/chat/types";
-import { findBestMatch } from "@/lib/chat/matchEngine";
+import { Teaser } from "./Teaser";
+import { Message, FlowState, LeadInfo, FlowInput } from "@/lib/chat/types";
+import { matchMessage, getEntryByTitle } from "@/lib/chat/matchEngine";
+import { startFlow, enterFlow, advanceFlow, getStep, interpolate } from "@/lib/chat/flows";
+import { isAffirmation, wantsHuman } from "@/lib/chat/normalize";
+import {
+  getPageContext,
+  isSuppressedPage,
+  typingDuration,
+  chunkResponse,
+} from "@/lib/chat/pageAware";
+import {
+  loadChat,
+  saveChat,
+  getTeaserShownCount,
+  incrementTeaserShownCount,
+} from "@/lib/chat/memory";
+import { refineSemantic, warmSemantic } from "@/lib/chat/semantic";
 
-const GREETING_MESSAGE: Message = {
-  id: "greeting",
-  role: "bot",
-  content:
-    "Hey there! 👋 I'm the Aeopic assistant. Got questions about our services, pricing, or process? I'm here to help!\n\nOr if you're ready, [get your free consultation here](/start)!",
-  timestamp: new Date(),
-  quickReplies: [
-    "What do you build?",
-    "How much does it cost?",
-    "What industries?",
-    "Talk to someone",
-  ],
-};
-
-const SESSION_STORAGE_KEY = "aeopic_chat_closed";
+const TEASER_SESSION_KEY = "aeopic_teaser_session";
+const PAGEVIEWS_SESSION_KEY = "aeopic_pageviews";
 const INACTIVITY_TIMEOUT = 2 * 60 * 1000; // 2 minutes
 const CLOSE_DELAY = 3000; // 3 seconds
+const TEASER_MAX_EVER = 2;
+const ENGAGEMENT_TIME_MS = 10_000;
+const ENGAGEMENT_SCROLL = 0.5;
 
 export function ChatWidget() {
   const pathname = usePathname();
   const router = useRouter();
+  const suppressed = isSuppressedPage(pathname);
 
   // State
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [hasGreeted, setHasGreeted] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+  const [teaserVisible, setTeaserVisible] = useState(false);
+  const [flowInput, setFlowInput] = useState<FlowInput | null>(null);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -46,30 +54,85 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatButtonRef = useRef<HTMLButtonElement>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
+  const isOpenRef = useRef(false);
+  const flowRef = useRef<FlowState | null>(null);
+  const leadRef = useRef<LeadInfo>({});
+  const unmatchedRef = useRef<string[]>([]);
+  const missStreakRef = useRef(0);
+  const restoredRef = useRef(false);
+  const greetedRef = useRef(false);
+  const bubbleQueueRef = useRef<Promise<void>>(Promise.resolve());
   const conversationRef = useRef<{ messages: Message[]; startTime: Date | null; page: string }>({
     messages: [],
     startTime: null,
     page: "",
   });
-  const transcriptSentRef = useRef(false);
+  const lastSentCountRef = useRef(0);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastActivityRef = useRef<Date>(new Date());
 
-  // Send transcript to API
-  const sendTranscript = useCallback(() => {
-    if (transcriptSentRef.current) return;
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
 
+  // ---- Message plumbing ----
+
+  const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+  const appendMessage = useCallback((message: Message) => {
+    setMessages((prev) => [...prev, message]);
+    conversationRef.current.messages.push(message);
+    if (!conversationRef.current.startTime) {
+      conversationRef.current.startTime = new Date();
+      conversationRef.current.page = window.location.pathname;
+    }
+  }, []);
+
+  /**
+   * Queue bot bubbles: each chunk shows the typing indicator for a
+   * realistic duration (Typebot formula), then lands. Quick replies ride
+   * on the final bubble. `instant: true` skips typing (greetings).
+   */
+  const sendBotBubbles = useCallback(
+    (chunks: string[], opts?: { quickReplies?: string[]; instant?: boolean }) => {
+      bubbleQueueRef.current = bubbleQueueRef.current.then(async () => {
+        for (let i = 0; i < chunks.length; i++) {
+          const isLast = i === chunks.length - 1;
+          if (!opts?.instant) {
+            setIsTyping(true);
+            await new Promise((r) => setTimeout(r, typingDuration(chunks[i])));
+            setIsTyping(false);
+          }
+          appendMessage({
+            id: generateId(),
+            role: "bot",
+            content: chunks[i],
+            timestamp: new Date(),
+            quickReplies: isLast ? opts?.quickReplies : undefined,
+          });
+          if (!isOpenRef.current) setHasUnread(true);
+        }
+      });
+      return bubbleQueueRef.current;
+    },
+    [appendMessage]
+  );
+
+  // ---- Transcript ----
+
+  const sendTranscript = useCallback((force = false) => {
     const conversation = conversationRef.current;
-    const userMessages = conversation.messages.filter((m) => m.role === "user");
-
-    // Only send if 2+ user messages
-    if (userMessages.length < 2) return;
     if (!conversation.startTime) return;
 
-    transcriptSentRef.current = true;
+    const userMessages = conversation.messages.filter((m) => m.role === "user");
+    const lead = leadRef.current;
+    const hasLead = Boolean(lead.contact || lead.name);
 
-    // Fire and forget - don't block UI
+    if (!force && !hasLead && userMessages.length < 2) return;
+    // Only re-send when there's new content since the last send
+    if (conversation.messages.length <= lastSentCountRef.current) return;
+    lastSentCountRef.current = conversation.messages.length;
+
     fetch("/api/chat-transcript", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -82,151 +145,168 @@ export function ChatWidget() {
         page: conversation.page,
         startTime: conversation.startTime.toISOString(),
         endTime: new Date().toISOString(),
+        lead: hasLead ? lead : undefined,
+        unmatched: unmatchedRef.current.length > 0 ? unmatchedRef.current : undefined,
       }),
     }).catch((err) => console.error("Failed to send transcript:", err));
   }, []);
 
-  // Reset inactivity timer
   const resetInactivityTimer = useCallback(() => {
-    lastActivityRef.current = new Date();
-
-    if (inactivityTimeoutRef.current) {
-      clearTimeout(inactivityTimeoutRef.current);
-    }
-
-    inactivityTimeoutRef.current = setTimeout(() => {
-      sendTranscript();
-    }, INACTIVITY_TIMEOUT);
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
+    inactivityTimeoutRef.current = setTimeout(() => sendTranscript(), INACTIVITY_TIMEOUT);
   }, [sendTranscript]);
 
-  // Scroll to bottom when messages change
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  // ---- Persistence ----
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isTyping, scrollToBottom]);
+    if (messages.length > 0) {
+      saveChat(messages, leadRef.current);
+      resetInactivityTimer();
+    }
+  }, [messages, resetInactivityTimer]);
 
-  // Show greeting when chat opens for the first time
+  // Scroll on new messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
+  // ---- Greeting / restore ----
+
   const showGreeting = useCallback(() => {
-    if (!hasGreeted) {
-      const greetingWithTimestamp = {
-        ...GREETING_MESSAGE,
-        timestamp: new Date(),
-      };
-      setMessages([greetingWithTimestamp]);
-      conversationRef.current.messages = [greetingWithTimestamp];
+    if (greetedRef.current) return;
+    greetedRef.current = true;
+
+    const stored = restoredRef.current ? null : loadChat();
+    if (stored) {
+      restoredRef.current = true;
+      leadRef.current = stored.lead;
+      setMessages(stored.messages);
+      conversationRef.current.messages = [...stored.messages];
       conversationRef.current.startTime = new Date();
       conversationRef.current.page = pathname;
-      setHasGreeted(true);
+      const name = stored.lead.name;
+      sendBotBubbles(
+        [`Welcome back${name ? `, ${name}` : ""}! 👋 Pick up where we left off — or ask me something new.`],
+        { quickReplies: getPageContext(pathname).quickReplies, instant: true }
+      );
+      return;
     }
-  }, [hasGreeted, pathname]);
 
-  // Handle opening the chat
+    const ctx = getPageContext(pathname);
+    sendBotBubbles([ctx.greeting], { quickReplies: ctx.quickReplies, instant: true });
+  }, [pathname, sendBotBubbles]);
+
+  // ---- Open / close ----
+
   const handleOpen = useCallback(() => {
     setIsOpen(true);
     setHasUnread(false);
+    setTeaserVisible(false);
     showGreeting();
-
-    // Cancel pending transcript send (user reopened)
+    warmSemantic(); // lazy-load the in-browser semantic model (Phase 4)
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
     }
-
-    // Focus input after animation
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 350);
+    setTimeout(() => inputRef.current?.focus(), 350);
   }, [showGreeting]);
 
-  // Handle closing the chat
   const handleClose = useCallback(() => {
     setIsOpen(false);
-    // Mark as closed in session storage
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem(SESSION_STORAGE_KEY, "true");
-    }
-    // Return focus to button
     chatButtonRef.current?.focus();
-
-    // Send transcript after delay (in case user reopens)
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-    closeTimeoutRef.current = setTimeout(() => {
-      sendTranscript();
-    }, CLOSE_DELAY);
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = setTimeout(() => sendTranscript(), CLOSE_DELAY);
   }, [sendTranscript]);
 
-  // Toggle chat
   const handleToggle = useCallback(() => {
-    if (isOpen) {
-      handleClose();
-    } else {
-      handleOpen();
-    }
+    if (isOpen) handleClose();
+    else handleOpen();
   }, [isOpen, handleClose, handleOpen]);
 
-  // Auto-open behavior
+  // ---- Proactive teaser (replaces auto-open) ----
+
   useEffect(() => {
+    if (suppressed || isOpen) return;
     if (typeof window === "undefined") return;
+    if (sessionStorage.getItem(TEASER_SESSION_KEY)) return;
+    if (getTeaserShownCount() >= TEASER_MAX_EVER) return;
+    // Visitors with an existing conversation don't need a nudge
+    if (loadChat()) return;
 
-    const wasClosed = sessionStorage.getItem(SESSION_STORAGE_KEY) === "true";
-    if (wasClosed) return;
+    const pageviews = Number(sessionStorage.getItem(PAGEVIEWS_SESSION_KEY) ?? "0") + 1;
+    sessionStorage.setItem(PAGEVIEWS_SESSION_KEY, String(pageviews));
 
-    // Delay auto-open on /get-started page
-    const delay = pathname === "/get-started" ? 5000 : 100;
+    let elapsed = false;
+    let cancelled = false;
 
-    const timer = setTimeout(() => {
-      handleOpen();
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [pathname, handleOpen]);
-
-  // Keyboard accessibility
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        handleClose();
-      }
+    const show = () => {
+      if (cancelled || isOpenRef.current) return;
+      sessionStorage.setItem(TEASER_SESSION_KEY, "1");
+      incrementTeaserShownCount();
+      setTeaserVisible(true);
     };
 
+    const scrolledEnough = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      return scrollable <= 0 || window.scrollY / scrollable >= ENGAGEMENT_SCROLL;
+    };
+
+    const onScroll = () => {
+      if (elapsed && scrolledEnough()) show();
+    };
+
+    // Trigger A: engaged time + scroll depth
+    const timer = setTimeout(() => {
+      elapsed = true;
+      if (scrolledEnough()) show();
+    }, ENGAGEMENT_TIME_MS);
+
+    // Trigger B: second pageview this session (shorter wait, no scroll gate)
+    const pageviewTimer =
+      pageviews >= 2 ? setTimeout(show, 4000) : null;
+
+    // Trigger C: exit intent on /pricing (desktop)
+    const onMouseOut = (e: MouseEvent) => {
+      if (pathname.startsWith("/pricing") && e.clientY <= 0 && !e.relatedTarget) show();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("mouseout", onMouseOut);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      if (pageviewTimer) clearTimeout(pageviewTimer);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("mouseout", onMouseOut);
+    };
+  }, [pathname, suppressed, isOpen]);
+
+  const dismissTeaser = useCallback(() => setTeaserVisible(false), []);
+
+  // ---- Keyboard / lifecycle ----
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) handleClose();
+    };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, handleClose]);
 
-  // Send transcript on page unload or visibility change
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      sendTranscript();
-    };
-
+    const handleBeforeUnload = () => sendTranscript();
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        sendTranscript();
-      }
+      if (document.visibilityState === "hidden") sendTranscript();
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
-
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [sendTranscript]);
 
-  // Reset inactivity timer when messages change
-  useEffect(() => {
-    if (messages.length > 0) {
-      resetInactivityTimer();
-    }
-  }, [messages, resetInactivityTimer]);
-
-  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
@@ -237,106 +317,235 @@ export function ChatWidget() {
   // Focus trap
   useEffect(() => {
     if (!isOpen || !chatWindowRef.current) return;
-
     const chatWindow = chatWindowRef.current;
-    const focusableElements = chatWindow.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
     const handleTabKey = (e: KeyboardEvent) => {
       if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement?.focus();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement?.focus();
-        }
+      const focusable = chatWindow.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
       }
     };
-
     chatWindow.addEventListener("keydown", handleTabKey);
     return () => chatWindow.removeEventListener("keydown", handleTabKey);
   }, [isOpen, messages]);
 
-  // Generate unique ID
-  const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  // ---- Flows ----
 
-  // Handle sending a message
-  const handleSendMessage = useCallback(
-    (content: string) => {
-      const trimmed = content.trim();
-      if (!trimmed || isTyping) return;
-
-      // Add user message
-      const userMessage: Message = {
-        id: generateId(),
-        role: "user",
-        content: trimmed,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-      conversationRef.current.messages.push(userMessage);
-
-      // Show typing indicator
-      setIsTyping(true);
-
-      // Random delay for "thinking"
-      const delay = 800 + Math.random() * 400;
-
-      setTimeout(() => {
-        // Get bot response
-        const result = findBestMatch(trimmed);
-
-        const botMessage: Message = {
-          id: generateId(),
-          role: "bot",
-          content: result.response,
-          timestamp: new Date(),
-          quickReplies: result.quickReplies,
-        };
-
-        setMessages((prev) => [...prev, botMessage]);
-        conversationRef.current.messages.push(botMessage);
-        setIsTyping(false);
-
-        // Show unread indicator if chat is closed
-        if (!isOpen) {
-          setHasUnread(true);
-        }
-      }, delay);
+  const beginFlow = useCallback(
+    (flowId: string) => {
+      const state = startFlow(flowId);
+      const opening = enterFlow(state);
+      flowRef.current = opening.state;
+      setFlowInput(opening.input ?? null);
+      sendBotBubbles(opening.say, {
+        quickReplies: opening.input?.type === "buttons" ? opening.input.options : undefined,
+      });
     },
-    [isTyping, isOpen]
+    [sendBotBubbles]
   );
 
-  // Handle quick reply selection
-  const handleQuickReply = useCallback(
-    (reply: string) => {
-      // Navigation quick replies
-      if (
-        reply.toLowerCase() === "get free consultation" ||
-        reply.toLowerCase() === "get started"
-      ) {
-        router.push("/get-started");
+  const feedFlow = useCallback(
+    (answer: string) => {
+      const state = flowRef.current;
+      if (!state) return;
+      const result = advanceFlow(state, answer);
+
+      if ("exited" in result) {
+        flowRef.current = null;
+        setFlowInput(null);
+        sendBotBubbles(["No problem — we can pick that up anytime. What else can I help with?"], {
+          quickReplies: getPageContext(pathname).quickReplies,
+        });
         return;
       }
 
-      // Send as normal message
-      handleSendMessage(reply);
+      flowRef.current = result.state;
+      setFlowInput(result.input ?? null);
+
+      if (result.completedLead) {
+        leadRef.current = { ...leadRef.current, ...result.completedLead };
+      }
+
+      sendBotBubbles(result.say, {
+        quickReplies: result.input?.type === "buttons" ? result.input.options : undefined,
+      });
+
+      if (result.completedLead) {
+        // Ship the lead immediately — speed-to-lead is the whole point
+        bubbleQueueRef.current.then(() => sendTranscript(true));
+      }
     },
-    [router, handleSendMessage]
+    [pathname, sendBotBubbles, sendTranscript]
   );
 
-  // Get the last message's quick replies
+  // ---- Message handling ----
+
+  const handleSendMessage = useCallback(
+    (content: string) => {
+      const trimmed = content.trim();
+      if (!trimmed) return;
+
+      appendMessage({ id: generateId(), role: "user", content: trimmed, timestamp: new Date() });
+
+      // 1. Active guided flow consumes the answer — but questions typed
+      //    mid-flow must be ANSWERED, never stored as a slot value
+      if (flowRef.current) {
+        if (wantsHuman(trimmed) && flowRef.current.flowId !== "human") {
+          flowRef.current = null;
+          setFlowInput(null);
+          beginFlow("human");
+          return;
+        }
+
+        const step = getStep(flowRef.current);
+        const looksLikeQuestion =
+          /\?\s*$/.test(trimmed) ||
+          /^(how|what|why|when|where|who|can|do|does|is|are|could|would|should|will)\b/i.test(trimmed) ||
+          trimmed.split(/\s+/).length > 7;
+
+        if (looksLikeQuestion) {
+          const reAsk = interpolate(step.say[step.say.length - 1], flowRef.current.slots);
+          const stepOptions = step.input?.type === "buttons" ? step.input.options : undefined;
+          const result = matchMessage(trimmed, { pathname });
+          if (result.tier === "strong" || result.tier === "exact") {
+            sendBotBubbles(
+              [...chunkResponse(result.response), `Now, back to where we were — ${reAsk}`],
+              { quickReplies: stepOptions }
+            );
+          } else {
+            sendBotBubbles(
+              [`Good question — let's wrap up these last steps first and the team can cover that. ${reAsk} (Or type "skip" to exit.)`],
+              { quickReplies: stepOptions }
+            );
+          }
+          return;
+        }
+
+        feedFlow(trimmed);
+        return;
+      }
+
+      // 2. Human handoff must ALWAYS work
+      if (wantsHuman(trimmed)) {
+        missStreakRef.current = 0;
+        beginFlow("human");
+        return;
+      }
+
+      // 3. Affirmation → act on the bot's last suggestion
+      const lastBot = conversationRef.current.messages.filter((m) => m.role === "bot").slice(-1)[0];
+      if (isAffirmation(trimmed) && lastBot?.quickReplies?.length) {
+        handleQuickReplyRef.current(lastBot.quickReplies[0]);
+        return;
+      }
+
+      // 4. Knowledge-base match
+      const result = matchMessage(trimmed, { pathname });
+
+      if (result.tier === "fallback") {
+        unmatchedRef.current.push(trimmed);
+        missStreakRef.current += 1;
+
+        // Semantic refinement (Phase 4): the in-browser embedding model may
+        // still understand a paraphrase the lexical engine missed.
+        refineSemantic(trimmed).then((semantic) => {
+          if (semantic) {
+            missStreakRef.current = 0;
+            sendBotBubbles(
+              ["I think this is what you're after — if not, just say \"human\":", ...chunkResponse(semantic.response)],
+              { quickReplies: semantic.quickReplies }
+            );
+          } else if (missStreakRef.current >= 2) {
+            missStreakRef.current = 0;
+            sendBotBubbles(
+              ["I'm clearly not getting this one — let me grab someone who will. Want the team to follow up directly?"],
+              { quickReplies: ["Talk to a human", "Get a ballpark", "No thanks"] }
+            );
+          } else {
+            sendBotBubbles(chunkResponse(result.response), { quickReplies: result.quickReplies });
+          }
+        });
+        return;
+      }
+
+      missStreakRef.current = 0;
+      sendBotBubbles(chunkResponse(result.response), { quickReplies: result.quickReplies });
+    },
+    [appendMessage, beginFlow, feedFlow, pathname, sendBotBubbles]
+  );
+
+  const handleQuickReply = useCallback(
+    (reply: string) => {
+      const lower = reply.toLowerCase();
+
+      // Flow-starting chips
+      if (lower === "get a ballpark") {
+        appendMessage({ id: generateId(), role: "user", content: reply, timestamp: new Date() });
+        beginFlow("ballpark");
+        return;
+      }
+      if (lower === "talk to a human" || lower === "talk to someone") {
+        appendMessage({ id: generateId(), role: "user", content: reply, timestamp: new Date() });
+        beginFlow("human");
+        return;
+      }
+      if (lower === "no thanks") {
+        appendMessage({ id: generateId(), role: "user", content: reply, timestamp: new Date() });
+        sendBotBubbles(["All good! I'm here if you need me."], {
+          quickReplies: getPageContext(pathname).quickReplies,
+        });
+        return;
+      }
+
+      // Navigation chips
+      if (lower === "open the estimator") {
+        router.push("/pricing");
+        return;
+      }
+      if (lower === "get free consultation" || lower === "get started") {
+        router.push("/start");
+        return;
+      }
+
+      // "Did you mean…?" chips — entry titles answer directly
+      const entry = getEntryByTitle(reply);
+      if (entry) {
+        appendMessage({ id: generateId(), role: "user", content: reply, timestamp: new Date() });
+        missStreakRef.current = 0;
+        sendBotBubbles(chunkResponse(entry.response), { quickReplies: entry.quickReplies });
+        return;
+      }
+
+      handleSendMessage(reply);
+    },
+    [appendMessage, beginFlow, handleSendMessage, pathname, router, sendBotBubbles]
+  );
+
+  // Stable ref so handleSendMessage can dispatch affirmations without a
+  // circular dependency between the two callbacks
+  const handleQuickReplyRef = useRef(handleQuickReply);
+  useEffect(() => {
+    handleQuickReplyRef.current = handleQuickReply;
+  }, [handleQuickReply]);
+
+  // ---- Render ----
+
+  if (suppressed) return null;
+
   const latestBotMessage = messages.filter((m) => m.role === "bot").slice(-1)[0];
   const quickReplies = !isTyping && latestBotMessage?.quickReplies;
+  const inputPlaceholder =
+    flowInput?.type === "buttons"
+      ? "Pick an option above (or type it)"
+      : flowInput?.placeholder ?? "Type a message...";
 
   return (
     <>
@@ -350,14 +559,13 @@ export function ChatWidget() {
             ref={inputRef}
             onSend={handleSendMessage}
             disabled={isTyping}
-            placeholder="Type a message..."
+            placeholder={inputPlaceholder}
           />
         }
       >
         {messages.map((message, index) => {
           const isFirstBot =
-            message.role === "bot" &&
-            (index === 0 || messages[index - 1]?.role !== "bot");
+            message.role === "bot" && (index === 0 || messages[index - 1]?.role !== "bot");
           return (
             <ChatMessage
               key={message.id}
@@ -369,21 +577,19 @@ export function ChatWidget() {
         })}
         {isTyping && <TypingIndicator />}
         {quickReplies && quickReplies.length > 0 && (
-          <QuickReplies
-            replies={quickReplies}
-            onSelect={handleQuickReply}
-            disabled={isTyping}
-          />
+          <QuickReplies replies={quickReplies} onSelect={handleQuickReply} disabled={isTyping} />
         )}
         <div ref={messagesEndRef} />
       </ChatWindow>
 
-      <ChatButton
-        ref={chatButtonRef}
-        isOpen={isOpen}
-        onClick={handleToggle}
-        hasUnread={hasUnread}
+      <Teaser
+        visible={teaserVisible && !isOpen}
+        text={getPageContext(pathname).teaser}
+        onOpen={handleOpen}
+        onDismiss={dismissTeaser}
       />
+
+      <ChatButton ref={chatButtonRef} isOpen={isOpen} onClick={handleToggle} hasUnread={hasUnread} />
     </>
   );
 }
