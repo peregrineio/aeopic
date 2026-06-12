@@ -28,8 +28,13 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aeopic.com"),
+  // NOTE: Do NOT set a global `canonical` here. A layout-level canonical is
+  // inherited by every page that doesn't override it, forcing them all to
+  // canonicalize to "/" (the homepage) — which makes search engines treat
+  // location/industry/blog/programmatic pages as duplicates and refuse to
+  // index them. Each page should self-canonicalize: pages without an explicit
+  // `alternates.canonical` correctly default to their own URL.
   alternates: {
-    canonical: "/",
     types: {
       "application/rss+xml": "/feed.xml",
     },
