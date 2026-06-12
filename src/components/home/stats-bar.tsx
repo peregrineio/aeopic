@@ -1,94 +1,76 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Rocket, Shield, Code2, Unlock } from "lucide-react";
 
-const stats = [
-  {
-    value: "4–8",
-    label: "Weeks avg. to launch",
-    icon: Rocket,
-  },
-  {
-    value: "100%",
-    label: "Code ownership, upon completion",
-    icon: Shield,
-  },
-  {
-    value: "10+",
-    label: "Years combined engineering",
-    icon: Code2,
-  },
-  {
-    value: "0",
-    label: "Proprietary frameworks",
-    icon: Unlock,
-  },
+/**
+ * System status band — one continuous telemetry stream replacing the old
+ * stacked stats marquee + trust strip. Reads like the header of a console.
+ */
+
+const streamItems = [
+  { value: "4–8", label: "weeks avg. to launch" },
+  { value: "SOC 2", label: "Type II infrastructure" },
+  { value: "100%", label: "code ownership, upon completion" },
+  { value: "ISO 27001", label: "certified AI" },
+  { value: "10+", label: "years combined engineering" },
+  { value: "HIPAA", label: "BAA available" },
+  { value: "0", label: "proprietary frameworks" },
+  { value: "ZDR", label: "zero data retention" },
 ];
 
-// Duplicate for seamless loop
-const duplicatedStats = [...stats, ...stats, ...stats];
+const duplicated = [...streamItems, ...streamItems, ...streamItems];
 
 export function StatsBar() {
   const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="bg-[#0A0A0A] border-y border-white/10 overflow-hidden">
-      <div
-        ref={containerRef}
-        className="relative py-6"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+    <section className="bg-[#0A0A0C] border-y border-white/10 overflow-hidden">
+      <Link
+        href="/security"
+        className="flex items-stretch group"
+        aria-label="Aeopic system stats and security certifications"
       >
-        {/* Gradient masks for smooth edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+        {/* Fixed status block */}
+        <div className="hidden md:flex items-center gap-3 px-6 lg:px-8 py-5 border-r border-white/10 bg-[#0A0A0C] relative z-20 flex-shrink-0">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+          </span>
+          <span className="font-mono text-[11px] tracking-[0.25em] uppercase text-white/50 whitespace-nowrap">
+            Aeopic / Systems nominal
+          </span>
+        </div>
 
-        {/* Marquee track */}
-        <motion.div
-          className="flex gap-16 whitespace-nowrap"
-          animate={{
-            x: isPaused ? undefined : ["0%", "-33.333%"],
-          }}
-          transition={{
-            x: {
-              duration: 25,
-              ease: "linear",
-              repeat: Infinity,
-            },
-          }}
+        {/* Telemetry stream */}
+        <div
+          className="relative flex-1 py-5 overflow-hidden"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          {duplicatedStats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={`${stat.value}-${index}`}
-                className="flex items-center gap-4 flex-shrink-0 px-4"
-              >
-                {/* Icon */}
-                <div className="w-10 h-10 flex items-center justify-center bg-[#726AFF]/10 rounded-lg">
-                  <Icon className="w-5 h-5 text-[#726AFF]" />
-                </div>
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#0A0A0C] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#0A0A0C] to-transparent z-10 pointer-events-none" />
 
-                {/* Stat content */}
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                    {stat.value}
-                  </span>
-                  <span className="text-sm text-white/50 uppercase tracking-wider">
-                    {stat.label}
-                  </span>
-                </div>
-
-                {/* Separator dot */}
-                <div className="w-1.5 h-1.5 rounded-full bg-[#726AFF]/40 ml-8" />
+          <motion.div
+            className="flex items-center gap-0 whitespace-nowrap"
+            animate={{ x: isPaused ? undefined : ["0%", "-33.333%"] }}
+            transition={{ x: { duration: 30, ease: "linear", repeat: Infinity } }}
+          >
+            {duplicated.map((item, index) => (
+              <div key={`${item.value}-${index}`} className="flex items-center flex-shrink-0">
+                <span className="font-mono text-sm md:text-base font-bold text-[#726AFF] px-3">
+                  {item.value}
+                </span>
+                <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-white/40 group-hover:text-white/60 transition-colors">
+                  {item.label}
+                </span>
+                <span className="mx-8 text-white/15 font-mono">/</span>
               </div>
-            );
-          })}
-        </motion.div>
-      </div>
+            ))}
+          </motion.div>
+        </div>
+      </Link>
     </section>
   );
 }

@@ -1,248 +1,283 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Thermometer,
-  Wrench,
-  Hammer,
-  Leaf,
-  Heart,
-  UtensilsCrossed,
-  Scale,
-  Car,
-  Shield,
-  ArrowRight,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+
+const brand = { primary: "#726AFF", dark: "#0F1226" };
 
 const industries = [
   {
-    icon: Heart,
-    title: "Medical & Dental Clinics",
+    title: "Medical & Dental",
     slug: "medical",
-    color: "#ef4444",
+    accent: "#ef4444",
     pain: "Patients are calling to book appointments that could be handled online in 30 seconds.",
     solution:
       "Patient portals with self-service booking, intake forms, appointment reminders, and secure messaging — HIPAA compliance built into every healthcare build.",
   },
   {
-    icon: Thermometer,
     title: "HVAC & Home Services",
     slug: "hvac",
-    color: "#f59e0b",
+    accent: "#f59e0b",
     pain: "You're juggling phone calls, handwritten schedules, and chasing invoices.",
     solution:
-      "We build dispatch dashboards, online booking, automated invoicing, and customer portals that let homeowners schedule and pay without calling.",
+      "Dispatch dashboards, online booking, automated invoicing, and customer portals that let homeowners schedule and pay without calling.",
   },
   {
-    icon: Wrench,
     title: "Plumbing & Electrical",
     slug: "plumbing-electrical",
-    color: "#3b82f6",
+    accent: "#3b82f6",
     pain: "Your best marketing is word of mouth — but new customers can't find you online.",
     solution:
       "A modern website with local SEO, Google Business optimization, online scheduling, and a review system that turns happy customers into 5-star ratings.",
   },
   {
-    icon: Hammer,
     title: "Contractors & Remodeling",
     slug: "contractors",
-    color: "#726AFF",
-    pain: "Your portfolio is on your phone, not on your website. Leads are going to competitors with better online presence.",
+    accent: "#726AFF",
+    pain: "Your portfolio is on your phone, not on your website. Leads are going to competitors.",
     solution:
       "Portfolio websites with project galleries, quote request forms, and CRM tools to track leads from first call to final walkthrough.",
   },
   {
-    icon: Leaf,
     title: "Lawn Care & Landscaping",
     slug: "lawn-care",
-    color: "#38a169",
+    accent: "#38a169",
     pain: "You're managing routes on paper and customers can't see when you're coming.",
     solution:
       "Route optimization, customer portals with service history, automated reminders, and seasonal marketing campaigns that fill your schedule.",
   },
   {
-    icon: UtensilsCrossed,
     title: "Restaurants & Food Service",
     slug: "restaurants",
-    color: "#f59e0b",
+    accent: "#f59e0b",
     pain: "You're paying third-party delivery apps 30% when customers would rather order from you directly.",
     solution:
       "Custom online ordering, reservation systems, loyalty programs, and marketing that brings customers to YOUR platform, not DoorDash.",
   },
   {
-    icon: Scale,
     title: "Law Offices",
     slug: "law",
-    color: "#1e3a5f",
+    accent: "#1e3a5f",
     pain: "Client intake is still emails and phone tag. Documents get lost. Follow-ups fall through the cracks.",
     solution:
       "Client portals with secure document sharing, intake automation, case status tracking, and appointment scheduling.",
   },
   {
-    icon: Car,
     title: "Auto Repair & Detailing",
     slug: "auto",
-    color: "#3b82f6",
+    accent: "#3b82f6",
     pain: "Your customers call to check if their car is ready because you don't have a system to notify them.",
     solution:
       "Booking systems, service status notifications, customer history tracking, and marketing that keeps them coming back.",
   },
   {
-    icon: Shield,
     title: "Cleaning & Pest Control",
     slug: "cleaning",
-    color: "#38a169",
-    pain: "You've got 5-star reviews but no website. Customers searching for your service are finding your competitors.",
+    accent: "#38a169",
+    pain: "You've got 5-star reviews but no website. Customers searching are finding your competitors.",
     solution:
       "Professional websites with online booking, recurring service management, review generation, and local SEO that puts you on the map.",
   },
 ];
 
-// Duplicate for seamless infinite loop
-const duplicatedIndustries = [...industries, ...industries];
-
-// Card width + gap
-const cardWidth = 340;
-const gap = 24;
-const totalWidth = industries.length * (cardWidth + gap);
+const AUTO_ADVANCE_MS = 4500;
 
 export function WhoWeHelp() {
-  const [isPaused, setIsPaused] = useState(false);
+  const [active, setActive] = useState(0);
+  const [userTookOver, setUserTookOver] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Auto-cycle until the visitor interacts
+  useEffect(() => {
+    if (userTookOver) return;
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % industries.length);
+    }, AUTO_ADVANCE_MS);
+    return () => clearInterval(timer);
+  }, [userTookOver]);
+
+  const select = (i: number) => {
+    setUserTookOver(true);
+    setActive(i);
+  };
+
+  const current = industries[active];
 
   return (
-    <section className="py-20 md:py-28 bg-[#F6F7FB] overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-36 bg-[#FAFAFA] overflow-hidden">
       <div className="container-site">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4"
-          >
-            Who We Help
-          </motion.span>
+        {/* Dossier rule */}
+        <div className="flex items-baseline gap-4 mb-14 md:mb-16">
+          <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: brand.primary }}>
+            02
+          </span>
+          <span className="font-mono text-xs tracking-[0.3em] uppercase text-gray-400">
+            Who we help — select your industry
+          </span>
+          <div className="flex-1 h-px bg-gray-200" />
+        </div>
+
+        {/* Header */}
+        <div className="max-w-3xl mb-14 md:mb-20">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-4xl font-bold text-foreground mb-4"
+            transition={{ duration: 0.6 }}
+            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.02]"
+            style={{ color: brand.dark }}
           >
-            We Know Your Industry. We&apos;ve Solved These Problems Before.
+            We&apos;ve solved
+            <br />
+            <span style={{ color: brand.primary }}>your problems before.</span>
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
+        </div>
+
+        {/* Switchboard: industry list ↔ diagnosis panel */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Industry list */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="text-lg text-muted-foreground"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-4 border-t border-gray-200"
           >
-            Every business is different — but the challenges aren&apos;t.
-            Here&apos;s how we help businesses like yours.
-          </motion.p>
+            {industries.map((industry, i) => {
+              const isActive = i === active;
+              return (
+                <div key={industry.slug} className="border-b border-gray-200">
+                  <button
+                    onClick={() => select(i)}
+                    onMouseEnter={() => select(i)}
+                    aria-pressed={isActive}
+                    className="w-full flex items-center gap-4 py-3.5 text-left group cursor-pointer"
+                  >
+                    {/* Signal dot */}
+                    <span
+                      className="w-1.5 h-1.5 rounded-full transition-all duration-300 flex-shrink-0"
+                      style={{
+                        background: isActive ? industry.accent : "#D1D5DB",
+                        transform: isActive ? "scale(1.6)" : "scale(1)",
+                      }}
+                    />
+                    <span
+                      className="font-heading text-base md:text-lg font-bold tracking-tight transition-all duration-300 flex-1"
+                      style={{
+                        color: isActive ? brand.dark : "#9CA3AF",
+                        transform: isActive ? "translateX(4px)" : "none",
+                      }}
+                    >
+                      {industry.title}
+                    </span>
+                    <span
+                      className="font-mono text-[10px] transition-opacity duration-300"
+                      style={{ color: industry.accent, opacity: isActive ? 1 : 0 }}
+                    >
+                      ●
+                    </span>
+                  </button>
+
+                  {/* Mobile: diagnosis expands inline */}
+                  <AnimatePresence initial={false}>
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+                        className="overflow-hidden lg:hidden"
+                      >
+                        <DiagnosisPanel industry={current} compact />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+
+            <Link
+              href="/industries"
+              className="inline-flex items-center gap-2 mt-8 font-mono text-xs tracking-[0.2em] uppercase text-gray-500 hover:text-[#726AFF] transition-colors border-b border-gray-300 hover:border-[#726AFF] pb-1"
+            >
+              All industries <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          {/* Diagnosis panel (desktop) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="hidden lg:block lg:col-span-7 lg:col-start-6 lg:sticky lg:top-28"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3 }}
+              >
+                <DiagnosisPanel industry={current} />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
-
-      {/* Auto-scrolling Carousel */}
-      <div
-        className="relative"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {/* Gradient masks for smooth edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#F6F7FB] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F6F7FB] to-transparent z-10 pointer-events-none" />
-
-        {/* Animated track */}
-        <motion.div
-          className="flex gap-6 pl-6"
-          animate={{
-            x: isPaused ? undefined : [0, -totalWidth],
-          }}
-          transition={{
-            x: {
-              duration: 40,
-              ease: "linear",
-              repeat: Infinity,
-            },
-          }}
-        >
-          {duplicatedIndustries.map((industry, index) => {
-            const Icon = industry.icon;
-            return (
-              <div
-                key={`${industry.slug}-${index}`}
-                className="flex-shrink-0"
-                style={{ width: `${cardWidth}px` }}
-              >
-                <Link
-                  href={`/industries/${industry.slug}`}
-                  className="group relative block bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full min-h-[320px]"
-                >
-                  {/* Animated left border on hover */}
-                  <div
-                    className="absolute left-0 top-0 bottom-0 w-0 group-hover:w-1 transition-all duration-300"
-                    style={{ backgroundColor: industry.color }}
-                  />
-
-                  {/* Icon */}
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-                    style={{ backgroundColor: `${industry.color}20` }}
-                  >
-                    <Icon
-                      className="h-6 w-6"
-                      style={{ color: industry.color }}
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                    {industry.title}
-                  </h3>
-
-                  {/* Pain Point */}
-                  <p className="text-sm text-muted-foreground italic mb-4">
-                    &ldquo;{industry.pain}&rdquo;
-                  </p>
-
-                  {/* Solution */}
-                  <p className="text-sm text-foreground leading-relaxed mb-4">
-                    {industry.solution}
-                  </p>
-
-                  {/* Learn More Link */}
-                  <div className="flex items-center gap-2 text-primary text-sm font-medium">
-                    <span>Learn More</span>
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
-        </motion.div>
-      </div>
-
-      {/* View All Link */}
-      <div className="container-site">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mt-10"
-        >
-          <Link
-            href="/industries"
-            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-          >
-            View all industries
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
-      </div>
     </section>
+  );
+}
+
+function DiagnosisPanel({
+  industry,
+  compact = false,
+}: {
+  industry: (typeof industries)[number];
+  compact?: boolean;
+}) {
+  return (
+    <div className={compact ? "pb-8 pt-2 pl-5" : ""}>
+      {/* The symptom */}
+      <p
+        className="font-mono text-[11px] tracking-[0.25em] uppercase mb-4"
+        style={{ color: industry.accent }}
+      >
+        The symptom
+      </p>
+      <blockquote
+        className={`font-heading font-bold tracking-tight leading-[1.15] mb-10 ${
+          compact ? "text-xl" : "text-2xl md:text-4xl"
+        }`}
+        style={{ color: brand.dark }}
+      >
+        <span style={{ color: industry.accent }}>&ldquo;</span>
+        {industry.pain}
+        <span style={{ color: industry.accent }}>&rdquo;</span>
+      </blockquote>
+
+      {/* The fix */}
+      <div className="flex gap-5">
+        <div className="w-px flex-shrink-0" style={{ background: industry.accent, opacity: 0.35 }} />
+        <div>
+          <p className="font-mono text-[11px] tracking-[0.25em] uppercase text-gray-400 mb-3">
+            How we fix it
+          </p>
+          <p className={`text-gray-600 leading-relaxed mb-6 ${compact ? "text-sm" : "text-base md:text-lg max-w-xl"}`}>
+            {industry.solution}
+          </p>
+          <Link
+            href={`/industries/${industry.slug}`}
+            className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.2em] uppercase transition-all hover:gap-3"
+            style={{ color: brand.primary }}
+          >
+            See the full build <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

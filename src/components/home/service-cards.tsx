@@ -1,374 +1,434 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
-import { Code2, Sparkles, TrendingUp, ShoppingCart, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 
-// Web Apps - Growth line chart
-function WebAppsVisual() {
+const brand = { primary: "#726AFF", dark: "#0F1226" };
+
+// ============================================================================
+// Showcase visuals — rendered inside the dark "product window"
+// ============================================================================
+
+function WebAppsShowcase() {
   return (
-    <div className="bg-[#F6F7FB] rounded-lg p-3 border border-gray-100">
-      <svg viewBox="0 0 340 80" className="w-full h-auto">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/40">
+          Revenue dashboard
+        </p>
+        <span className="font-mono text-xs text-emerald-400">↑ 42% this quarter</span>
+      </div>
+      <svg viewBox="0 0 340 110" className="w-full h-auto">
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(114,106,255,0.35)" />
-            <stop offset="100%" stopColor="rgba(114,106,255,0.05)" />
+          <linearGradient id="homeLineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="rgba(114,106,255,0.4)" />
+            <stop offset="100%" stopColor="rgba(114,106,255,0)" />
           </linearGradient>
         </defs>
-        {/* Area fill */}
-        <path
-          d="M 20 65 Q 60 60, 100 55 T 180 40 T 260 25 T 320 15 L 320 70 L 20 70 Z"
-          fill="url(#lineGradient)"
+        {[0, 1, 2, 3].map((i) => (
+          <line key={i} x1="0" y1={25 * i + 10} x2="340" y2={25 * i + 10} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+        ))}
+        <motion.path
+          d="M 10 95 Q 50 88, 90 78 T 170 58 T 250 32 T 330 18 L 330 105 L 10 105 Z"
+          fill="url(#homeLineGradient)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         />
-        {/* Line */}
-        <polyline
-          points="20,65 60,58 100,52 140,45 180,38 220,30 260,22 300,18 320,15"
+        <motion.polyline
+          points="10,95 50,86 90,78 130,68 170,58 210,45 250,32 290,24 330,18"
           fill="none"
-          stroke="#726AFF"
-          strokeWidth="2"
+          stroke={brand.primary}
+          strokeWidth="2.5"
           strokeLinecap="round"
-          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
-        {/* End dot */}
-        <circle cx="320" cy="15" r="4" fill="#726AFF" />
-        {/* Label */}
-        <text x="295" y="12" fill="#726AFF" fontSize="11" fontWeight="600">
-          ↑ 42%
-        </text>
+        <motion.circle
+          cx="330" cy="18" r="4" fill={brand.primary}
+          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.1 }}
+        />
       </svg>
-    </div>
-  );
-}
-
-// AI Tools - Chat conversation
-function AIToolsVisual() {
-  return (
-    <div className="bg-[#F6F7FB] rounded-lg p-3 border border-gray-100 space-y-2">
-      {/* User message - left */}
-      <div className="flex justify-start">
-        <div className="bg-white rounded-lg px-3 py-2 max-w-[85%] border border-gray-100">
-          <p className="text-[0.7rem] text-gray-700">
-            How do I reschedule my appointment?
-          </p>
-        </div>
-      </div>
-      {/* Bot message - right */}
-      <div className="flex justify-end">
-        <div className="bg-[#726AFF]/10 border border-[#726AFF]/20 rounded-lg px-3 py-2 max-w-[85%]">
-          <p className="text-[0.7rem] text-[#726AFF]">
-            I found your booking for Mar 31. Move it to Apr 2?
-          </p>
-        </div>
-      </div>
-      {/* User confirmation - left */}
-      <div className="flex justify-start">
-        <div className="bg-white rounded-lg px-3 py-2 border border-gray-100">
-          <p className="text-[0.65rem] text-gray-500">Yes please!</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Marketing - Progress bars
-function MarketingVisual() {
-  const channels = [
-    { name: "Organic Search", value: 82, color: "#726AFF" },
-    { name: "Google Business", value: 68, color: "#a78bfa" },
-    { name: "Social Media", value: 54, color: "#c4b5fd" },
-    { name: "Direct", value: 38, color: "#6d3fd4" },
-  ];
-
-  return (
-    <div className="bg-[#F6F7FB] rounded-lg p-3 border border-gray-100 space-y-2.5">
-      {channels.map((channel) => (
-        <div key={channel.name} className="flex items-center gap-2">
-          <span className="text-[0.65rem] text-gray-500 w-[110px] shrink-0">
-            {channel.name}
-          </span>
-          <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{
-                width: `${channel.value}%`,
-                backgroundColor: channel.color,
-              }}
-            />
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { k: "Bookings", v: "312" },
+          { k: "Invoices", v: "$48.2k" },
+          { k: "Uptime", v: "99.99%" },
+        ].map((cell) => (
+          <div key={cell.k} className="border border-white/10 rounded-lg px-3 py-2.5">
+            <p className="text-white font-bold text-sm">{cell.v}</p>
+            <p className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/35">{cell.k}</p>
           </div>
-          <span className="text-[0.65rem] text-gray-500 w-8 text-right">
-            {channel.value}%
-          </span>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
 
-// eCommerce - Donut chart
-function EcommerceVisual() {
+function AIToolsShowcase() {
+  const lines = [
+    { role: "user", text: "How do I reschedule my appointment?" },
+    { role: "bot", text: "I found your booking for Mar 31. Move it to Apr 2 at 10am?" },
+    { role: "user", text: "Yes please!" },
+    { role: "bot", text: "Done — confirmation sent. Anything else?" },
+  ];
   return (
-    <div className="bg-[#F6F7FB] rounded-lg p-3 border border-gray-100">
-      <svg viewBox="0 0 340 80" className="w-full h-auto">
-        {/* Donut chart */}
-        <g transform="translate(50, 40)">
-          {/* Background circle */}
-          <circle
-            cx="0"
-            cy="0"
-            r="28"
-            fill="none"
-            stroke="#e5e7eb"
-            strokeWidth="8"
-          />
-          {/* Products 40% */}
-          <circle
-            cx="0"
-            cy="0"
-            r="28"
-            fill="none"
-            stroke="#726AFF"
-            strokeWidth="8"
-            strokeDasharray="70.4 175.9"
-            strokeDashoffset="44"
-            transform="rotate(-90)"
-          />
-          {/* Subscriptions 29% */}
-          <circle
-            cx="0"
-            cy="0"
-            r="28"
-            fill="none"
-            stroke="#a78bfa"
-            strokeWidth="8"
-            strokeDasharray="51 175.9"
-            strokeDashoffset="-26.4"
-            transform="rotate(-90)"
-          />
-          {/* Services 19% */}
-          <circle
-            cx="0"
-            cy="0"
-            r="28"
-            fill="none"
-            stroke="#c4b5fd"
-            strokeWidth="8"
-            strokeDasharray="33.4 175.9"
-            strokeDashoffset="-77.4"
-            transform="rotate(-90)"
-          />
-          {/* Other 12% */}
-          <circle
-            cx="0"
-            cy="0"
-            r="28"
-            fill="none"
-            stroke="#d1d5db"
-            strokeWidth="8"
-            strokeDasharray="21.1 175.9"
-            strokeDashoffset="-110.8"
-            transform="rotate(-90)"
-          />
-          {/* Center text */}
-          <text
-            x="0"
-            y="-3"
-            textAnchor="middle"
-            fill="#1A1A1A"
-            fontSize="10"
-            fontWeight="bold"
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/40">
+          Support assistant
+        </p>
+        <span className="font-mono text-xs text-white/40">resolves without staff</span>
+      </div>
+      <div className="space-y-2.5">
+        {lines.map((line, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 + i * 0.35 }}
+            className={`flex ${line.role === "bot" ? "justify-end" : "justify-start"}`}
           >
-            $48K
-          </text>
-          <text
-            x="0"
-            y="8"
-            textAnchor="middle"
-            fill="#6b7280"
-            fontSize="7"
-          >
-            Monthly
-          </text>
-        </g>
-
-        {/* Legend */}
-        <g transform="translate(115, 15)">
-          <rect x="0" y="0" width="8" height="8" rx="1" fill="#726AFF" />
-          <text x="14" y="7" fill="#6b7280" fontSize="8">
-            Products 40%
-          </text>
-
-          <rect x="0" y="16" width="8" height="8" rx="1" fill="#a78bfa" />
-          <text x="14" y="23" fill="#6b7280" fontSize="8">
-            Subscriptions 29%
-          </text>
-
-          <rect x="0" y="32" width="8" height="8" rx="1" fill="#c4b5fd" />
-          <text x="14" y="39" fill="#6b7280" fontSize="8">
-            Services 19%
-          </text>
-
-          <rect x="0" y="48" width="8" height="8" rx="1" fill="#d1d5db" />
-          <text x="14" y="55" fill="#6b7280" fontSize="8">
-            Other 12%
-          </text>
-        </g>
-      </svg>
+            <div
+              className={`rounded-xl px-3.5 py-2.5 max-w-[80%] text-xs leading-relaxed ${
+                line.role === "bot"
+                  ? "bg-[#726AFF] text-white rounded-br-sm"
+                  : "bg-white/10 text-white/80 rounded-bl-sm"
+              }`}
+            >
+              {line.text}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        className="font-mono text-[10px] tracking-[0.15em] uppercase text-emerald-400"
+      >
+        ✓ ticket resolved · 0 human minutes
+      </motion.p>
     </div>
   );
 }
+
+function MarketingShowcase() {
+  const channels = [
+    { name: "Organic search", value: 82 },
+    { name: "Google Business", value: 68 },
+    { name: "Social media", value: 54 },
+    { name: "Direct", value: 38 },
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/40">
+          Acquisition channels
+        </p>
+        <span className="font-mono text-xs text-emerald-400">12.4k visitors / mo</span>
+      </div>
+      <div className="space-y-3.5">
+        {channels.map((channel, i) => (
+          <div key={channel.name}>
+            <div className="flex justify-between mb-1.5">
+              <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-white/55">
+                {channel.name}
+              </span>
+              <span className="font-mono text-[11px] text-white/40">{channel.value}%</span>
+            </div>
+            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: brand.primary, opacity: 1 - i * 0.18 }}
+                initial={{ width: 0 }}
+                animate={{ width: `${channel.value}%` }}
+                transition={{ duration: 0.9, delay: 0.2 + i * 0.12, ease: "easeOut" }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/35 pt-1">
+        all channels, one strategy
+      </p>
+    </div>
+  );
+}
+
+function EcommerceShowcase() {
+  const rows = [
+    { sku: "Products", share: "40%", amt: "$19.2k" },
+    { sku: "Subscriptions", share: "29%", amt: "$13.9k" },
+    { sku: "Services", share: "19%", amt: "$9.1k" },
+    { sku: "Other", share: "12%", amt: "$5.8k" },
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/40">
+          Monthly revenue
+        </p>
+        <span className="text-white font-bold">$48,000</span>
+      </div>
+      <div className="border-t border-white/10">
+        {rows.map((row, i) => (
+          <motion.div
+            key={row.sku}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 + i * 0.12 }}
+            className="flex items-baseline gap-3 py-2.5 border-b border-white/10"
+          >
+            <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-white/55 w-28">
+              {row.sku}
+            </span>
+            <span className="flex-1 border-b border-dotted border-white/15 translate-y-[-3px]" />
+            <span className="font-mono text-[11px] text-white/40">{row.share}</span>
+            <span className="font-mono text-xs text-white font-semibold w-14 text-right">{row.amt}</span>
+          </motion.div>
+        ))}
+      </div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="font-mono text-[10px] tracking-[0.15em] uppercase text-emerald-400"
+      >
+        ✓ stripe-powered · no platform fees
+      </motion.p>
+    </div>
+  );
+}
+
+// ============================================================================
+// Service data
+// ============================================================================
 
 const services = [
   {
-    icon: Code2,
+    n: "01",
     title: "Custom Web Apps",
+    slug: "app.yourbusiness.com",
     description:
       "Platforms built for your exact workflow. Not a template with your logo — real code, real ownership.",
     href: "/services/web-apps",
-    accent: "from-primary to-primary/60",
-    Visual: WebAppsVisual,
+    Showcase: WebAppsShowcase,
   },
   {
-    icon: Sparkles,
-    title: "AI Integrated Operating Systems",
+    n: "02",
+    title: "AI Operating Systems",
+    slug: "assistant.yourbusiness.com",
     description:
       "Smart systems that actually work. Ticket automation, knowledge bases, customer support that scales.",
     href: "/services/ai-tools",
-    accent: "from-[hsl(260_80%_60%)] to-primary/60",
-    Visual: AIToolsVisual,
+    Showcase: AIToolsShowcase,
   },
   {
-    icon: TrendingUp,
+    n: "03",
     title: "Marketing & SEO",
+    slug: "analytics.yourbusiness.com",
     description:
       "Get found by customers who need you. Social media, SEO, Google Business — all connected.",
     href: "/services/marketing",
-    accent: "from-primary/80 to-[hsl(280_70%_50%)]",
-    Visual: MarketingVisual,
+    Showcase: MarketingShowcase,
   },
   {
-    icon: ShoppingCart,
+    n: "04",
     title: "eCommerce",
+    slug: "shop.yourbusiness.com",
     description:
       "Sell products, subscriptions, services. Stores built for conversion, not monthly platform fees.",
     href: "/services/ecommerce",
-    accent: "from-[hsl(280_70%_50%)] to-primary",
-    Visual: EcommerceVisual,
+    Showcase: EcommerceShowcase,
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
+// ============================================================================
+// Section
+// ============================================================================
 
 export function ServiceCards() {
-  return (
-    <section className="section-padding mesh-gradient-1 relative overflow-hidden">
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 grid-pattern opacity-50" />
+  const [active, setActive] = useState(0);
+  const ActiveShowcase = services[active].Showcase;
 
-      <div className="container-site relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-block eyebrow text-primary mb-4"
-          >
-            What We Build
-          </motion.span>
+  return (
+    <section className="py-24 lg:py-36 bg-white relative overflow-hidden">
+      <div className="container-site">
+        {/* Dossier rule */}
+        <div className="flex items-baseline gap-4 mb-14 md:mb-16">
+          <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: brand.primary }}>
+            01
+          </span>
+          <span className="font-mono text-xs tracking-[0.3em] uppercase text-gray-400">
+            What we build
+          </span>
+          <div className="flex-1 h-px bg-gray-200" />
+        </div>
+
+        {/* Header */}
+        <div className="grid lg:grid-cols-12 gap-8 mb-16 md:mb-20">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-5"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 font-heading text-4xl md:text-6xl font-bold tracking-tight leading-[1]"
+            style={{ color: brand.dark }}
           >
-            Everything You Need
-            <br className="hidden sm:block" />
-            <span className="text-gradient">to Grow Online</span>
+            Everything you need
+            <br />
+            <span style={{ color: "transparent", WebkitTextStroke: `2px ${brand.primary}` }}>
+              to grow online.
+            </span>
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-muted-foreground text-lg max-w-xl mx-auto"
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="lg:col-span-4 lg:col-start-9 text-gray-600 leading-relaxed self-end"
           >
-            From custom platforms to AI tools to marketing — one team, one vision, everything connected.
+            From custom platforms to AI tools to marketing — one team, one
+            vision, everything connected.
           </motion.p>
         </div>
 
-        {/* Cards Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
-        >
-          {services.map((service) => (
-            <motion.div key={service.title} variants={cardVariants}>
-              <Link
-                href={service.href}
-                className="group block h-full"
-              >
-                <div className="premium-card p-8 lg:p-10 h-full relative overflow-hidden">
-                  {/* Gradient accent line at top */}
-                  <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${service.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                  />
+        {/* Split: index ↔ live panel */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Service index */}
+          <div className="lg:col-span-5 border-t border-gray-200">
+            {services.map((service, i) => {
+              const isActive = i === active;
+              return (
+                <motion.div
+                  key={service.n}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="border-b border-gray-200"
+                >
+                  <button
+                    onMouseEnter={() => setActive(i)}
+                    onClick={() => setActive(i)}
+                    aria-expanded={isActive}
+                    className="w-full text-left py-6 md:py-7 group cursor-pointer"
+                  >
+                    <div className="flex items-baseline gap-5">
+                      <span
+                        className="font-mono text-sm transition-colors duration-300"
+                        style={{ color: isActive ? brand.primary : "#9CA3AF" }}
+                      >
+                        /{service.n}
+                      </span>
+                      <h3
+                        className="font-heading text-2xl md:text-3xl font-bold tracking-tight transition-colors duration-300 flex-1"
+                        style={{ color: isActive ? brand.primary : brand.dark }}
+                      >
+                        {service.title}
+                      </h3>
+                      <ArrowUpRight
+                        className="w-5 h-5 transition-all duration-300"
+                        style={{
+                          color: isActive ? brand.primary : "#D1D5DB",
+                          transform: isActive ? "rotate(45deg)" : "none",
+                        }}
+                      />
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <p className="pt-3 pl-12 text-gray-600 leading-relaxed pr-8">
+                            {service.description}
+                          </p>
+                          <Link
+                            href={service.href}
+                            className="inline-flex items-center gap-2 mt-3 ml-12 font-mono text-[11px] tracking-[0.2em] uppercase hover:gap-3 transition-all"
+                            style={{ color: brand.primary }}
+                          >
+                            Explore <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
 
-                  {/* Icon */}
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
-                    <service.icon className="h-7 w-7 text-primary" />
-                  </div>
+                          {/* Mobile: showcase inline under the active row */}
+                          <div className="lg:hidden mt-6">
+                            <ShowcaseWindow slug={service.slug}>
+                              <service.Showcase />
+                            </ShowcaseWindow>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </button>
+                </motion.div>
+              );
+            })}
 
-                  {/* Title with arrow */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-xl lg:text-2xl font-heading">
-                      {service.title}
-                    </h3>
-                    <ArrowUpRight className="w-5 h-5 text-primary opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
-                  </div>
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 mt-8 font-mono text-xs tracking-[0.2em] uppercase text-gray-500 hover:text-[#726AFF] transition-colors border-b border-gray-300 hover:border-[#726AFF] pb-1"
+            >
+              All services <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
 
-                  {/* Description */}
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-
-                  {/* Inline Visual */}
-                  <service.Visual />
-
-                  {/* Hover indicator */}
-                  <div className="mt-6 pt-6 border-t border-border/50">
-                    <span className="text-sm font-medium text-primary opacity-60 group-hover:opacity-100 transition-opacity">
-                      Learn more
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+          {/* Sticky live panel (desktop) */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="hidden lg:block lg:col-span-7 lg:sticky lg:top-28"
+          >
+            <ShowcaseWindow slug={services[active].slug}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ActiveShowcase />
+                </motion.div>
+              </AnimatePresence>
+            </ShowcaseWindow>
+          </motion.div>
+        </div>
       </div>
     </section>
+  );
+}
+
+/** Dark product window with browser chrome — the showcase frame. */
+function ShowcaseWindow({ slug, children }: { slug: string; children: React.ReactNode }) {
+  return (
+    <div
+      className="rounded-2xl overflow-hidden border border-gray-200 shadow-[0_40px_90px_-50px_rgba(15,18,38,0.55)]"
+      style={{ background: brand.dark }}
+    >
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-white/10">
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+        </div>
+        <div className="flex-1 mx-2">
+          <div className="bg-white/5 border border-white/10 rounded-md px-3 py-1 font-mono text-[11px] text-white/40 text-center max-w-xs mx-auto truncate">
+            {slug}
+          </div>
+        </div>
+      </div>
+      <div className="p-6 md:p-8 min-h-[340px]">{children}</div>
+    </div>
   );
 }
