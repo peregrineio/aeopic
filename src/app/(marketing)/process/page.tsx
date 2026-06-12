@@ -2,561 +2,348 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import {
-  Search,
-  FileCode,
-  Hammer,
-  Rocket,
-  ArrowRight,
-  MessageSquare,
-  Layers,
-  BarChart3,
-  CheckCircle2,
-  Clock,
-  Users,
-  Zap,
-  Shield,
-} from "lucide-react";
+import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 
-// Brand colors
-const brand = {
-  primary: "#726AFF",
-  primarySoft: "#8B5CF6",
-  lavender: "#C4B5FD",
-  lavenderLight: "#DDD6FE",
-  purpleBg: "#F5F3FF",
-  dark: "#1A1625",
-};
+const brand = { primary: "#726AFF", dark: "#0F1226" };
 
 // ============================================================================
-// HERO SECTION
+// HERO — the pipeline run
 // ============================================================================
+
+const pipelineStages = [
+  { id: "discovery", label: "discovery", duration: "wk 1–2" },
+  { id: "blueprint", label: "blueprint", duration: "wk 1–2" },
+  { id: "build", label: "build", duration: "wk 4–8" },
+  { id: "launch", label: "launch", duration: "ongoing" },
+];
+
+const LOOP_DURATION = 6;
+const LOOP_PAUSE = 2;
+const TOTAL = LOOP_DURATION + LOOP_PAUSE;
+
+/** A pipeline node that lights up as the sweep passes its position. */
+function PipelineNode({ index }: { index: number }) {
+  const stage = pipelineStages[index];
+  // Point in the loop (0..1 of LOOP_DURATION) when the sweep reaches this node
+  const hit = (index / (pipelineStages.length - 1)) * (LOOP_DURATION / TOTAL);
+  const after = Math.min(hit + 0.02, 1);
+
+  return (
+    <div className="flex flex-col items-center gap-3 relative z-10">
+      <div className="relative w-12 h-12 md:w-14 md:h-14">
+        {/* Idle ring */}
+        <div className="absolute inset-0 rounded-full border-2 border-white/15 bg-[#0F1226]" />
+        {/* Lit state */}
+        <motion.div
+          className="absolute inset-0 rounded-full flex items-center justify-center"
+          style={{
+            background: brand.primary,
+            boxShadow: `0 0 30px ${brand.primary}80`,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0, 1, 1, 0] }}
+          transition={{
+            duration: TOTAL,
+            times: [0, hit, after, 0.97, 1],
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          <Check className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={3} />
+        </motion.div>
+        {/* Idle index */}
+        <div className="absolute inset-0 rounded-full flex items-center justify-center">
+          <motion.span
+            className="font-mono text-sm text-white/50"
+            animate={{ opacity: [1, 1, 0, 0, 1] }}
+            transition={{
+              duration: TOTAL,
+              times: [0, hit, after, 0.97, 1],
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </motion.span>
+        </div>
+      </div>
+      <div className="text-center">
+        <p className="font-mono text-[11px] md:text-xs tracking-[0.2em] uppercase text-white/70">
+          {stage.label}
+        </p>
+        <p className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/30 mt-0.5">
+          {stage.duration}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function PipelineVisual() {
+  return (
+    <div className="relative">
+      {/* Track */}
+      <div className="absolute top-6 md:top-7 left-6 right-6 md:left-7 md:right-7 h-0.5 bg-white/10" />
+      {/* Animated fill sweep */}
+      <div className="absolute top-6 md:top-7 left-6 right-6 md:left-7 md:right-7 h-0.5 overflow-hidden">
+        <motion.div
+          className="h-full origin-left"
+          style={{ background: brand.primary, boxShadow: `0 0 12px ${brand.primary}` }}
+          animate={{ scaleX: [0, 1, 1, 0] }}
+          transition={{
+            duration: TOTAL,
+            times: [0, LOOP_DURATION / TOTAL, 0.97, 1],
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
+
+      <div className="flex justify-between">
+        {pipelineStages.map((stage, i) => (
+          <PipelineNode key={stage.id} index={i} />
+        ))}
+      </div>
+
+      {/* Run output */}
+      <motion.p
+        className="mt-8 font-mono text-[11px] tracking-[0.15em] text-emerald-400 text-center"
+        animate={{ opacity: [0, 0, 1, 1, 0] }}
+        transition={{
+          duration: TOTAL,
+          times: [0, LOOP_DURATION / TOTAL - 0.02, LOOP_DURATION / TOTAL + 0.02, 0.97, 1],
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      >
+        ✓ pipeline complete — platform live in 4–8 weeks
+      </motion.p>
+    </div>
+  );
+}
 
 function ProcessHero() {
   return (
-    <section className="relative flex items-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        {/* Base gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 100% 80% at 50% 0%, ${brand.purpleBg} 0%, white 60%),
-              linear-gradient(180deg, white 0%, #FAFAFA 100%)
-            `,
-          }}
-        />
+    <section className="relative overflow-hidden" style={{ background: brand.dark }}>
+      {/* Grid texture */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, white 1px, transparent 1px),
+            linear-gradient(to bottom, white 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div
+        className="absolute -left-40 top-1/3 w-[500px] h-[500px] rounded-full blur-[150px] opacity-20 pointer-events-none"
+        style={{ background: brand.primary }}
+      />
+      <div
+        className="absolute -right-48 -top-48 w-[480px] h-[480px] border border-white/[0.06] pointer-events-none"
+        style={{ transform: "rotate(45deg)" }}
+      />
 
-        {/* Grid pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.03]">
-          <defs>
-            <pattern id="heroGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke={brand.dark} strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#heroGrid)" />
-        </svg>
+      <div className="container-site relative z-10 pt-40 pb-20 md:pt-48 md:pb-28">
+        {/* File header */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-12 font-mono text-[11px] tracking-[0.25em] uppercase"
+        >
+          <span style={{ color: brand.primary }}>PIPELINE / HOW WE WORK</span>
+          <span className="text-white/30">—</span>
+          <span className="text-white/40">4 stages</span>
+          <span className="text-white/30">—</span>
+          <span className="text-white/40">No surprises, no scope creep</span>
+        </motion.div>
 
-      </div>
-
-      <div className="container-site relative z-10 pt-32 pb-20">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-center gap-3 mb-6"
-          >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)` }}
-            >
-              <Layers className="w-6 h-6" style={{ color: brand.primary }} />
-            </div>
-            <span
-              className="text-sm font-semibold tracking-widest uppercase"
-              style={{ color: brand.primary }}
-            >
-              Our Process
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+        {/* Headline */}
+        <h1 className="font-heading font-bold tracking-tight leading-[0.95] mb-8">
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-            style={{ color: brand.dark }}
+            className="block text-5xl md:text-7xl lg:text-8xl text-white"
           >
-            From Idea to
-            <br />
-            <span style={{ color: brand.primary }}>Launch</span>
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            Idea in.
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl"
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="block text-5xl md:text-7xl lg:text-8xl"
+            style={{ color: "transparent", WebkitTextStroke: `2px ${brand.primary}` }}
           >
-            A proven 4-phase process that turns your vision into a production-ready
-            platform. No surprises, no scope creep — just steady progress toward launch.
-          </motion.p>
+            Launch out.
+          </motion.span>
+        </h1>
 
-          {/* Timeline badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="inline-flex items-center gap-6 px-6 py-4 rounded-2xl border border-gray-200 bg-white/80 backdrop-blur-sm shadow-lg shadow-gray-100/50"
-          >
-            <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5" style={{ color: brand.primary }} />
-              <div>
-                <p className="text-2xl font-bold" style={{ color: brand.dark }}>4-8 Weeks</p>
-                <p className="text-sm text-gray-500">Average time to launch</p>
-              </div>
-            </div>
-            <div className="w-px h-12 bg-gray-200" />
-            <div className="flex items-center gap-3">
-              <Zap className="w-5 h-5" style={{ color: brand.primary }} />
-              <div>
-                <p className="text-2xl font-bold" style={{ color: brand.dark }}>4 Phases</p>
-                <p className="text-sm text-gray-500">Clear milestones</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="max-w-xl text-lg md:text-xl text-white/70 leading-relaxed mb-16 md:mb-20"
+        >
+          A proven 4-phase process that turns your vision into a
+          production-ready platform. No surprises, no scope creep — just
+          steady progress toward launch.
+        </motion.p>
+
+        {/* The living pipeline */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
+          className="max-w-3xl mx-auto rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm px-6 py-8 md:px-10 md:py-10"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35">
+              aeopic — pipeline run
+            </p>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
+          </div>
+          <PipelineVisual />
+        </motion.div>
       </div>
-
     </section>
   );
 }
 
 // ============================================================================
-// PHASE VISUAL MOCKUPS
+// PHASE ARTIFACTS — terminal-styled stage outputs
 // ============================================================================
 
-function DiscoveryMockup() {
+function ArtifactWindow({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="relative w-full h-full min-h-[300px]">
-      {/* Conversation bubbles */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="absolute top-4 left-4 max-w-[200px] p-4 rounded-2xl rounded-bl-sm bg-white border border-gray-200 shadow-lg"
-      >
-        <p className="text-sm text-gray-600">&ldquo;We need a better way to manage bookings...&rdquo;</p>
-        <div className="flex items-center gap-2 mt-2">
-          <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
-            <Users className="w-3 h-3 text-blue-600" />
-          </div>
-          <span className="text-xs text-gray-400">Client</span>
+    <div
+      className="rounded-2xl overflow-hidden border border-gray-200 shadow-[0_30px_70px_-40px_rgba(15,18,38,0.5)]"
+      style={{ background: brand.dark }}
+    >
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-white/10">
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
         </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="absolute top-24 right-4 max-w-[220px] p-4 rounded-2xl rounded-br-sm border border-gray-200 shadow-lg"
-        style={{ background: brand.purpleBg }}
-      >
-        <p className="text-sm text-gray-700">&ldquo;Let me map out your current workflow...&rdquo;</p>
-        <div className="flex items-center gap-2 mt-2">
-          <div
-            className="w-6 h-6 rounded-full flex items-center justify-center"
-            style={{ background: brand.lavender }}
-          >
-            <MessageSquare className="w-3 h-3" style={{ color: brand.primary }} />
-          </div>
-          <span className="text-xs text-gray-500">Aeopic</span>
-        </div>
-      </motion.div>
-
-      {/* Workflow diagram sketch */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[280px] p-4 bg-white rounded-xl border border-gray-200 shadow-xl"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-2 h-2 rounded-full bg-red-400" />
-          <div className="w-2 h-2 rounded-full bg-yellow-400" />
-          <div className="w-2 h-2 rounded-full bg-green-400" />
-          <span className="text-xs text-gray-400 ml-2">workflow.sketch</span>
-        </div>
-        <div className="flex items-center justify-between gap-2">
-          {["Inquiry", "Schedule", "Service", "Invoice"].map((step, i) => (
-            <div key={step} className="flex items-center">
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center text-[10px] font-medium text-center"
-                style={{
-                  background: i === 0 ? brand.purpleBg : "white",
-                  border: `1px solid ${i === 0 ? brand.lavender : "#e5e7eb"}`,
-                  color: i === 0 ? brand.primary : "#6b7280",
-                }}
-              >
-                {step}
-              </div>
-              {i < 3 && <ArrowRight className="w-3 h-3 text-gray-300 mx-1" />}
-            </div>
-          ))}
-        </div>
-      </motion.div>
+        <span className="font-mono text-[11px] text-white/40 ml-auto">{title}</span>
+      </div>
+      <div className="p-6 font-mono text-xs md:text-[13px] leading-relaxed">{children}</div>
     </div>
   );
 }
 
-function BlueprintMockup() {
+function DiscoveryArtifact() {
   return (
-    <div className="relative w-full h-full min-h-[300px]">
-      {/* Architecture diagram */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="absolute top-4 left-4 right-4"
-      >
-        <div className="bg-white rounded-xl border border-gray-200 shadow-xl p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <FileCode className="w-4 h-4" style={{ color: brand.primary }} />
-            <span className="text-xs font-semibold text-gray-600">System Architecture</span>
-          </div>
+    <ArtifactWindow title="discovery — kickoff notes">
+      <p className="text-white/80">
+        <span style={{ color: brand.primary }}>$</span> aeopic discover --client=you
+      </p>
+      <div className="mt-3 space-y-2 text-white/55">
+        <p><span className="text-white/35">Q:</span> What eats the most hours every week?</p>
+        <p className="pl-4 text-white/75">&ldquo;Chasing invoices and double-entering jobs.&rdquo;</p>
+        <p><span className="text-white/35">Q:</span> Where do leads fall through?</p>
+        <p className="pl-4 text-white/75">&ldquo;Voicemail. After hours. Every weekend.&rdquo;</p>
+      </div>
+      <p className="mt-4 text-emerald-400">✓ pain points mapped · goals set · metrics defined</p>
+    </ArtifactWindow>
+  );
+}
 
-          <svg viewBox="0 0 280 100" className="w-full">
-            {/* Frontend box */}
-            <rect x="10" y="10" width="70" height="35" rx="6" fill={brand.purpleBg} stroke={brand.lavender} strokeWidth="1" />
-            <text x="45" y="32" textAnchor="middle" fontSize="9" fill={brand.primary} fontWeight="500">Frontend</text>
+function BlueprintArtifact() {
+  return (
+    <ArtifactWindow title="blueprint — spec.md">
+      <div className="space-y-1.5 text-white/55">
+        <p className="text-white/80">your-platform/</p>
+        <p className="pl-4">├── <span style={{ color: brand.primary }}>dashboard</span> <span className="text-white/30">— jobs, revenue, schedule at a glance</span></p>
+        <p className="pl-4">├── <span style={{ color: brand.primary }}>booking</span> <span className="text-white/30">— customers self-serve 24/7</span></p>
+        <p className="pl-4">├── <span style={{ color: brand.primary }}>invoicing</span> <span className="text-white/30">— auto-send, auto-chase</span></p>
+        <p className="pl-4">└── <span style={{ color: brand.primary }}>portal</span> <span className="text-white/30">— customers track everything</span></p>
+      </div>
+      <p className="mt-4 text-emerald-400">✓ approved by you before a line of code</p>
+    </ArtifactWindow>
+  );
+}
 
-            {/* API box */}
-            <rect x="105" y="10" width="70" height="35" rx="6" fill={brand.purpleBg} stroke={brand.lavender} strokeWidth="1" />
-            <text x="140" y="32" textAnchor="middle" fontSize="9" fill={brand.primary} fontWeight="500">API Layer</text>
-
-            {/* Database box */}
-            <rect x="200" y="10" width="70" height="35" rx="6" fill={brand.purpleBg} stroke={brand.lavender} strokeWidth="1" />
-            <text x="235" y="32" textAnchor="middle" fontSize="9" fill={brand.primary} fontWeight="500">Database</text>
-
-            {/* Connecting lines */}
-            <line x1="80" y1="27" x2="105" y2="27" stroke={brand.lavender} strokeWidth="2" strokeDasharray="4 2" />
-            <line x1="175" y1="27" x2="200" y2="27" stroke={brand.lavender} strokeWidth="2" strokeDasharray="4 2" />
-
-            {/* Services row */}
-            <rect x="60" y="60" width="55" height="30" rx="4" fill="white" stroke="#e5e7eb" strokeWidth="1" />
-            <text x="87" y="79" textAnchor="middle" fontSize="8" fill="#6b7280">Auth</text>
-
-            <rect x="125" y="60" width="55" height="30" rx="4" fill="white" stroke="#e5e7eb" strokeWidth="1" />
-            <text x="152" y="79" textAnchor="middle" fontSize="8" fill="#6b7280">Payments</text>
-
-            {/* Connect to API */}
-            <line x1="140" y1="45" x2="140" y2="60" stroke="#e5e7eb" strokeWidth="1" />
-          </svg>
-        </div>
-      </motion.div>
-
-      {/* UI mockup thumbnail */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="absolute bottom-4 right-4 w-[140px] bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden"
-      >
-        <div className="h-4 bg-gray-100 flex items-center px-2 gap-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
-          <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
-          <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-        </div>
-        <div className="p-2 space-y-1">
-          <div className="h-3 rounded" style={{ background: brand.lavender, width: "60%" }} />
-          <div className="h-2 bg-gray-200 rounded w-full" />
-          <div className="h-2 bg-gray-200 rounded w-3/4" />
-          <div className="h-6 rounded mt-2" style={{ background: brand.primary }} />
-        </div>
-      </motion.div>
-
-      {/* Feature list */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.7 }}
-        className="absolute bottom-4 left-4 bg-white rounded-lg border border-gray-200 shadow-md p-3"
-      >
-        <p className="text-[10px] font-semibold text-gray-500 mb-2">MVP FEATURES</p>
-        {["User auth", "Dashboard", "Booking flow"].map((f, i) => (
-          <div key={f} className="flex items-center gap-2 text-xs text-gray-600">
-            <CheckCircle2 className="w-3 h-3" style={{ color: brand.primary }} />
-            {f}
-          </div>
+function BuildArtifact() {
+  const sprints = [
+    { week: "wk 1", task: "core platform + auth", state: "✓" },
+    { week: "wk 2", task: "booking flow — demo'd Friday", state: "✓" },
+    { week: "wk 3", task: "your feedback: 'move the calendar' — done", state: "✓" },
+    { week: "wk 4", task: "invoicing + payments", state: "●" },
+  ];
+  return (
+    <ArtifactWindow title="build — sprint log">
+      <div className="space-y-2">
+        {sprints.map((sprint) => (
+          <p key={sprint.week} className="text-white/55">
+            <span className={sprint.state === "✓" ? "text-emerald-400" : "text-[#726AFF]"}>
+              {sprint.state}
+            </span>{" "}
+            <span className="text-white/35 inline-block w-12">{sprint.week}</span>
+            {sprint.task}
+          </p>
         ))}
-      </motion.div>
-    </div>
+      </div>
+      <p className="mt-4 text-white/80">
+        <span style={{ color: brand.primary }}>$</span> demo every Friday · your feedback shapes the build
+        <motion.span
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 1.1, repeat: Infinity }}
+          className="inline-block w-2 h-3.5 ml-1.5 align-middle"
+          style={{ background: brand.primary }}
+        />
+      </p>
+    </ArtifactWindow>
   );
 }
 
-function BuildMockup() {
+function LaunchArtifact() {
   return (
-    <div className="relative w-full h-full min-h-[300px]">
-      {/* Code editor mockup */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="absolute top-4 left-4 w-[200px] bg-[#1e1e2e] rounded-xl overflow-hidden shadow-2xl"
-      >
-        <div className="h-6 bg-[#181825] flex items-center px-3 gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-red-400" />
-          <div className="w-2 h-2 rounded-full bg-yellow-400" />
-          <div className="w-2 h-2 rounded-full bg-green-400" />
-          <span className="text-[9px] text-gray-500 ml-2">dashboard.tsx</span>
-        </div>
-        <div className="p-3 font-mono text-[9px] leading-relaxed">
-          <p><span className="text-purple-400">export</span> <span className="text-blue-400">function</span> <span className="text-yellow-300">Dashboard</span>() {"{"}</p>
-          <p className="pl-2"><span className="text-purple-400">const</span> data = <span className="text-blue-400">useData</span>();</p>
-          <p className="pl-2"><span className="text-purple-400">return</span> (</p>
-          <p className="pl-4"><span className="text-gray-500">&lt;</span><span className="text-green-400">Card</span><span className="text-gray-500">&gt;</span></p>
-          <p className="pl-6 text-orange-300">{"{"}data.stats{"}"}</p>
-          <p className="pl-4"><span className="text-gray-500">&lt;/</span><span className="text-green-400">Card</span><span className="text-gray-500">&gt;</span></p>
-          <p className="pl-2">);</p>
-          <p>{"}"}</p>
-        </div>
-      </motion.div>
-
-      {/* Sprint progress */}
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="absolute top-4 right-4 w-[160px] bg-white rounded-xl border border-gray-200 shadow-lg p-3"
-      >
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-[10px] font-semibold text-gray-500">SPRINT 3</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: brand.purpleBg, color: brand.primary }}>
-            In Progress
-          </span>
-        </div>
-        <div className="space-y-2">
-          {[
-            { name: "Auth flow", done: true },
-            { name: "Dashboard UI", done: true },
-            { name: "Booking API", done: false },
-          ].map((task) => (
-            <div key={task.name} className="flex items-center gap-2">
-              <div
-                className={`w-3 h-3 rounded-sm flex items-center justify-center ${
-                  task.done ? "" : "border border-gray-300"
-                }`}
-                style={task.done ? { background: brand.primary } : {}}
-              >
-                {task.done && <CheckCircle2 className="w-2 h-2 text-white" />}
-              </div>
-              <span className={`text-[10px] ${task.done ? "text-gray-400 line-through" : "text-gray-600"}`}>
-                {task.name}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-            <span>Progress</span>
-            <span>67%</span>
-          </div>
-          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: brand.primary }}
-              initial={{ width: 0 }}
-              whileInView={{ width: "67%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.6 }}
-            />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Preview window */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[260px] bg-white rounded-xl border border-gray-200 shadow-xl overflow-hidden"
-      >
-        <div className="h-6 bg-gray-50 flex items-center justify-between px-3">
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-red-400" />
-            <div className="w-2 h-2 rounded-full bg-yellow-400" />
-            <div className="w-2 h-2 rounded-full bg-green-400" />
-          </div>
-          <span className="text-[9px] text-gray-400">localhost:3000</span>
-          <div className="w-12" />
-        </div>
-        <div className="p-3">
-          <div className="flex items-center justify-between mb-3">
-            <div className="h-3 w-20 rounded" style={{ background: brand.lavender }} />
-            <div className="flex gap-1">
-              <div className="w-6 h-6 rounded" style={{ background: brand.purpleBg }} />
-              <div className="w-6 h-6 rounded bg-gray-100" />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-2 rounded-lg bg-gray-50">
-                <div className="text-sm font-bold" style={{ color: brand.primary }}>{i * 12}K</div>
-                <div className="h-1.5 bg-gray-200 rounded w-full mt-1" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function LaunchMockup() {
-  return (
-    <div className="relative w-full h-full min-h-[300px]">
-      {/* Rocket animation */}
-      <motion.div
-        className="absolute top-8 left-1/2 -translate-x-1/2"
-        initial={{ y: 50, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <motion.div
-          animate={{ y: [-5, 5, -5] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-              boxShadow: `0 10px 40px -10px ${brand.primary}80`,
-            }}
-          >
-            <Rocket className="w-8 h-8 text-white" />
-          </div>
-          {/* Exhaust particles */}
-          <motion.div
-            className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-2 h-8 rounded-full opacity-50"
-            style={{ background: `linear-gradient(180deg, ${brand.lavender} 0%, transparent 100%)` }}
-            animate={{ scaleY: [1, 1.5, 1], opacity: [0.5, 0.3, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* Metrics dashboard */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="absolute bottom-4 left-4 right-4 bg-white rounded-xl border border-gray-200 shadow-xl p-4"
-      >
-        <div className="flex items-center gap-2 mb-4">
-          <BarChart3 className="w-4 h-4" style={{ color: brand.primary }} />
-          <span className="text-xs font-semibold text-gray-600">Launch Day Metrics</span>
-          <div className="ml-auto flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-[10px] text-green-600">Live</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: "Uptime", value: "99.9%", color: "text-green-600" },
-            { label: "Response", value: "45ms", color: "" },
-            { label: "Users", value: "1.2K", color: "" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <motion.p
-                className={`text-lg font-bold ${stat.color}`}
-                style={!stat.color ? { color: brand.primary } : {}}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
-                {stat.value}
-              </motion.p>
-              <p className="text-[10px] text-gray-500">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Mini chart */}
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <svg viewBox="0 0 200 40" className="w-full h-8">
-            <defs>
-              <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor={brand.primary} stopOpacity="0.3" />
-                <stop offset="100%" stopColor={brand.primary} stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M 0 35 Q 25 30, 50 25 T 100 20 T 150 12 T 200 8 L 200 40 L 0 40 Z"
-              fill="url(#chartGrad)"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.9 }}
-            />
-            <motion.path
-              d="M 0 35 Q 25 30, 50 25 T 100 20 T 150 12 T 200 8"
-              fill="none"
-              stroke={brand.primary}
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.7 }}
-            />
-          </svg>
-        </div>
-      </motion.div>
-    </div>
+    <ArtifactWindow title="launch — production">
+      <p className="text-white/80">
+        <span style={{ color: brand.primary }}>$</span> aeopic deploy --production
+      </p>
+      <div className="mt-3 space-y-1.5 text-white/55">
+        <p><span className="text-emerald-400">✓</span> deployed to app.yourbusiness.com</p>
+        <p><span className="text-emerald-400">✓</span> monitoring live · 99.99% uptime</p>
+        <p><span className="text-emerald-400">✓</span> bug fixes included</p>
+        <p><span className="text-emerald-400">✓</span> code ownership transferred to you</p>
+      </div>
+      <p className="mt-4 text-white/80">
+        <span style={{ color: brand.primary }}>?</span> what should we build next
+      </p>
+    </ArtifactWindow>
   );
 }
 
 // ============================================================================
-// PHASE SECTION COMPONENT
+// PHASES — hung off a scroll-driven spine
 // ============================================================================
 
 interface PhaseData {
-  number: number;
-  icon: React.ElementType;
+  number: string;
   title: string;
   duration: string;
   description: string;
   activities: string[];
   deliverable: string;
-  Mockup: React.ComponentType;
+  Artifact: React.ComponentType;
 }
 
 const phases: PhaseData[] = [
   {
-    number: 1,
-    icon: Search,
+    number: "01",
     title: "Discovery",
-    duration: "1-2 Weeks",
-    description: "We start by understanding your business inside and out. What works, what doesn't, and where you want to be. This is where we ask the hard questions.",
+    duration: "Weeks 1–2",
+    description:
+      "We start by understanding your business inside and out. What works, what doesn't, and where you want to be. This is where we ask the hard questions.",
     activities: [
       "Kickoff conversation to understand your business",
       "Workflow mapping — how things work today",
@@ -565,14 +352,14 @@ const phases: PhaseData[] = [
       "Success metrics definition",
     ],
     deliverable: "Detailed project specification",
-    Mockup: DiscoveryMockup,
+    Artifact: DiscoveryArtifact,
   },
   {
-    number: 2,
-    icon: FileCode,
+    number: "02",
     title: "Blueprint",
-    duration: "1-2 Weeks",
-    description: "We design everything before writing code. Architecture, UI, workflows — all mapped out and approved by you before development begins.",
+    duration: "Weeks 1–2",
+    description:
+      "We design everything before writing code. Architecture, UI, workflows — all mapped out and approved by you before development begins.",
     activities: [
       "Technical architecture design",
       "UI/UX wireframes and design system",
@@ -581,14 +368,14 @@ const phases: PhaseData[] = [
       "Feature prioritization for MVP",
     ],
     deliverable: "Complete blueprint + visual mockups",
-    Mockup: BlueprintMockup,
+    Artifact: BlueprintArtifact,
   },
   {
-    number: 3,
-    icon: Hammer,
+    number: "03",
     title: "Build & Iterate",
-    duration: "4-8 Weeks",
-    description: "We build in weekly sprints, showing you real progress every step of the way. Your feedback shapes the final product.",
+    duration: "Weeks 4–8",
+    description:
+      "We build in weekly sprints, showing you real progress every step of the way. Your feedback shapes the final product.",
     activities: [
       "Agile development sprints",
       "Weekly progress demos",
@@ -597,14 +384,14 @@ const phases: PhaseData[] = [
       "Performance optimization",
     ],
     deliverable: "Production-ready platform",
-    Mockup: BuildMockup,
+    Artifact: BuildArtifact,
   },
   {
-    number: 4,
-    icon: Rocket,
+    number: "04",
     title: "Launch & Evolve",
     duration: "Ongoing",
-    description: "Go live with confidence. We handle deployment, monitoring, and stick around to help you grow and optimize.",
+    description:
+      "Go live with confidence. We handle deployment, monitoring, and stick around to help you grow and optimize.",
     activities: [
       "Production deployment",
       "Performance monitoring",
@@ -613,216 +400,140 @@ const phases: PhaseData[] = [
       "Ongoing optimization",
     ],
     deliverable: "Live platform + ongoing partnership",
-    Mockup: LaunchMockup,
+    Artifact: LaunchArtifact,
   },
 ];
 
-function PhaseSection({ phase, index }: { phase: PhaseData; index: number }) {
+function PhaseBlock({ phase, index }: { phase: PhaseData; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const isEven = index % 2 === 0;
 
   return (
-    <section
-      ref={ref}
-      className="relative py-20 lg:py-32"
-      style={{
-        background: isEven
-          ? `linear-gradient(180deg, white 0%, ${brand.purpleBg}50 100%)`
-          : "white",
-      }}
-    >
-      {/* Connecting line */}
-      {index < phases.length - 1 && (
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-gray-200 to-transparent" />
-      )}
-
-      <div className="container-site">
-        <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${!isEven ? "lg:grid-flow-dense" : ""}`}>
-          {/* Content */}
-          <motion.div
-            className={!isEven ? "lg:col-start-2" : ""}
-            initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            {/* Phase badge */}
-            <div className="flex items-center gap-4 mb-6">
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-                  boxShadow: `0 8px 30px -8px ${brand.primary}60`,
-                }}
-              >
-                <phase.icon className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <span className="text-sm font-medium text-gray-500">Phase {phase.number}</span>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-bold" style={{ color: brand.dark }}>
-                    {phase.title}
-                  </h2>
-                  <span
-                    className="text-xs px-3 py-1 rounded-full font-medium"
-                    style={{ background: brand.purpleBg, color: brand.primary }}
-                  >
-                    {phase.duration}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Description */}
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              {phase.description}
-            </p>
-
-            {/* Activities */}
-            <div className="space-y-3 mb-8">
-              {phase.activities.map((activity, i) => (
-                <motion.div
-                  key={activity}
-                  className="flex items-start gap-3"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
-                >
-                  <CheckCircle2
-                    className="w-5 h-5 mt-0.5 flex-shrink-0"
-                    style={{ color: brand.primary }}
-                  />
-                  <span className="text-gray-700">{activity}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Deliverable */}
-            <div
-              className="inline-flex items-center gap-3 px-5 py-3 rounded-xl"
-              style={{ background: brand.purpleBg }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ background: brand.lavender }}
-              >
-                <Shield className="w-4 h-4" style={{ color: brand.primary }} />
-              </div>
-              <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Deliverable</p>
-                <p className="font-semibold" style={{ color: brand.dark }}>{phase.deliverable}</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Visual mockup */}
-          <motion.div
-            className={`relative ${!isEven ? "lg:col-start-1 lg:row-start-1" : ""}`}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            <div
-              className="relative rounded-3xl p-2 overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${brand.lavender}40 0%, ${brand.purpleBg} 100%)`,
-              }}
-            >
-              <div className="relative rounded-2xl bg-gradient-to-br from-gray-50 to-white min-h-[350px] overflow-hidden">
-                <phase.Mockup />
-              </div>
-            </div>
-
-            {/* Decorative elements */}
-            <div
-              className="absolute -z-10 -top-6 -right-6 w-32 h-32 rounded-full blur-3xl opacity-40"
-              style={{ background: brand.lavender }}
-            />
-            <div
-              className="absolute -z-10 -bottom-6 -left-6 w-24 h-24 rounded-full blur-2xl opacity-30"
-              style={{ background: brand.primary }}
-            />
-          </motion.div>
-        </div>
+    <div ref={ref} className="relative grid lg:grid-cols-12 gap-10 lg:gap-14 py-16 md:py-24">
+      {/* Spine node */}
+      <div className="hidden lg:block absolute left-[-49px] top-[7.5rem]">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={isInView ? { scale: 1 } : {}}
+          transition={{ duration: 0.4, type: "spring" }}
+          className="w-4 h-4 rounded-full border-[3px] bg-white"
+          style={{ borderColor: brand.primary }}
+        />
       </div>
-    </section>
+
+      {/* Meta column */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+        className="lg:col-span-4"
+      >
+        <span
+          className="block font-heading text-7xl md:text-8xl font-bold tracking-tighter leading-none mb-4 select-none"
+          style={{ color: "transparent", WebkitTextStroke: `1.5px ${brand.primary}` }}
+        >
+          {phase.number}
+        </span>
+        <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-2" style={{ color: brand.dark }}>
+          {phase.title}
+        </h2>
+        <p className="font-mono text-[11px] tracking-[0.25em] uppercase text-gray-400 mb-6">
+          {phase.duration}
+        </p>
+        <p className="text-gray-600 leading-relaxed mb-8">{phase.description}</p>
+
+        {/* Deliverable plate */}
+        <div className="border-l-2 pl-4" style={{ borderColor: brand.primary }}>
+          <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-1">
+            Deliverable
+          </p>
+          <p className="font-semibold" style={{ color: brand.dark }}>
+            {phase.deliverable}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Work column */}
+      <div className="lg:col-span-7 lg:col-start-6 space-y-8">
+        {/* Activities ledger */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="border-t border-gray-200"
+        >
+          {phase.activities.map((activity, i) => (
+            <motion.div
+              key={activity}
+              initial={{ opacity: 0, x: -12 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.2 + i * 0.08 }}
+              className="flex items-baseline gap-4 py-3 border-b border-gray-200"
+            >
+              <span className="font-mono text-[11px]" style={{ color: brand.primary }}>
+                {phase.number}.{i + 1}
+              </span>
+              <span className="text-sm md:text-base text-gray-700">{activity}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Stage artifact */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <phase.Artifact />
+        </motion.div>
+      </div>
+
+      {/* Mobile divider */}
+      {index < phases.length - 1 && (
+        <div className="lg:hidden absolute bottom-0 left-0 right-0 h-px bg-gray-200" />
+      )}
+    </div>
   );
 }
 
-// ============================================================================
-// WHAT TO EXPECT SECTION
-// ============================================================================
-
-const expectations = [
-  {
-    icon: MessageSquare,
-    title: "Clear Communication",
-    description: "Weekly updates. No ghosting. You always know where things stand.",
-  },
-  {
-    icon: Shield,
-    title: "No Surprises",
-    description: "Scope and budget are locked in from day one. No hidden fees.",
-  },
-  {
-    icon: Zap,
-    title: "Fast Iteration",
-    description: "See real progress every week. Not months of silence.",
-  },
-  {
-    icon: Users,
-    title: "Direct Access",
-    description: "Talk to the engineers building your product. No middlemen.",
-  },
-];
-
-function ExpectationsSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+function PhasesSection() {
+  const spineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: spineRef,
+    offset: ["start 0.7", "end 0.7"],
+  });
+  const spineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-[#0F1226]">
+    <section className="py-24 lg:py-32 bg-white">
       <div className="container-site">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span
-            className="inline-block text-sm font-semibold tracking-widest uppercase mb-4"
-            style={{ color: brand.lavender }}
-          >
-            Working With Us
+        {/* Dossier rule */}
+        <div className="flex items-baseline gap-4 mb-10">
+          <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: brand.primary }}>
+            STAGES
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            What to Expect
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            We believe in transparency, speed, and quality. Here&apos;s what that looks like in practice.
-          </p>
-        </motion.div>
+          <span className="font-mono text-xs tracking-[0.3em] uppercase text-gray-400">
+            The pipeline, stage by stage
+          </span>
+          <div className="flex-1 h-px bg-gray-200" />
+        </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {expectations.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group relative p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
-            >
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                style={{
-                  background: `linear-gradient(135deg, ${brand.primary}30 0%, ${brand.primarySoft}20 100%)`,
-                }}
-              >
-                <item.icon className="w-6 h-6" style={{ color: brand.lavender }} />
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
-            </motion.div>
+        {/* Spine + phases */}
+        <div ref={spineRef} className="relative lg:pl-12">
+          {/* Track */}
+          <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-px bg-gray-200" />
+          {/* Scroll-driven fill — the pipeline completes as you read */}
+          <motion.div
+            className="hidden lg:block absolute left-0 top-0 bottom-0 w-px origin-top"
+            style={{
+              scaleY: spineProgress,
+              background: brand.primary,
+              boxShadow: `0 0 8px ${brand.primary}60`,
+            }}
+          />
+
+          {phases.map((phase, index) => (
+            <PhaseBlock key={phase.number} phase={phase} index={index} />
           ))}
         </div>
       </div>
@@ -831,7 +542,126 @@ function ExpectationsSection() {
 }
 
 // ============================================================================
-// CTA SECTION
+// WORKING AGREEMENT — what to expect, rendered as a document
+// ============================================================================
+
+const agreementClauses = [
+  {
+    n: "01",
+    title: "Clear communication",
+    body: "Weekly updates. No ghosting. You always know where things stand.",
+  },
+  {
+    n: "02",
+    title: "No surprises",
+    body: "Scope and budget are locked in from day one. No hidden fees.",
+  },
+  {
+    n: "03",
+    title: "Fast iteration",
+    body: "See real progress every week. Not months of silence.",
+  },
+  {
+    n: "04",
+    title: "Direct access",
+    body: "Talk to the engineers building your product. No middlemen.",
+  },
+];
+
+function WorkingAgreement() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="py-24 lg:py-36 relative overflow-hidden" style={{ background: brand.dark }}>
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, white 1px, transparent 1px),
+            linear-gradient(to bottom, white 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div
+        className="absolute -right-40 bottom-0 w-[500px] h-[500px] rounded-full blur-[150px] opacity-15 pointer-events-none"
+        style={{ background: brand.primary }}
+      />
+
+      <div className="container-site relative z-10">
+        {/* Dossier rule */}
+        <div className="flex items-baseline gap-4 mb-14 md:mb-20">
+          <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: brand.primary }}>
+            TERMS
+          </span>
+          <span className="font-mono text-xs tracking-[0.3em] uppercase text-white/40">
+            Working with us
+          </span>
+          <div className="flex-1 h-px bg-white/10" />
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5"
+          >
+            <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] text-white mb-6">
+              The terms we
+              <br />
+              <span style={{ color: "transparent", WebkitTextStroke: "2px rgba(255,255,255,0.5)" }}>
+                hold ourselves to.
+              </span>
+            </h2>
+            <p className="text-white/60 leading-relaxed max-w-md">
+              We believe in transparency, speed, and quality. This is what that
+              looks like in practice — on every project, no exceptions.
+            </p>
+          </motion.div>
+
+          {/* The document */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="lg:col-span-6 lg:col-start-7"
+          >
+            <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/25 backdrop-blur-sm">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+                <span className="font-mono text-[11px] text-white/40">working-agreement.md</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-emerald-400">
+                  ✓ standard on every build
+                </span>
+              </div>
+              <div className="p-6 md:p-8 space-y-7">
+                {agreementClauses.map((clause, i) => (
+                  <motion.div
+                    key={clause.n}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.15 }}
+                  >
+                    <p className="font-mono text-xs mb-1.5">
+                      <span style={{ color: brand.primary }}>##</span>{" "}
+                      <span className="text-white/35">{clause.n}.</span>{" "}
+                      <span className="text-white font-bold tracking-wide">{clause.title}</span>
+                    </p>
+                    <p className="text-sm text-white/55 leading-relaxed pl-6">{clause.body}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// CTA
 // ============================================================================
 
 function ProcessCTA() {
@@ -839,60 +669,63 @@ function ProcessCTA() {
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section
-      ref={ref}
-      className="relative py-20 lg:py-32 overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${brand.purpleBg} 0%, white 50%, ${brand.purpleBg} 100%)`,
-      }}
-    >
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-30 blur-3xl"
-          style={{ background: brand.lavender }}
-        />
-      </div>
+    <section ref={ref} className="py-24 lg:py-36 bg-white">
+      <div className="container-site">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="font-mono text-xs tracking-[0.3em] uppercase mb-8"
+          style={{ color: brand.primary }}
+        >
+          Stage 00 — the conversation
+        </motion.p>
 
-      <div className="container-site relative z-10">
-        <motion.div
-          className="max-w-3xl mx-auto text-center"
+        <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1] mb-8 max-w-4xl"
+          style={{ color: brand.dark }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ color: brand.dark }}>
-            Ready to Start Building?
-          </h2>
-          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-            Let&apos;s have a conversation about your project. No pressure, no sales pitch —
-            just a discussion about what you need and how we can help.
-          </p>
+          Every pipeline starts
+          <br />
+          <span style={{ color: "transparent", WebkitTextStroke: `2px ${brand.dark}` }}>
+            with a conversation.
+          </span>
+        </motion.h2>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/start"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-                boxShadow: `0 10px 40px -10px ${brand.primary}80`,
-              }}
-            >
-              Start Your Project
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 hover:bg-gray-50"
-              style={{ borderColor: brand.lavender, color: brand.dark }}
-            >
-              See Our Work
-            </Link>
-          </div>
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="text-lg text-gray-600 max-w-xl mb-12 leading-relaxed"
+        >
+          Tell us what you&apos;re building. We&apos;ll map the stages, give you a
+          fixed number, and you&apos;ll know exactly what happens next.
+        </motion.p>
 
-          <p className="mt-8 text-sm text-gray-500">
-            Usually respond within 24 hours · Houston-based · Remote-friendly
-          </p>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+        >
+          <Link
+            href="/start"
+            className="group inline-flex items-center gap-3 px-8 py-4 font-bold text-white transition-all duration-200 hover:opacity-90"
+            style={{ background: brand.primary }}
+          >
+            Start Your Project
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+          </Link>
+          <Link
+            href="/pricing"
+            className="group inline-flex items-center gap-2 font-mono text-sm tracking-[0.15em] uppercase text-gray-500 hover:text-[#726AFF] transition-colors border-b border-gray-300 hover:border-[#726AFF] pb-1"
+          >
+            Get an instant estimate
+            <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -900,20 +733,15 @@ function ProcessCTA() {
 }
 
 // ============================================================================
-// MAIN PAGE COMPONENT
+// PAGE
 // ============================================================================
 
 export default function ProcessPage() {
   return (
     <main>
       <ProcessHero />
-
-      {/* Phase sections */}
-      {phases.map((phase, index) => (
-        <PhaseSection key={phase.number} phase={phase} index={index} />
-      ))}
-
-      <ExpectationsSection />
+      <PhasesSection />
+      <WorkingAgreement />
       <ProcessCTA />
     </main>
   );
