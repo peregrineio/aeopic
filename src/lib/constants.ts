@@ -41,6 +41,7 @@ export const navLinks = [
   { label: "Pricing", href: "/pricing" },
   { label: "Security", href: "/security" },
   { label: "Blog", href: "/blog" },
+  { label: "Opportunities", href: "/opportunities" },
 ];
 
 export const footerLinks = {
@@ -77,6 +78,7 @@ export const footerLinks = {
     { label: "Work", href: "/work" },
     { label: "Blog", href: "/blog" },
     { label: "Pricing", href: "/pricing" },
+    { label: "Opportunities", href: "/opportunities" },
     { label: "Get Started", href: "/start" },
   ],
 };

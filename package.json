@@ -7,15 +7,20 @@
     "build": "velite && next build",
     "start": "next start",
     "lint": "eslint",
-    "velite": "velite"
+    "velite": "velite",
+    "chat:embeddings": "tsx scripts/generate-chat-embeddings.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@huggingface/transformers": "^4.2.0",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.1",
     "@vercel/og": "^0.11.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.4",
     "lucide-react": "^0.576.0",
+    "minisearch": "^7.2.0",
     "next": "16.1.6",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
@@ -28,6 +33,7 @@
     "resend": "^6.9.4",
     "rss": "^1.2.2",
     "shiki": "^4.0.2",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "velite": "^0.3.1",
     "zod": "^4.3.6"
