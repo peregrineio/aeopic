@@ -4,59 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  X,
-  ChevronDown,
-  LayoutDashboard,
-  Bot,
-  Megaphone,
-  ShoppingCart,
-  Thermometer,
-  Wrench,
-  HardHat,
-  Leaf,
-  Stethoscope,
-  UtensilsCrossed,
-  Scale,
-  Car,
-  SprayCan,
-  Building2,
-  ArrowRight,
-  LogIn,
-} from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/constants";
 
-const serviceIcons: Record<string, React.ElementType> = {
-  "Custom Web Apps": LayoutDashboard,
-  "AI Integrated Operating Systems": Bot,
-  "Marketing & SEO": Megaphone,
-  eCommerce: ShoppingCart,
-};
-
-const industryIcons: Record<string, React.ElementType> = {
-  "HVAC & Home Services": Thermometer,
-  "Plumbing & Electrical": Wrench,
-  "Contractors & Remodeling": HardHat,
-  "Lawn Care & Landscaping": Leaf,
-  "Medical & Dental": Stethoscope,
-  Restaurants: UtensilsCrossed,
-  "Law Offices": Scale,
-  "Auto & Detailing": Car,
-  "Cleaning & Pest Control": SprayCan,
-  "Chambers of Commerce": Building2,
-};
-
-const brand = {
-  primary: "#726AFF",
-  primarySoft: "#8B5CF6",
-  lavender: "#C4B5FD",
-  lavenderLight: "#DDD6FE",
-  purpleBg: "#F5F3FF",
-};
+const brand = { primary: "#726AFF", dark: "#0F1226" };
 
 const refIndustryMap: Record<string, { label: string; href: string }> = {
   "chambers-of-commerce": { label: "Chambers of Commerce", href: "/industries/chambers-of-commerce" },
@@ -133,7 +87,6 @@ export function Header() {
 
   const isHomePage = pathname === "/";
 
-  // Animation variants
   const overlayVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -145,11 +98,7 @@ export function Header() {
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
+      transition: { delay: i * 0.05, duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const },
     }),
     exit: { opacity: 0, y: 10, transition: { duration: 0.15 } },
   };
@@ -159,225 +108,140 @@ export function Header() {
     visible: {
       opacity: 1,
       height: "auto",
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
+      transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: { duration: 0.2 },
-    },
+    exit: { opacity: 0, height: 0, transition: { duration: 0.2 } },
   };
 
   const dropdownVariants = {
-    hidden: { opacity: 0, y: 8, scale: 0.98 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: 0.2,
+        duration: 0.25,
         ease: [0.23, 1, 0.32, 1] as const,
-        staggerChildren: 0.03,
+        staggerChildren: 0.035,
         delayChildren: 0.05,
       },
     },
-    exit: {
-      opacity: 0,
-      y: 4,
-      scale: 0.98,
-      transition: {
-        duration: 0.15,
-        ease: [0.23, 1, 0.32, 1] as const,
-      },
-    },
+    exit: { opacity: 0, y: 6, transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] as const } },
   };
 
   const dropdownItemVariants = {
-    hidden: { opacity: 0, x: -8 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] as const },
-    },
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: [0.23, 1, 0.32, 1] as const } },
   };
 
+  /** Dark dossier dropdown panels — ledger rows, mono indexes, no icon tiles. */
   const renderDropdownContent = (
     link: (typeof navLinks)[0],
     dropdownType: "services" | "industries"
   ) => {
-    const icons =
-      dropdownType === "services" ? serviceIcons : industryIcons;
     const children = link.children || [];
+    const isServices = dropdownType === "services";
 
-    if (dropdownType === "services") {
-      return (
-        <motion.div
-          variants={dropdownVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-          style={{ width: "520px" }}
-        >
-          <div
-            className="rounded-2xl border border-gray-200/80 shadow-xl overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, white 0%, ${brand.purpleBg} 100%)`,
-              boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
-            }}
-          >
-            <div className="px-6 py-4 border-b border-gray-100">
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
-                Our Services
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-1 p-2">
-              {children.map((child) => {
-                const Icon = icons[child.label] || LayoutDashboard;
-                return (
-                  <motion.div key={child.label} variants={dropdownItemVariants}>
-                    <Link
-                      href={child.href}
-                      onClick={() => setActiveDropdown(null)}
-                      className="group flex items-start gap-4 p-4 rounded-xl transition-all duration-200 hover:bg-white"
-                      style={{ boxShadow: "0 0 0 0 transparent" }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = "0 0 0 0 transparent";
-                      }}
-                    >
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
-                        style={{
-                          background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
-                        }}
-                      >
-                        <Icon
-                          className="w-5 h-5 transition-colors duration-200"
-                          style={{ color: brand.primary }}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-900 group-hover:text-[#726AFF] transition-colors">
-                            {child.label}
-                          </span>
-                          <ArrowRight
-                            className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
-                            style={{ color: brand.primary }}
-                          />
-                        </div>
-                        <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                          {child.description}
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-            <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
-              <Link
-                href="/services"
-                onClick={() => setActiveDropdown(null)}
-                className="group flex items-center justify-between text-sm"
-              >
-                <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
-                  View all services
-                </span>
-                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all" />
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      );
-    }
-
-    // Industries: 3-column mega menu
     return (
       <motion.div
         variants={dropdownVariants}
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-        style={{ width: "680px" }}
+        className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+        style={{ width: isServices ? "480px" : "620px" }}
       >
         <div
-          className="rounded-2xl border border-gray-200/80 shadow-xl overflow-hidden"
-          style={{
-            background: `linear-gradient(135deg, white 0%, ${brand.purpleBg} 100%)`,
-            boxShadow: `0 25px 50px -12px rgba(114, 106, 255, 0.15), 0 0 0 1px rgba(114, 106, 255, 0.05)`,
-          }}
+          className="overflow-hidden rounded-xl border border-white/10 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.7)]"
+          style={{ background: "rgba(15,18,38,0.97)", backdropFilter: "blur(20px)" }}
         >
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-gray-400 font-medium">
-              Industries We Serve
+          {/* Panel header */}
+          <div className="flex items-center justify-between px-6 py-3.5 border-b border-white/10">
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
+              {isServices ? "Services" : "Industries"}
             </p>
-            <span
-              className="text-[0.6rem] px-2 py-1 rounded-full font-medium"
-              style={{ background: brand.purpleBg, color: brand.primary }}
-            >
-              10 Specializations
-            </span>
+            <p className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: brand.primary }}>
+              {children.length} {isServices ? "modules" : "specializations"}
+            </p>
           </div>
-          <div className="grid grid-cols-3 gap-1 p-2">
-            {children.map((child) => {
-              const Icon = icons[child.label] || Wrench;
-              return (
-                <motion.div key={child.label} variants={dropdownItemVariants}>
-                  <Link
-                    href={child.href}
-                    onClick={() => setActiveDropdown(null)}
-                    className="group flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
-                    style={{ boxShadow: "0 0 0 0 transparent" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = `0 4px 20px -4px rgba(114, 106, 255, 0.2)`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 0 0 0 transparent";
-                    }}
+
+          {/* Ledger rows */}
+          <div className={cn("py-2", !isServices && "grid grid-cols-2 gap-x-0")}>
+            {children.map((child, i) => (
+              <motion.div key={child.label} variants={dropdownItemVariants}>
+                <Link
+                  href={child.href}
+                  onClick={() => setActiveDropdown(null)}
+                  className="group/row flex items-baseline gap-4 px-6 py-3 transition-colors duration-200 hover:bg-white/[0.05]"
+                >
+                  <span
+                    className="font-mono text-[11px] flex-shrink-0 transition-colors duration-200"
+                    style={{ color: brand.primary }}
                   >
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
-                      style={{
-                        background: `linear-gradient(135deg, ${brand.purpleBg} 0%, ${brand.lavenderLight} 100%)`,
-                      }}
-                    >
-                      <Icon
-                        className="w-4 h-4 transition-colors duration-200"
+                    /{String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-white/85 group-hover/row:text-white transition-colors truncate">
+                        {child.label.replace(" & Home Services", "")}
+                      </span>
+                      <ArrowUpRight
+                        className="w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 group-hover/row:opacity-100 group-hover/row:translate-x-0 group-hover/row:rotate-45 transition-all duration-200"
                         style={{ color: brand.primary }}
                       />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-[#726AFF] transition-colors truncate">
-                      {child.label.replace(" & Home Services", "")}
                     </span>
-                  </Link>
-                </motion.div>
-              );
-            })}
+                    {isServices && "description" in child && (
+                      <span className="block text-xs text-white/40 mt-0.5 leading-relaxed group-hover/row:text-white/55 transition-colors">
+                        {child.description}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
           </div>
-          <div className="px-6 py-4 border-t border-gray-100 bg-white/50">
-            <Link
-              href="/industries"
-              onClick={() => setActiveDropdown(null)}
-              className="group flex items-center justify-between text-sm"
-            >
-              <span className="font-medium text-gray-600 group-hover:text-[#726AFF] transition-colors">
-                Explore all industries
-              </span>
-              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#726AFF] group-hover:translate-x-1 transition-all" />
-            </Link>
-          </div>
+
+          {/* Panel footer */}
+          <Link
+            href={isServices ? "/services" : "/industries"}
+            onClick={() => setActiveDropdown(null)}
+            className="group/all flex items-center justify-between px-6 py-3.5 border-t border-white/10 hover:bg-white/[0.05] transition-colors"
+          >
+            <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-white/45 group-hover/all:text-white transition-colors">
+              Index all {isServices ? "services" : "industries"}
+            </span>
+            <ArrowRight
+              className="w-3.5 h-3.5 text-white/30 group-hover/all:translate-x-1 transition-all"
+              style={{ color: brand.primary }}
+            />
+          </Link>
         </div>
       </motion.div>
     );
   };
+
+  /** Route-style nav label: a purple "/" slides in on hover; active keeps it. */
+  const NavLabel = ({ label, active }: { label: string; active: boolean }) => (
+    <span className="relative flex items-center">
+      <span
+        className={cn(
+          "font-mono transition-all duration-200 overflow-hidden",
+          active ? "w-2.5 opacity-100" : "w-0 opacity-0 group-hover/nav:w-2.5 group-hover/nav:opacity-100"
+        )}
+        style={{ color: brand.primary }}
+        aria-hidden
+      >
+        /
+      </span>
+      <span
+        className={cn(
+          "text-[13px] font-medium transition-colors duration-200",
+          active ? "text-white" : "text-white/65 group-hover/nav:text-white"
+        )}
+      >
+        {label}
+      </span>
+    </span>
+  );
 
   return (
     <>
@@ -385,11 +249,16 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-black/[0.04]"
+            ? "border-b border-white/[0.08] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.5)]"
             : isHomePage
               ? "bg-transparent"
               : "bg-[#0F1226]"
         )}
+        style={
+          isScrolled
+            ? { background: "rgba(15,18,38,0.85)", backdropFilter: "blur(20px)" }
+            : undefined
+        }
       >
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div
@@ -414,7 +283,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-0.5">
+            <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) =>
                 link.children ? (
                   <div
@@ -425,22 +294,20 @@ export function Header() {
                   >
                     <button
                       className={cn(
-                        "flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200",
-                        isScrolled
-                          ? "text-gray-600 hover:text-gray-900 hover:bg-black/[0.04]"
-                          : "text-white/75 hover:text-white hover:bg-white/[0.08]",
-                        isActive(link.href) && "text-[#726AFF]",
-                        activeDropdown === link.label &&
-                          (isScrolled
-                            ? "text-gray-900 bg-black/[0.04]"
-                            : "text-white bg-white/[0.08]")
+                        "group/nav flex items-center gap-1.5 px-3 py-2 transition-all duration-200",
+                        activeDropdown === link.label && "[&_span]:text-white"
                       )}
                     >
-                      {link.label}
+                      <NavLabel
+                        label={link.label}
+                        active={isActive(link.href) || activeDropdown === link.label}
+                      />
                       <ChevronDown
                         className={cn(
-                          "w-3.5 h-3.5 transition-transform duration-200",
-                          activeDropdown === link.label && "rotate-180"
+                          "w-3 h-3 transition-all duration-200",
+                          activeDropdown === link.label
+                            ? "rotate-180 text-white"
+                            : "text-white/40 group-hover/nav:text-white/70"
                         )}
                       />
                     </button>
@@ -457,15 +324,9 @@ export function Header() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={cn(
-                      "px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all duration-200",
-                      isScrolled
-                        ? "text-gray-600 hover:text-gray-900 hover:bg-black/[0.04]"
-                        : "text-white/75 hover:text-white hover:bg-white/[0.08]",
-                      isActive(link.href) && "text-[#726AFF]"
-                    )}
+                    className="group/nav px-3 py-2 transition-all duration-200"
                   >
-                    {link.label}
+                    <NavLabel label={link.label} active={isActive(link.href)} />
                   </Link>
                 )
               )}
@@ -473,11 +334,10 @@ export function Header() {
                 <Link
                   href={refIndustry.href}
                   className={cn(
-                    "px-3 py-1.5 text-[13px] font-semibold rounded-lg transition-all duration-200 border",
-                    isScrolled
-                      ? "text-[#726AFF] border-[#726AFF]/30 hover:bg-[#726AFF]/5"
-                      : "text-white border-white/30 hover:bg-white/[0.08]",
-                    isActive(refIndustry.href) && "bg-[#726AFF]/10 border-[#726AFF]/50"
+                    "ml-1 px-3 py-1.5 font-mono text-[11px] tracking-[0.1em] uppercase transition-all duration-200 border",
+                    isActive(refIndustry.href)
+                      ? "text-white border-[#726AFF] bg-[#726AFF]/15"
+                      : "text-white/80 border-white/25 hover:border-[#726AFF] hover:text-white"
                   )}
                 >
                   {refIndustry.label}
@@ -485,33 +345,25 @@ export function Header() {
               )}
             </nav>
 
-            {/* Desktop: Login icon + CTA */}
-            <div className="hidden lg:flex items-center gap-2">
+            {/* Desktop: Login + CTA */}
+            <div className="hidden lg:flex items-center gap-3">
               <a
                 href="https://portal.aeopic.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Client Portal"
-                className={cn(
-                  "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
-                  isScrolled
-                    ? "text-gray-400 hover:text-[#726AFF] hover:bg-black/[0.04]"
-                    : "text-white/40 hover:text-white hover:bg-white/[0.08]"
-                )}
+                title="Client Portal"
+                className="flex items-center justify-center w-9 h-9 text-white/40 hover:text-white transition-colors duration-200"
               >
                 <LogIn className="w-[18px] h-[18px]" />
               </a>
-              <div
-                className={cn(
-                  "w-px h-5",
-                  isScrolled ? "bg-gray-200" : "bg-white/15"
-                )}
-              />
+              <div className="w-px h-5 bg-white/15" />
               <Link
                 href="/start"
-                className="bg-[#726AFF] text-white text-[13px] font-semibold px-5 py-2 rounded-xl hover:bg-[#5B54D6] transition-all duration-200 shadow-sm shadow-[#726AFF]/20"
+                className="group/cta inline-flex items-center gap-2 bg-[#726AFF] text-white text-[13px] font-bold px-5 py-2.5 hover:bg-[#5B54D6] transition-all duration-200"
               >
                 Get Started
+                <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-1 transition-transform" />
               </Link>
             </div>
 
@@ -521,7 +373,7 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMenuOpen(true)}
-                className={cn(isScrolled ? "text-foreground" : "text-white")}
+                className="text-white"
                 aria-label="Open menu"
               >
                 <Menu className="h-6 w-6" />
@@ -531,7 +383,7 @@ export function Header() {
         </div>
       </header>
 
-      {/* Full-Screen Mobile Menu Overlay */}
+      {/* Full-Screen Mobile Menu Overlay — dossier style */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -543,8 +395,18 @@ export function Header() {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute inset-0 bg-[#0F1226]">
+              {/* Grid texture */}
+              <div
+                className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(to right, white 1px, transparent 1px),
+                    linear-gradient(to bottom, white 1px, transparent 1px)
+                  `,
+                  backgroundSize: "64px 64px",
+                }}
+              />
               <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-[#726AFF]/10 blur-[120px] pointer-events-none" />
-              <div className="absolute bottom-1/4 right-0 w-[300px] h-[300px] rounded-full bg-[#726AFF]/5 blur-[100px] pointer-events-none" />
             </div>
 
             <div className="relative h-full flex flex-col px-6 py-6">
@@ -574,96 +436,98 @@ export function Header() {
                 </Button>
               </motion.div>
 
-              {/* Navigation Links */}
-              <nav className="flex-1 flex flex-col justify-center items-center space-y-6 overflow-y-auto py-8">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.label}
-                    custom={index + 1}
-                    variants={menuItemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="w-full max-w-xs text-center"
-                  >
-                    {link.children ? (
-                      <div>
-                        <button
-                          onClick={() => toggleExpanded(link.label)}
-                          className={cn(
-                            "flex items-center justify-center gap-2 w-full text-3xl font-semibold tracking-tight transition-colors",
-                            isActive(link.href)
-                              ? "text-[#726AFF]"
-                              : "text-white hover:text-white/80"
-                          )}
-                        >
-                          {link.label}
-                          <ChevronDown
-                            className={cn(
-                              "h-6 w-6 transition-transform duration-300",
-                              expandedItem === link.label && "rotate-180"
-                            )}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {expandedItem === link.label && (
-                            <motion.div
-                              variants={subMenuVariants}
-                              initial="hidden"
-                              animate="visible"
-                              exit="exit"
-                              className="overflow-hidden"
+              {/* Navigation index */}
+              <nav className="flex-1 flex flex-col justify-center overflow-y-auto py-8">
+                <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/30 mb-6">
+                  Index
+                </p>
+                <div className="space-y-1">
+                  {navLinks.map((link, index) => (
+                    <motion.div
+                      key={link.label}
+                      custom={index + 1}
+                      variants={menuItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="border-b border-white/[0.07]"
+                    >
+                      {link.children ? (
+                        <div>
+                          <button
+                            onClick={() => toggleExpanded(link.label)}
+                            className="flex items-center gap-4 w-full py-3.5 text-left"
+                          >
+                            <span className="font-mono text-xs" style={{ color: brand.primary }}>
+                              /{String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span
+                              className={cn(
+                                "flex-1 font-heading text-2xl font-bold tracking-tight transition-colors",
+                                isActive(link.href) ? "text-[#9B95FF]" : "text-white"
+                              )}
                             >
-                              <div className="pt-4 space-y-3">
-                                {link.children.map((child) => {
-                                  const icons =
-                                    link.label === "Services"
-                                      ? serviceIcons
-                                      : industryIcons;
-                                  const Icon = icons[child.label] || Wrench;
-                                  return (
+                              {link.label}
+                            </span>
+                            <ChevronDown
+                              className={cn(
+                                "h-5 w-5 text-white/40 transition-transform duration-300",
+                                expandedItem === link.label && "rotate-180"
+                              )}
+                            />
+                          </button>
+                          <AnimatePresence>
+                            {expandedItem === link.label && (
+                              <motion.div
+                                variants={subMenuVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                className="overflow-hidden"
+                              >
+                                <div className="pb-4 pl-10 space-y-0.5">
+                                  {link.children.map((child) => (
                                     <Link
                                       key={child.label}
                                       href={child.href}
                                       onClick={closeMenu}
                                       className={cn(
-                                        "flex items-center gap-3 text-lg transition-colors px-4 py-2 rounded-lg",
+                                        "block py-2 text-base transition-colors",
                                         isActive(child.href)
-                                          ? "text-[#726AFF] bg-[#726AFF]/10"
-                                          : "text-white/70 hover:text-white hover:bg-white/5"
+                                          ? "text-[#9B95FF]"
+                                          : "text-white/60 hover:text-white"
                                       )}
                                     >
-                                      <Icon className="w-5 h-5 flex-shrink-0" />
-                                      <span>
-                                        {child.label.replace(
-                                          " & Home Services",
-                                          ""
-                                        )}
-                                      </span>
+                                      {child.label.replace(" & Home Services", "")}
                                     </Link>
-                                  );
-                                })}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        onClick={closeMenu}
-                        className={cn(
-                          "block text-3xl font-semibold tracking-tight transition-colors",
-                          isActive(link.href)
-                            ? "text-[#726AFF]"
-                            : "text-white hover:text-white/80"
-                        )}
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                  </motion.div>
-                ))}
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          onClick={closeMenu}
+                          className="flex items-center gap-4 py-3.5"
+                        >
+                          <span className="font-mono text-xs" style={{ color: brand.primary }}>
+                            /{String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span
+                            className={cn(
+                              "font-heading text-2xl font-bold tracking-tight transition-colors",
+                              isActive(link.href) ? "text-[#9B95FF]" : "text-white"
+                            )}
+                          >
+                            {link.label}
+                          </span>
+                        </Link>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
               </nav>
 
               {/* Bottom: CTA + Contact */}
@@ -678,27 +542,26 @@ export function Header() {
                 <Link
                   href="/start"
                   onClick={closeMenu}
-                  className="block w-full py-4 text-center text-lg font-semibold text-white rounded-xl cta-gradient hover:opacity-90 transition-opacity shadow-lg shadow-[#726AFF]/30"
+                  className="flex items-center justify-center gap-3 w-full py-4 text-center text-lg font-bold text-white bg-[#726AFF] hover:bg-[#5B54D6] transition-colors"
                 >
                   Get Started
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
                 <a
                   href="https://portal.aeopic.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-white/50 hover:text-white/80 transition-colors"
+                  className="flex items-center justify-center gap-2 py-2 font-mono text-[11px] tracking-[0.2em] uppercase text-white/45 hover:text-white/80 transition-colors"
                 >
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className="w-3.5 h-3.5" />
                   Client Portal
                 </a>
-                <div className="text-center space-y-1">
-                  <a
-                    href="mailto:contact@aeopic.com"
-                    className="block text-sm text-white/40 hover:text-white/60 transition-colors"
-                  >
-                    contact@aeopic.com
-                  </a>
-                </div>
+                <a
+                  href="mailto:contact@aeopic.com"
+                  className="block text-center font-mono text-[11px] tracking-[0.15em] text-white/30 hover:text-white/60 transition-colors"
+                >
+                  contact@aeopic.com
+                </a>
               </motion.div>
             </div>
           </motion.div>
