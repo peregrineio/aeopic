@@ -3,10 +3,25 @@ import { createStaticAnonClient } from "@/lib/supabase/server";
 import type { OpportunityListing } from "@/lib/types/opportunities";
 
 /**
+ * Missing Supabase env vars must degrade to empty listings — never crash
+ * the build (generateStaticParams runs these at build time).
+ */
+function hasSupabaseEnv(): boolean {
+  const configured = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+  if (!configured) {
+    console.warn("[opportunities] Supabase env vars not set — returning empty data");
+  }
+  return configured;
+}
+
+/**
  * Fetch all currently-visible active listings. RLS makes this safe to call
  * from anywhere — anon role can only see status='active' rows.
  */
 export async function getActiveListings(): Promise<OpportunityListing[]> {
+  if (!hasSupabaseEnv()) return [];
   const supabase = createStaticAnonClient();
   const { data, error } = await supabase
     .from("opportunity_listings")
@@ -25,6 +40,7 @@ export async function getActiveListings(): Promise<OpportunityListing[]> {
 export async function getListingBySlug(
   slug: string
 ): Promise<OpportunityListing | null> {
+  if (!hasSupabaseEnv()) return null;
   const supabase = createStaticAnonClient();
   const { data, error } = await supabase
     .from("opportunity_listings")
@@ -41,6 +57,7 @@ export async function getListingBySlug(
 }
 
 export async function getActiveListingCount(): Promise<number> {
+  if (!hasSupabaseEnv()) return 0;
   const supabase = createStaticAnonClient();
   const { count, error } = await supabase
     .from("opportunity_listings")
@@ -58,6 +75,7 @@ export async function getActiveListingCount(): Promise<number> {
  * Fetch all active listing slugs for `generateStaticParams()`.
  */
 export async function getAllActiveSlugs(): Promise<string[]> {
+  if (!hasSupabaseEnv()) return [];
   const supabase = createStaticAnonClient();
   const { data, error } = await supabase
     .from("opportunity_listings")
