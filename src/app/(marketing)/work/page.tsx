@@ -1007,7 +1007,7 @@ function StatsSection() {
 
   const stats = [
     { value: "Full", label: "Code Ownership", description: "You own everything we build for you" },
-    { value: "8-12", label: "Weeks to Launch", description: "Average project timeline" },
+    { value: "4-8", label: "Weeks to Launch", description: "Average project timeline" },
     { value: "24/7", label: "Uptime", description: "Your platform never sleeps" },
     { value: "10+", label: "Years Experience", description: "Combined engineering expertise" },
   ];

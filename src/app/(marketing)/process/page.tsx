@@ -118,7 +118,7 @@ function ProcessHero() {
             <div className="flex items-center gap-3">
               <Clock className="w-5 h-5" style={{ color: brand.primary }} />
               <div>
-                <p className="text-2xl font-bold" style={{ color: brand.dark }}>8-12 Weeks</p>
+                <p className="text-2xl font-bold" style={{ color: brand.dark }}>4-8 Weeks</p>
                 <p className="text-sm text-gray-500">Average time to launch</p>
               </div>
             </div>

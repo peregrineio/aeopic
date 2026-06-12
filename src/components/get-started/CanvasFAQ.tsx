@@ -12,7 +12,7 @@ import {
 const faqs = [
   {
     q: "How long does a typical project take?",
-    a: "Most projects launch in 8-12 weeks. You'll see weekly progress demos throughout development, so there are no surprises. We move fast without cutting corners.",
+    a: "Most projects launch in 4-8 weeks. You'll see weekly progress demos throughout development, so there are no surprises. We move fast without cutting corners.",
   },
   {
     q: "Do I own the code you build?",

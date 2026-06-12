@@ -6,7 +6,7 @@ import { Rocket, Shield, Code2, Unlock } from "lucide-react";
 
 const stats = [
   {
-    value: "8–12",
+    value: "4–8",
     label: "Weeks avg. to launch",
     icon: Rocket,
   },

@@ -121,7 +121,7 @@ export default function LocationsPage() {
                 size="lg"
                 className="h-14 px-8 text-base font-semibold text-white bg-[#726AFF] hover:bg-[#5B54D6] transition-colors"
               >
-                <Link href="/contact" className="flex items-center gap-3">
+                <Link href="/start" className="flex items-center gap-3">
                   Start Your Project
                   <ArrowUpRight className="w-5 h-5" />
                 </Link>

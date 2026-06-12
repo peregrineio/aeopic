@@ -39,7 +39,7 @@ const comparisonData = [
   { feature: "Open-Source Stack", aeopic: true, agency: "partial", nocode: false },
   { feature: "AI-Native Build", aeopic: true, agency: "partial", nocode: false },
   { feature: "Direct Engineer Access", aeopic: true, agency: false, nocode: "na" },
-  { feature: "8–12 Week Launch", aeopic: true, agency: false, nocode: true },
+  { feature: "4–8 Week Launch", aeopic: true, agency: false, nocode: true },
   { feature: "Custom Business Logic", aeopic: true, agency: true, nocode: false },
   { feature: "App + Marketing", aeopic: true, agency: "partial", nocode: false },
 ];

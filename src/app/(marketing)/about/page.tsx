@@ -2,337 +2,306 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import {
-  Code2,
-  Sparkles,
-  Palette,
-  TrendingUp,
-  Megaphone,
-  Headphones,
-  Star,
-  Shield,
-  Heart,
-  Hammer,
-  Rocket,
-  Users,
-  ArrowRight,
-  MapPin,
-  Building2,
-  Zap,
-  CheckCircle2,
-  Quote,
-  Coffee,
-  Terminal,
-  Lightbulb,
-  Target,
-} from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-// Brand colors
+// Brand
 const brand = {
   primary: "#726AFF",
-  primarySoft: "#8B5CF6",
-  lavender: "#C4B5FD",
-  lavenderLight: "#DDD6FE",
-  purpleBg: "#F5F3FF",
-  dark: "#1A1625",
+  dark: "#0F1226",
 };
 
 // ============================================================================
-// HERO SECTION
+// SHARED — section scaffolding (dossier style: number + rule + mono label)
 // ============================================================================
 
-function AboutHero() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-
+function SectionRule({
+  number,
+  label,
+  dark = false,
+}: {
+  number: string;
+  label: string;
+  dark?: boolean;
+}) {
   return (
-    <section ref={ref} className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 60% 40% at 30% 20%, ${brand.lavender}30 0%, transparent 50%),
-              radial-gradient(ellipse 50% 50% at 80% 80%, ${brand.purpleBg} 0%, transparent 40%),
-              linear-gradient(180deg, white 0%, #FAFAFA 100%)
-            `,
-          }}
-        />
-
-        {/* Constellation pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.15]">
-          <defs>
-            <pattern id="constellation" width="100" height="100" patternUnits="userSpaceOnUse">
-              <circle cx="50" cy="50" r="1" fill={brand.primary} />
-              <circle cx="20" cy="30" r="0.5" fill={brand.lavender} />
-              <circle cx="80" cy="70" r="0.5" fill={brand.lavender} />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#constellation)" />
-        </svg>
-
-        {/* Team collaboration visual */}
-        <motion.div
-          style={{ y }}
-          className="absolute right-[5%] top-1/2 -translate-y-1/2 hidden xl:block"
-        >
-          <TeamConstellationVisual />
-        </motion.div>
-      </div>
-
-      <div className="container-site relative z-10 py-20">
-        <div className="max-w-3xl">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm mb-8"
-          >
-            <MapPin className="w-4 h-4" style={{ color: brand.primary }} />
-            <span className="text-sm font-medium text-gray-600">Houston, Texas</span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-            style={{ color: brand.dark }}
-          >
-            Meet the Team
-            <br />
-            <span style={{ color: brand.primary }}>Behind the Code</span>
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-xl text-gray-600 mb-10 max-w-2xl leading-relaxed"
-          >
-            A small, focused team of engineers and strategists building custom software
-            for businesses that are ready to grow. We&apos;re not an agency — we&apos;re your
-            technical partners.
-          </motion.p>
-
-          {/* Quick stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex flex-wrap gap-8"
-          >
-            {[
-              { value: "10+", label: "Years Combined Experience" },
-              { value: "Full", label: "Code Ownership" },
-              { value: "Houston", label: "Based & Proud" },
-            ].map((stat, i) => (
-              <div key={stat.label} className="flex items-center gap-3">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
-                  style={{ background: brand.purpleBg }}
-                >
-                  <span className="text-lg font-bold" style={{ color: brand.primary }}>
-                    {stat.value}
-                  </span>
-                </div>
-                <span className="text-sm text-gray-500">{stat.label}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Team constellation visual component
-function TeamConstellationVisual() {
-  return (
-    <div className="relative w-[400px] h-[400px]">
-      {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full">
-        <motion.line
-          x1="200" y1="80" x2="100" y2="200"
-          stroke={brand.lavender}
-          strokeWidth="2"
-          strokeDasharray="4 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-        />
-        <motion.line
-          x1="200" y1="80" x2="300" y2="200"
-          stroke={brand.lavender}
-          strokeWidth="2"
-          strokeDasharray="4 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.7 }}
-        />
-        <motion.line
-          x1="100" y1="200" x2="200" y2="320"
-          stroke={brand.lavender}
-          strokeWidth="2"
-          strokeDasharray="4 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.9 }}
-        />
-        <motion.line
-          x1="300" y1="200" x2="200" y2="320"
-          stroke={brand.lavender}
-          strokeWidth="2"
-          strokeDasharray="4 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 1.1 }}
-        />
-      </svg>
-
-      {/* Team member nodes */}
-      {[
-        { x: 200, y: 80, initials: "SS", role: "Founder", delay: 0 },
-        { x: 100, y: 200, initials: "DE", role: "Engineer", delay: 0.2 },
-        { x: 300, y: 200, initials: "AM", role: "Strategy", delay: 0.4 },
-        { x: 200, y: 320, initials: "JK", role: "Design", delay: 0.6 },
-      ].map((member) => (
-        <motion.div
-          key={member.initials}
-          className="absolute"
-          style={{ left: member.x - 30, top: member.y - 30 }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: member.delay }}
-        >
-          <div
-            className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white font-bold shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-              boxShadow: `0 8px 30px -8px ${brand.primary}60`,
-            }}
-          >
-            {member.initials}
-          </div>
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
-            <span className="text-xs text-gray-500">{member.role}</span>
-          </div>
-        </motion.div>
-      ))}
-
-      {/* Central glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-3xl opacity-30"
-        style={{ background: brand.primary }}
-      />
+    <div className="flex items-baseline gap-4 mb-14 md:mb-20">
+      <span
+        className="font-mono text-xs tracking-[0.3em] uppercase"
+        style={{ color: brand.primary }}
+      >
+        {number}
+      </span>
+      <span
+        className={`font-mono text-xs tracking-[0.3em] uppercase ${
+          dark ? "text-white/40" : "text-gray-400"
+        }`}
+      >
+        {label}
+      </span>
+      <div className={`flex-1 h-px ${dark ? "bg-white/10" : "bg-gray-200"}`} />
     </div>
   );
 }
 
 // ============================================================================
-// OUR STORY SECTION
+// 01 — HERO: file header
 // ============================================================================
+
+function AboutHero() {
+  return (
+    <section className="relative overflow-hidden" style={{ background: brand.dark }}>
+      {/* Grid-paper texture (matches site footer language) */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, white 1px, transparent 1px),
+            linear-gradient(to bottom, white 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      {/* Rotated square accent */}
+      <div
+        className="absolute -right-40 -top-40 w-[480px] h-[480px] border border-white/[0.06] pointer-events-none"
+        style={{ transform: "rotate(45deg)" }}
+      />
+      <div
+        className="absolute -right-24 -top-24 w-[480px] h-[480px] border border-white/[0.04] pointer-events-none"
+        style={{ transform: "rotate(45deg)" }}
+      />
+      {/* Purple bloom */}
+      <div
+        className="absolute -left-40 bottom-0 w-[500px] h-[500px] rounded-full blur-[140px] opacity-20 pointer-events-none"
+        style={{ background: brand.primary }}
+      />
+
+      {/* Vertical coordinates — right edge */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden lg:block">
+        <span
+          className="font-mono text-[11px] tracking-[0.4em] text-white/25 uppercase"
+          style={{ writingMode: "vertical-rl" }}
+        >
+          29.7604° N — 95.3698° W · Houston, Texas
+        </span>
+      </div>
+
+      <div className="container-site relative z-10 pt-40 pb-24 md:pt-48 md:pb-32">
+        {/* File header line */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-12 font-mono text-[11px] tracking-[0.25em] uppercase"
+        >
+          <span style={{ color: brand.primary }}>FILE / ABOUT</span>
+          <span className="text-white/30">—</span>
+          <span className="text-white/40">Aeopic LLC</span>
+          <span className="text-white/30">—</span>
+          <span className="text-white/40">Custom Software Studio</span>
+        </motion.div>
+
+        {/* Headline */}
+        <h1 className="font-heading font-bold tracking-tight leading-[0.95] mb-10">
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="block text-5xl md:text-7xl lg:text-8xl text-white"
+          >
+            The team
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="block text-5xl md:text-7xl lg:text-8xl"
+            style={{
+              color: "transparent",
+              WebkitTextStroke: `2px ${brand.primary}`,
+            }}
+          >
+            behind the code.
+          </motion.span>
+        </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="max-w-xl text-lg md:text-xl text-white/70 leading-relaxed mb-20"
+        >
+          A small, focused team of engineers and strategists building custom
+          software for businesses that are ready to grow. We&apos;re not an
+          agency — we&apos;re your technical partners.
+        </motion.p>
+
+        {/* Stats — ruled ledger row, not pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.55 }}
+          className="grid grid-cols-1 sm:grid-cols-3 border-t border-white/15"
+        >
+          {[
+            { value: "10+", label: "Years combined experience" },
+            { value: "100%", label: "Code ownership, upon completion" },
+            { value: "HTX", label: "Houston based & proud" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="py-6 pr-8 border-b border-white/15 sm:border-b-0 sm:border-r last:border-r-0 sm:px-8 first:pl-0"
+            >
+              <p
+                className="font-heading text-3xl md:text-4xl font-bold mb-1"
+                style={{ color: brand.primary }}
+              >
+                {stat.value}
+              </p>
+              <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/45">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// 02 — STORY: git log
+// ============================================================================
+
+const commits = [
+  {
+    hash: "a3f08c1",
+    tag: "the-problem",
+    title: "We saw a gap",
+    body: "Expensive agencies charging six figures, or limited SaaS tools forcing you to adapt. There had to be a better way.",
+  },
+  {
+    hash: "7d21e9b",
+    tag: "the-idea",
+    title: "Friends with a mission",
+    body: "Engineers, strategists, and designers came together with one goal: make custom technology accessible to all businesses.",
+  },
+  {
+    hash: "f96b442",
+    tag: "the-solution",
+    title: "Aeopic was born",
+    body: "A new kind of software partner — one that builds with you, not just for you. Real code, real ownership, real results.",
+  },
+];
 
 function StorySection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const milestones = [
-    {
-      year: "The Problem",
-      icon: Lightbulb,
-      title: "We Saw a Gap",
-      description: "Expensive agencies charging six figures, or limited SaaS tools forcing you to adapt. There had to be a better way.",
-    },
-    {
-      year: "The Idea",
-      icon: Coffee,
-      title: "Friends with a Mission",
-      description: "Engineers, strategists, and designers came together with one goal: make custom technology accessible to all businesses.",
-    },
-    {
-      year: "The Solution",
-      icon: Rocket,
-      title: "Aeopic Was Born",
-      description: "A new kind of software partner — one that builds with you, not just for you. Real code, real ownership, real results.",
-    },
-  ];
-
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-gradient-to-b from-white to-gray-50">
+    <section ref={ref} className="py-24 lg:py-36 bg-white">
       <div className="container-site">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span
-            className="inline-block text-sm font-semibold tracking-widest uppercase mb-4"
-            style={{ color: brand.primary }}
-          >
-            Our Story
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: brand.dark }}>
-            Why We Started Aeopic
-          </h2>
-        </motion.div>
+        <SectionRule number="01" label="Origin — why we started" />
 
-        {/* Timeline */}
-        <div className="max-w-4xl mx-auto relative">
-          {/* Vertical line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
-
-          {milestones.map((milestone, index) => (
-            <motion.div
-              key={milestone.year}
-              className={`relative flex items-start gap-8 mb-16 last:mb-0 ${
-                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              }`}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          {/* Left: editorial statement */}
+          <div className="lg:col-span-5">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="font-heading text-4xl md:text-5xl font-bold tracking-tight leading-[1.05]"
+              style={{ color: brand.dark }}
             >
-              {/* Content */}
-              <div className={`flex-1 ${index % 2 === 0 ? "md:text-right md:pr-12" : "md:pl-12"} pl-20 md:pl-0`}>
-                <span
-                  className="inline-block text-xs font-bold tracking-widest uppercase mb-2"
-                  style={{ color: brand.primary }}
-                >
-                  {milestone.year}
+              Every company has a commit history.
+              <span style={{ color: brand.primary }}> This is ours.</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="mt-6 text-gray-600 leading-relaxed max-w-md"
+            >
+              Aeopic didn&apos;t start as a business plan. It started as a
+              frustration with how local businesses get treated by the software
+              industry.
+            </motion.p>
+          </div>
+
+          {/* Right: terminal log */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:col-span-7"
+          >
+            <div
+              className="rounded-2xl overflow-hidden border border-gray-200 shadow-[0_30px_80px_-40px_rgba(15,18,38,0.4)]"
+              style={{ background: brand.dark }}
+            >
+              {/* Terminal chrome */}
+              <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+                </div>
+                <span className="font-mono text-[11px] text-white/40">
+                  aeopic — git log --reverse
                 </span>
-                <h3 className="text-xl font-bold mb-2" style={{ color: brand.dark }}>
-                  {milestone.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {milestone.description}
-                </p>
               </div>
 
-              {/* Center icon */}
-              <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 z-10">
-                <motion.div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center bg-white border-2 shadow-lg"
-                  style={{ borderColor: brand.lavender }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
+              <div className="p-6 md:p-8 space-y-8">
+                {commits.map((commit, i) => (
+                  <motion.div
+                    key={commit.hash}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.25 }}
+                    className="relative pl-6"
+                  >
+                    {/* Commit dot + line */}
+                    <span
+                      className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full"
+                      style={{ background: brand.primary }}
+                    />
+                    {i < commits.length - 1 && (
+                      <span className="absolute left-[4.5px] top-5 bottom-[-32px] w-px bg-white/15" />
+                    )}
+
+                    <p className="font-mono text-xs text-white/40 mb-1.5">
+                      <span style={{ color: brand.primary }}>commit {commit.hash}</span>
+                      {"  "}
+                      <span className="text-white/30">(tag: {commit.tag})</span>
+                    </p>
+                    <p className="font-heading text-lg font-bold text-white mb-1.5">
+                      {commit.title}
+                    </p>
+                    <p className="text-sm text-white/60 leading-relaxed max-w-lg">
+                      {commit.body}
+                    </p>
+                  </motion.div>
+                ))}
+
+                {/* Cursor line */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : {}}
+                  transition={{ delay: 1.4 }}
+                  className="font-mono text-xs text-white/40 pl-6"
                 >
-                  <milestone.icon className="w-7 h-7" style={{ color: brand.primary }} />
-                </motion.div>
+                  $ <span className="text-white/70">next commit: yours</span>
+                  <motion.span
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 1.1, repeat: Infinity }}
+                    className="inline-block w-2 h-3.5 ml-1 align-middle"
+                    style={{ background: brand.primary }}
+                  />
+                </motion.p>
               </div>
-
-              {/* Empty space for alternating layout */}
-              <div className="flex-1 hidden md:block" />
-            </motion.div>
-          ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -340,107 +309,108 @@ function StorySection() {
 }
 
 // ============================================================================
-// CAPABILITIES SECTION
+// 03 — CAPABILITIES: editorial index (full-row hover inversion)
 // ============================================================================
+
+const capabilities = [
+  {
+    n: "01",
+    title: "Engineering",
+    description: "Full-stack developers building production-grade platforms from the ground up.",
+  },
+  {
+    n: "02",
+    title: "AI & Automation",
+    description: "Integrating AI into real business workflows — not just chatbots.",
+  },
+  {
+    n: "03",
+    title: "Design & UX",
+    description: "Interfaces built for humans first, with obsessive attention to usability.",
+  },
+  {
+    n: "04",
+    title: "Strategy",
+    description: "We help you figure out what to build and why it matters.",
+  },
+  {
+    n: "05",
+    title: "Marketing",
+    description: "Data-driven campaigns connecting your business with the right customers.",
+  },
+  {
+    n: "06",
+    title: "Support",
+    description: "We stick around after launch. Your success is our success.",
+  },
+];
 
 function CapabilitiesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const capabilities = [
-    {
-      icon: Code2,
-      title: "Engineering",
-      description: "Full-stack developers building production-grade platforms from the ground up.",
-      visual: <EngineeringVisual />,
-    },
-    {
-      icon: Sparkles,
-      title: "AI & Automation",
-      description: "Integrating AI into real business workflows — not just chatbots.",
-      visual: <AIVisual />,
-    },
-    {
-      icon: Palette,
-      title: "Design & UX",
-      description: "Interfaces built for humans first, with obsessive attention to usability.",
-      visual: <DesignVisual />,
-    },
-    {
-      icon: TrendingUp,
-      title: "Strategy",
-      description: "We help you figure out what to build and why it matters.",
-      visual: <StrategyVisual />,
-    },
-    {
-      icon: Megaphone,
-      title: "Marketing",
-      description: "Data-driven campaigns connecting your business with the right customers.",
-      visual: <MarketingVisual />,
-    },
-    {
-      icon: Headphones,
-      title: "Support",
-      description: "We stick around after launch. Your success is our success.",
-      visual: <SupportVisual />,
-    },
-  ];
-
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
+    <section ref={ref} className="py-24 lg:py-36 bg-[#FAFAFA]">
       <div className="container-site">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span
-            className="inline-block text-sm font-semibold tracking-widest uppercase mb-4"
-            style={{ color: brand.primary }}
+        <SectionRule number="02" label="Index — what we bring" />
+
+        <div className="grid lg:grid-cols-12 gap-10 mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 font-heading text-4xl md:text-6xl font-bold tracking-tight leading-[1]"
+            style={{ color: brand.dark }}
           >
-            What We Bring
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: brand.dark }}>
-            Full-Stack Everything
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Engineers, designers, and strategists — working together to turn your ideas into reality.
-          </p>
-        </motion.div>
+            Full-stack
+            <br />
+            everything.
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="lg:col-span-4 lg:col-start-9 text-gray-600 leading-relaxed self-end"
+          >
+            Engineers, designers, and strategists — six disciplines, one team,
+            working together to turn your ideas into reality.
+          </motion.p>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {capabilities.map((cap, index) => (
+        {/* The index */}
+        <div className="border-t border-gray-200">
+          {capabilities.map((cap, i) => (
             <motion.div
-              key={cap.title}
-              initial={{ opacity: 0, y: 30 }}
+              key={cap.n}
+              initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group"
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
+              className="group relative border-b border-gray-200 overflow-hidden cursor-default"
             >
-              <div className="bg-gray-50 hover:bg-white rounded-2xl p-6 border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-300 h-full">
-                {/* Visual */}
-                <div className="h-32 mb-4 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center">
-                  {cap.visual}
-                </div>
+              {/* Inversion sweep */}
+              <div
+                className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
+                style={{ background: brand.dark }}
+              />
 
-                {/* Content */}
-                <div className="flex items-start gap-4">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: brand.purpleBg }}
-                  >
-                    <cap.icon className="w-5 h-5" style={{ color: brand.primary }} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-1" style={{ color: brand.dark }}>
-                      {cap.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {cap.description}
-                    </p>
-                  </div>
-                </div>
+              <div className="relative grid grid-cols-12 items-center gap-4 py-7 md:py-9">
+                <span
+                  className="col-span-2 md:col-span-1 font-mono text-sm transition-colors duration-500"
+                  style={{ color: brand.primary }}
+                >
+                  /{cap.n}
+                </span>
+                <h3
+                  className="col-span-10 md:col-span-5 font-heading text-2xl md:text-4xl font-bold tracking-tight text-[#0F1226] group-hover:text-white transition-colors duration-500"
+                >
+                  {cap.title}
+                </h3>
+                <p className="col-span-10 col-start-3 md:col-span-5 md:col-start-7 text-sm md:text-base text-gray-500 group-hover:text-white/60 transition-colors duration-500 leading-relaxed">
+                  {cap.description}
+                </p>
+                <span className="hidden md:flex col-span-1 col-start-12 justify-end">
+                  <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-white group-hover:rotate-45 transition-all duration-500" />
+                </span>
               </div>
             </motion.div>
           ))}
@@ -450,428 +420,161 @@ function CapabilitiesSection() {
   );
 }
 
-// Capability visual components
-function EngineeringVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center">
-      <div className="bg-[#1e1e2e] rounded-lg p-3 w-full max-w-[200px] font-mono text-[10px]">
-        <div className="flex items-center gap-1.5 mb-2">
-          <div className="w-2 h-2 rounded-full bg-red-400" />
-          <div className="w-2 h-2 rounded-full bg-yellow-400" />
-          <div className="w-2 h-2 rounded-full bg-green-400" />
-        </div>
-        <div className="text-gray-400">
-          <span className="text-purple-400">const</span> app = <span className="text-blue-400">build</span>({"{"}<br />
-          &nbsp;&nbsp;quality: <span className="text-green-400">&quot;production&quot;</span>,<br />
-          &nbsp;&nbsp;owned: <span className="text-orange-400">true</span><br />
-          {"}"});
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AIVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center">
-      <div className="relative">
-        <motion.div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center"
-          style={{ background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)` }}
-          animate={{ rotate: [0, 5, -5, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
-        >
-          <Sparkles className="w-8 h-8 text-white" />
-        </motion.div>
-        <motion.div
-          className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-400 flex items-center justify-center"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Zap className="w-3 h-3 text-white" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function DesignVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center gap-3">
-      {[brand.primary, brand.primarySoft, brand.lavender, brand.lavenderLight].map((color, i) => (
-        <motion.div
-          key={color}
-          className="w-8 h-8 rounded-lg shadow-sm"
-          style={{ background: color }}
-          initial={{ y: 0 }}
-          animate={{ y: [0, -5, 0] }}
-          transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function StrategyVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center">
-      <div className="flex items-end gap-2">
-        {[40, 60, 45, 80, 65].map((h, i) => (
-          <motion.div
-            key={i}
-            className="w-6 rounded-t-md"
-            style={{
-              height: h,
-              background: i === 3 ? brand.primary : brand.lavender,
-            }}
-            initial={{ height: 0 }}
-            animate={{ height: h }}
-            transition={{ duration: 0.8, delay: i * 0.1 }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MarketingVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center">
-      <div className="relative">
-        <motion.div
-          className="w-20 h-20 rounded-full border-4 flex items-center justify-center"
-          style={{ borderColor: brand.lavender }}
-        >
-          <div className="text-center">
-            <div className="text-lg font-bold" style={{ color: brand.primary }}>12K</div>
-            <div className="text-[10px] text-gray-500">visitors</div>
-          </div>
-        </motion.div>
-        <motion.div
-          className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-green-400 flex items-center justify-center text-white text-[10px] font-bold"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          ↑
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function SupportVisual() {
-  return (
-    <div className="w-full h-full p-4 flex items-center justify-center">
-      <div className="flex items-center gap-2">
-        <motion.div
-          className="w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ background: brand.purpleBg }}
-          animate={{ y: [0, -3, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Headphones className="w-5 h-5" style={{ color: brand.primary }} />
-        </motion.div>
-        <div className="space-y-1">
-          <div className="h-2 w-16 rounded bg-gray-200" />
-          <div className="h-2 w-12 rounded bg-gray-200" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ============================================================================
-// VALUES SECTION
+// 04 — VALUES: typographic manifesto
 // ============================================================================
+
+const values = [
+  { word: "Excellence", note: "We don't ship anything we wouldn't use ourselves" },
+  { word: "Integrity", note: "Honest timelines, transparent pricing, no shortcuts" },
+  { word: "Service", note: "We build for people, not just profit" },
+  { word: "Craft", note: "We love what we do and it shows in the code" },
+  { word: "Growth", note: "Always learning, always improving" },
+];
 
 function ValuesSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const values = [
-    { icon: Star, title: "Excellence", description: "We don't ship anything we wouldn't use ourselves", color: brand.primary },
-    { icon: Shield, title: "Integrity", description: "Honest timelines, transparent pricing, no shortcuts", color: "#3b82f6" },
-    { icon: Heart, title: "Service", description: "We build for people, not just profit", color: "#ef4444" },
-    { icon: Hammer, title: "Craft", description: "We love what we do and it shows in the code", color: "#f59e0b" },
-    { icon: TrendingUp, title: "Growth", description: "Always learning, always improving", color: "#10b981" },
-  ];
-
-  return (
-    <section ref={ref} className="py-20 lg:py-32 bg-[#0F1226] relative overflow-hidden">
-      {/* Background glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-[100px]"
-        style={{ background: brand.primary }}
-      />
-
-      <div className="container-site relative z-10">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="inline-block text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: brand.lavender }}>
-            Our Values
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            What We Stand For
-          </h2>
-        </motion.div>
-
-        <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
-          {values.map((value, index) => (
-            <motion.div
-              key={value.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 w-[180px] text-center hover:bg-white/10 transition-colors"
-            >
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{ background: `${value.color}20` }}
-              >
-                <value.icon className="w-7 h-7" style={{ color: value.color }} />
-              </div>
-              <h3 className="font-bold text-white mb-2">{value.title}</h3>
-              <p className="text-sm text-white/60 leading-relaxed">{value.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================================
-// TECH STACK SECTION
-// ============================================================================
-
-function TechStackSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const techStack = [
-    { name: "Next.js", category: "Frontend" },
-    { name: "React", category: "Frontend" },
-    { name: "TypeScript", category: "Language" },
-    { name: "Tailwind", category: "Styling" },
-    { name: "Supabase", category: "Backend" },
-    { name: "PostgreSQL", category: "Database" },
-    { name: "Vercel", category: "Hosting" },
-    { name: "OpenAI", category: "AI" },
-  ];
-
-  return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
-      <div className="container-site">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span
-            className="inline-block text-sm font-semibold tracking-widest uppercase mb-4"
-            style={{ color: brand.primary }}
-          >
-            Our Stack
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: brand.dark }}>
-            Modern, Proven Technology
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            The same tools trusted by industry leaders — available to businesses of any size.
-          </p>
-        </motion.div>
-
-        <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
-          {techStack.map((tech, index) => (
-            <motion.div
-              key={tech.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              className="px-6 py-3 bg-gray-50 hover:bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all cursor-default"
-            >
-              <div className="flex items-center gap-3">
-                <Terminal className="w-4 h-4" style={{ color: brand.primary }} />
-                <div>
-                  <span className="font-semibold text-gray-900">{tech.name}</span>
-                  <span className="text-xs text-gray-400 ml-2">{tech.category}</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================================
-// HOUSTON SECTION
-// ============================================================================
-
-const stars = Array.from({ length: 20 }, (_, i) => ({
-  left: [14.2, 82.1, 45.6, 91.3, 27.8, 63.4, 8.7, 55.9, 73.2, 36.5, 95.1, 3.8, 68.4, 19.6, 50.3, 84.7, 41.2, 76.9, 22.5, 60.8][i],
-  top: [23.4, 8.1, 45.2, 12.7, 38.9, 51.3, 5.6, 33.8, 18.4, 42.1, 27.6, 55.2, 14.9, 48.3, 31.7, 3.5, 52.8, 20.1, 39.4, 10.6][i],
-  opacity: [0.5, 0.8, 0.4, 0.9, 0.6, 0.7, 0.3, 0.85, 0.55, 0.95, 0.45, 0.75, 0.65, 0.35, 0.88, 0.42, 0.72, 0.58, 0.92, 0.48][i],
-  duration: [3.2, 2.8, 3.6, 2.4, 3.9, 2.1, 3.4, 2.7, 3.1, 2.5, 3.8, 2.3, 3.5, 2.9, 3.3, 2.6, 3.7, 2.2, 3.0, 2.85][i],
-  delay: [0.4, 1.2, 0.8, 1.6, 0.2, 1.9, 0.6, 1.4, 1.0, 0.3, 1.7, 0.5, 1.1, 0.9, 1.5, 0.7, 1.8, 0.1, 1.3, 0.55][i],
-}));
-
-function HoustonSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
       ref={ref}
-      className="py-20 lg:py-32 relative overflow-hidden"
-      style={{ background: `linear-gradient(135deg, ${brand.purpleBg} 0%, white 100%)` }}
+      className="py-24 lg:py-36 relative overflow-hidden"
+      style={{ background: brand.dark }}
     >
+      {/* Grid texture */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, white 1px, transparent 1px),
+            linear-gradient(to bottom, white 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div
+        className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[140px] opacity-15 pointer-events-none"
+        style={{ background: brand.primary }}
+      />
+
       <div className="container-site relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                style={{ background: brand.primary }}
-              >
-                <Rocket className="w-6 h-6 text-white" />
-              </div>
-              <span
-                className="text-sm font-semibold tracking-widest uppercase"
-                style={{ color: brand.primary }}
-              >
-                Space City
-              </span>
-            </div>
+        <SectionRule number="03" label="Manifesto — what we stand for" dark />
 
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: brand.dark }}>
-              Houston Proud,
-              <br />
-              <span style={{ color: brand.primary }}>Globally Minded</span>
-            </h2>
-
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Based in Houston, Texas — home to NASA, the energy industry, and one of the most
-              diverse business ecosystems in the country. We serve clients locally and remotely,
-              bringing Space City ambition to every project.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              {[
-                { icon: MapPin, text: "Houston, TX" },
-                { icon: Building2, text: "Remote-Friendly" },
-                { icon: Users, text: "Local & Global Clients" },
-              ].map((item) => (
-                <div
-                  key={item.text}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200"
-                >
-                  <item.icon className="w-4 h-4" style={{ color: brand.primary }} />
-                  <span className="text-sm font-medium text-gray-700">{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Visual - Houston skyline silhouette with rocket */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative"
-          >
-            <div
-              className="rounded-3xl p-8 relative overflow-hidden"
-              style={{ background: `linear-gradient(135deg, ${brand.dark} 0%, #2d2640 100%)` }}
+        <div>
+          {values.map((value, i) => (
+            <motion.div
+              key={value.word}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.12 }}
+              className="group flex flex-col md:flex-row md:items-baseline gap-2 md:gap-10 py-4 md:py-5 border-b border-white/[0.07] last:border-b-0"
             >
-              {/* Stars — static positions to avoid SSR hydration mismatch */}
-              {stars.map((star, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 bg-white rounded-full"
-                  style={{
-                    left: `${star.left}%`,
-                    top: `${star.top}%`,
-                    opacity: star.opacity,
-                  }}
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: star.duration, repeat: Infinity, delay: star.delay }}
-                />
-              ))}
-
-              {/* Skyline silhouette */}
-              <svg viewBox="0 0 400 200" className="w-full h-auto">
-                {/* Buildings */}
-                <g fill={brand.primary} opacity="0.3">
-                  <rect x="20" y="120" width="30" height="80" />
-                  <rect x="60" y="100" width="25" height="100" />
-                  <rect x="95" y="80" width="35" height="120" />
-                  <rect x="140" y="60" width="40" height="140" rx="2" />
-                  <rect x="190" y="90" width="30" height="110" />
-                  <rect x="230" y="110" width="25" height="90" />
-                  <rect x="265" y="70" width="45" height="130" />
-                  <rect x="320" y="100" width="30" height="100" />
-                  <rect x="360" y="130" width="25" height="70" />
-                </g>
-
-                {/* Rocket */}
-                <motion.g
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={isInView ? { y: 0, opacity: 1 } : {}}
-                  transition={{ duration: 1, delay: 0.5 }}
+              <h3
+                className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none transition-all duration-500 select-none"
+                style={
+                  i % 2 === 0
+                    ? { color: "white" }
+                    : { color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.45)" }
+                }
+              >
+                <span
+                  className="group-hover:text-transparent transition-colors duration-500"
+                  style={{ transition: "color .5s" }}
                 >
-                  <motion.g
-                    animate={{ y: [-2, 2, -2] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    {/* Rocket body */}
-                    <path
-                      d="M200 30 L210 50 L210 80 L200 90 L190 80 L190 50 Z"
-                      fill={brand.lavender}
-                    />
-                    {/* Rocket tip */}
-                    <path
-                      d="M200 20 L210 35 L190 35 Z"
-                      fill="white"
-                    />
-                    {/* Fins */}
-                    <path d="M190 75 L180 90 L190 85 Z" fill={brand.primary} />
-                    <path d="M210 75 L220 90 L210 85 Z" fill={brand.primary} />
-                    {/* Exhaust */}
-                    <motion.ellipse
-                      cx="200"
-                      cy="95"
-                      rx="8"
-                      ry="12"
-                      fill="#f59e0b"
-                      opacity="0.8"
-                      animate={{ ry: [12, 18, 12], opacity: [0.8, 0.4, 0.8] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                    />
-                  </motion.g>
-                </motion.g>
-              </svg>
+                  <span className="group-hover:[-webkit-text-stroke:0px] group-hover:[color:#726AFF] transition-all duration-500">
+                    {value.word}
+                  </span>
+                </span>
+              </h3>
+              <p className="font-mono text-[11px] md:text-xs tracking-[0.18em] uppercase text-white/35 group-hover:text-white/70 transition-colors duration-500 md:ml-auto md:text-right max-w-xs">
+                {value.note}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-              {/* Quote */}
-              <div className="mt-6 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                <Quote className="w-5 h-5 text-white/50 mb-2" />
-                <p className="text-white/80 text-sm italic">
-                  &ldquo;Houston, we have liftoff.&rdquo;
-                </p>
-              </div>
+// ============================================================================
+// 05 — STACK: spec sheet with dotted leaders
+// ============================================================================
+
+const stack = [
+  { category: "Frontend", value: "Next.js / React" },
+  { category: "Language", value: "TypeScript" },
+  { category: "Styling", value: "Tailwind CSS" },
+  { category: "Backend", value: "Supabase" },
+  { category: "Database", value: "PostgreSQL" },
+  { category: "Hosting", value: "Vercel" },
+  { category: "AI", value: "Anthropic / OpenAI" },
+  { category: "Payments", value: "Stripe" },
+];
+
+function StackSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="py-24 lg:py-36 bg-white">
+      <div className="container-site">
+        <SectionRule number="04" label="Specification — our stack" />
+
+        <div className="grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="font-heading text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] mb-6"
+              style={{ color: brand.dark }}
+            >
+              Modern, proven
+              <br />
+              technology.
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="text-gray-600 leading-relaxed max-w-md"
+            >
+              The same tools trusted by industry leaders — available to
+              businesses of any size. No proprietary frameworks, no lock-in:
+              any developer can maintain what we build.
+            </motion.p>
+          </div>
+
+          {/* Spec table */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-6 lg:col-start-7 self-center"
+          >
+            <div className="font-mono text-sm">
+              {stack.map((row, i) => (
+                <motion.div
+                  key={row.category}
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.4, delay: 0.3 + i * 0.07 }}
+                  className="flex items-baseline gap-3 py-3 group"
+                >
+                  <span className="text-gray-400 uppercase tracking-[0.15em] text-xs whitespace-nowrap">
+                    {row.category}
+                  </span>
+                  <span
+                    className="flex-1 border-b border-dotted border-gray-300 translate-y-[-3px] group-hover:border-[#726AFF] transition-colors"
+                    aria-hidden
+                  />
+                  <span className="font-semibold whitespace-nowrap" style={{ color: brand.dark }}>
+                    {row.value}
+                  </span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
@@ -881,7 +584,97 @@ function HoustonSection() {
 }
 
 // ============================================================================
-// CTA SECTION
+// 06 — HOUSTON: coordinates strip
+// ============================================================================
+
+function HoustonSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="py-24 lg:py-36 bg-[#FAFAFA] relative overflow-hidden">
+      {/* Orbit rings */}
+      <div className="absolute right-[-120px] top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none">
+        <svg width="560" height="560" viewBox="0 0 560 560" fill="none">
+          <circle cx="280" cy="280" r="120" stroke={brand.primary} strokeOpacity="0.15" />
+          <circle cx="280" cy="280" r="200" stroke={brand.primary} strokeOpacity="0.1" strokeDasharray="3 6" />
+          <circle cx="280" cy="280" r="276" stroke={brand.primary} strokeOpacity="0.06" />
+          {/* Orbiting dot */}
+          <motion.g
+            animate={{ rotate: 360 }}
+            transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+            style={{ transformOrigin: "280px 280px" }}
+          >
+            <circle cx="280" cy="80" r="5" fill={brand.primary} />
+          </motion.g>
+          <circle cx="280" cy="280" r="7" fill={brand.primary} fillOpacity="0.6" />
+        </svg>
+      </div>
+
+      <div className="container-site relative z-10">
+        <SectionRule number="05" label="Coordinates — Space City" />
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="font-mono text-sm tracking-[0.3em] uppercase mb-6"
+          style={{ color: brand.primary }}
+        >
+          29.7604° N / 95.3698° W
+        </motion.p>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-heading text-4xl md:text-6xl font-bold tracking-tight leading-[1] mb-8 max-w-3xl"
+          style={{ color: brand.dark }}
+        >
+          Houston proud,
+          <br />
+          <span
+            style={{ color: "transparent", WebkitTextStroke: `2px ${brand.dark}` }}
+          >
+            globally minded.
+          </span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-lg text-gray-600 leading-relaxed max-w-xl mb-12"
+        >
+          Based in Houston, Texas — home to NASA, the energy industry, and one
+          of the most diverse business ecosystems in the country. We serve
+          clients locally and remotely, bringing Space City ambition to every
+          project.
+        </motion.p>
+
+        {/* Ruled facts row */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 border-t border-b border-gray-200 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 max-w-2xl"
+        >
+          {["Houston, TX", "Remote-friendly", "Local & global clients"].map((fact) => (
+            <span
+              key={fact}
+              className="font-mono text-xs tracking-[0.2em] uppercase text-gray-500 py-4 sm:px-8 first:pl-0"
+            >
+              {fact}
+            </span>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// 07 — CTA
 // ============================================================================
 
 function AboutCTA() {
@@ -889,67 +682,97 @@ function AboutCTA() {
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
-      <div className="container-site">
-        <motion.div
-          className="max-w-3xl mx-auto text-center"
+    <section
+      ref={ref}
+      className="py-28 lg:py-40 relative overflow-hidden"
+      style={{ background: brand.dark }}
+    >
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, white 1px, transparent 1px),
+            linear-gradient(to bottom, white 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[160px] opacity-20 pointer-events-none"
+        style={{ background: brand.primary }}
+      />
+
+      <div className="container-site relative z-10 text-center">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="font-mono text-xs tracking-[0.3em] uppercase mb-8"
+          style={{ color: brand.primary }}
+        >
+          End of file — start of something
+        </motion.p>
+
+        <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1] mb-8"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={isInView ? { scale: 1 } : {}}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="w-20 h-20 rounded-3xl mx-auto mb-8 flex items-center justify-center"
-            style={{
-              background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-              boxShadow: `0 20px 50px -15px ${brand.primary}60`,
-            }}
+          Ready to work
+          <br />
+          <span style={{ color: brand.primary }}>together?</span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="text-lg text-white/60 max-w-xl mx-auto mb-12 leading-relaxed"
+        >
+          We&apos;re always excited to meet businesses that are ready to build
+          something great. Let&apos;s have a conversation about what
+          you&apos;re working on.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-5"
+        >
+          <Link
+            href="/start"
+            className="group inline-flex items-center gap-3 px-8 py-4 font-bold text-white transition-all duration-200 hover:opacity-90"
+            style={{ background: brand.primary }}
           >
-            <Users className="w-10 h-10 text-white" />
-          </motion.div>
-
-          <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ color: brand.dark }}>
-            Ready to Work Together?
-          </h2>
-          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-            We&apos;re always excited to meet businesses that are ready to build something great.
-            Let&apos;s have a conversation about what you&apos;re working on.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/start"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${brand.primary} 0%, ${brand.primarySoft} 100%)`,
-                boxShadow: `0 10px 40px -10px ${brand.primary}80`,
-              }}
-            >
-              Start a Conversation
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 hover:bg-gray-50"
-              style={{ borderColor: brand.lavender, color: brand.dark }}
-            >
-              See Our Work
-            </Link>
-          </div>
-
-          <p className="mt-8 text-sm text-gray-500">
-            Usually respond within 24 hours · Houston-based · Remote-friendly
-          </p>
+            Start a Conversation
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+          </Link>
+          <Link
+            href="/work"
+            className="group inline-flex items-center gap-2 font-mono text-sm tracking-[0.15em] uppercase text-white/70 hover:text-white transition-colors border-b border-white/30 hover:border-white pb-1"
+          >
+            See our work
+            <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+          </Link>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="mt-12 font-mono text-[11px] tracking-[0.2em] uppercase text-white/30"
+        >
+          Usually respond within 24 hours · Houston-based · Remote-friendly
+        </motion.p>
       </div>
     </section>
   );
 }
 
 // ============================================================================
-// MAIN PAGE COMPONENT
+// PAGE
 // ============================================================================
 
 export default function AboutPage() {
@@ -959,7 +782,7 @@ export default function AboutPage() {
       <StorySection />
       <CapabilitiesSection />
       <ValuesSection />
-      <TechStackSection />
+      <StackSection />
       <HoustonSection />
       <AboutCTA />
     </main>

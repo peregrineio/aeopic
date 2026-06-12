@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const proofItems = [
   "Houston-Based Team",
   "Full Code Ownership",
-  "8-12 Week Launch",
+  "4-8 Week Launch",
   "24hr Response",
   "Open-Source Tech Stack",
   "Enterprise Security",

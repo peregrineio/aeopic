@@ -22,7 +22,7 @@ const steps = [
     icon: Rocket,
     num: "03",
     title: "We Build",
-    description: "Agile development with weekly demos. Live in 8-12 weeks.",
+    description: "Agile development with weekly demos. Live in 4-8 weeks.",
   },
 ];
 

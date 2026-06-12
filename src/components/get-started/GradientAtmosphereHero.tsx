@@ -136,7 +136,7 @@ export function GradientAtmosphereHero() {
                   className="text-4xl font-bold bg-gradient-to-r from-violet-400 to-purple-400
                   bg-clip-text text-transparent"
                 >
-                  8-12 Weeks
+                  4-8 Weeks
                 </div>
                 <p className="text-white/50 text-sm mt-1">
                   Average time to launch with weekly demos

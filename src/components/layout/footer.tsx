@@ -30,7 +30,8 @@ const company = [
   { label: "Work", href: "/work" },
   { label: "Pricing", href: "/pricing" },
   { label: "Security", href: "/security" },
-  { label: "Get Started", href: "/contact" },
+  { label: "Opportunities", href: "/opportunities" },
+  { label: "Get Started", href: "/start" },
 ];
 
 const locations = [
@@ -116,7 +117,7 @@ export function Footer() {
 
               {/* CTA Button */}
               <Link
-                href="/contact"
+                href="/start"
                 className="group inline-flex items-center gap-4 bg-primary hover:bg-primary-hover text-white font-bold text-lg px-8 py-5 transition-all duration-200"
               >
                 <span>Get Started</span>

@@ -426,7 +426,7 @@ export default function MedicalPage() {
               className="text-xl text-[#525252] leading-relaxed mb-10"
             >
               Let&apos;s build a patient experience that&apos;s secure, efficient,
-              and actually works. Most projects launch in 8–12 weeks.
+              and actually works. Most projects launch in 4–8 weeks.
             </motion.p>
 
             <motion.div

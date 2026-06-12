@@ -45,3 +45,7 @@ next-env.d.ts
 
 # Large uncompressed video files
 public/videos/herobackgroundbg.mp4
+
+# internal project docs
+/build-log/
+/prompt doc/

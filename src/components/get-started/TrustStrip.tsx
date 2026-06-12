@@ -16,7 +16,7 @@ const trustItems = [
   },
   {
     icon: Award,
-    value: "8-12",
+    value: "4-8",
     label: "Week Delivery",
   },
   {

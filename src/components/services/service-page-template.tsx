@@ -922,7 +922,7 @@ function ProcessSection({
             How We Build It
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            A proven process that delivers results in 8-12 weeks.
+            A proven process that delivers results in 4-8 weeks.
           </p>
         </motion.div>
 

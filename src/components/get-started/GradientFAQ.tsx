@@ -11,7 +11,7 @@ import {
 const faqs = [
   {
     q: "How long does a typical project take?",
-    a: "Most projects launch in 8-12 weeks. We use agile sprints with weekly demos so you see progress every step of the way.",
+    a: "Most projects launch in 4-8 weeks. We use agile sprints with weekly demos so you see progress every step of the way.",
   },
   {
     q: "Do I own the code you build?",

@@ -144,7 +144,7 @@ export function Hero() {
                 <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Code Ownership</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">8-12</p>
+                <p className="text-2xl lg:text-3xl font-heading font-bold text-white mb-1">4-8</p>
                 <p className="text-sm text-white/50 font-mono uppercase tracking-wider">Weeks to Launch</p>
               </div>
               <div className="text-center">

@@ -76,7 +76,7 @@ const faqs = [
   {
     question: "How long does a custom web app take to build?",
     answer:
-      "Most projects launch in 8-12 weeks. We work in sprints, so you'll see progress every week and can provide feedback throughout the process.",
+      "Most projects launch in 4-8 weeks. We work in sprints, so you'll see progress every week and can provide feedback throughout the process.",
   },
   {
     question: "Do I own the code?",
@@ -313,7 +313,7 @@ export default function WebAppsPage() {
                 <span className="text-white/20">|</span>
                 <div className="flex items-center gap-2 font-mono text-sm">
                   <span className="text-[#726AFF]">$</span>
-                  <span className="text-white font-bold">8-12 weeks</span>
+                  <span className="text-white font-bold">4-8 weeks</span>
                   <span className="text-white/40">to launch</span>
                 </div>
                 <span className="text-white/20">|</span>

@@ -121,7 +121,7 @@ export function LocationPageTemplate({ data }: LocationPageTemplateProps) {
                   className="h-14 px-8 text-base font-semibold text-white hover:opacity-90 transition-opacity"
                   style={{ backgroundColor: data.colors.primary }}
                 >
-                  <Link href="/contact" className="flex items-center gap-3">
+                  <Link href="/start" className="flex items-center gap-3">
                     Get Started
                     <ArrowUpRight className="w-5 h-5" />
                   </Link>
@@ -237,7 +237,7 @@ export function LocationPageTemplate({ data }: LocationPageTemplateProps) {
                 <span className="text-white/20">|</span>
                 <div className="flex items-center gap-2 font-mono text-sm">
                   <span style={{ color: data.colors.secondary }}>^</span>
-                  <span className="text-white font-bold">8-12 weeks</span>
+                  <span className="text-white font-bold">4-8 weeks</span>
                   <span className="text-white/40">to launch</span>
                 </div>
                 <span className="text-white/20">|</span>
@@ -807,7 +807,7 @@ export function LocationPageTemplate({ data }: LocationPageTemplateProps) {
                 className="h-14 px-8 text-base font-semibold text-white hover:opacity-90 transition-opacity"
                 style={{ backgroundColor: data.colors.primary }}
               >
-                <Link href="/contact" className="flex items-center gap-3">
+                <Link href="/start" className="flex items-center gap-3">
                   Start Your Project
                   <ArrowUpRight className="w-5 h-5" />
                 </Link>

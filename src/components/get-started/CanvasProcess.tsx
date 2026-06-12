@@ -21,7 +21,7 @@ const steps = [
     icon: Rocket,
     num: "03",
     title: "Build & Launch",
-    description: "Agile development with weekly demos. Watch your platform come to life. Go live in 8-12 weeks.",
+    description: "Agile development with weekly demos. Watch your platform come to life. Go live in 4-8 weeks.",
   },
 ];
 

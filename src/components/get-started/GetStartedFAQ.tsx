@@ -17,7 +17,7 @@ const faqs = [
   {
     question: "How long does it take to build?",
     answer:
-      "Most projects launch in 8-12 weeks. We work in weekly sprints, so you see real progress every week — not just a big reveal at the end. Marketing services are ongoing monthly.",
+      "Most projects launch in 4-8 weeks. We work in weekly sprints, so you see real progress every week — not just a big reveal at the end. Marketing services are ongoing monthly.",
   },
   {
     question: "Do I own the code?",

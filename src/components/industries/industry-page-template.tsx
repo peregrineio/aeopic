@@ -209,7 +209,7 @@ export function IndustryPageTemplate({
               <div className="flex items-center gap-12">
                 <div className="flex items-center gap-2 font-mono text-sm">
                   <span style={{ color }}>&gt;</span>
-                  <span className="text-[#EDEDF0] font-bold">8-12 Weeks</span>
+                  <span className="text-[#EDEDF0] font-bold">4-8 Weeks</span>
                   <span className="text-white/30">To Launch</span>
                 </div>
                 <span className="text-white/15">|</span>
