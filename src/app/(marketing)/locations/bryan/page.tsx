@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: locationData.seo.title,
   description: locationData.seo.description,
   keywords: locationData.seo.keywords,
+  alternates: { canonical: "/locations/bryan" },
   openGraph: {
     title: locationData.seo.title,
     description: locationData.seo.description,

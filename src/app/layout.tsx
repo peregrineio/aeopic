@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     },
   },
   title: {
-    default: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
+    default: "Aeopic | Custom Web Apps & AI Software | Houston, TX",
     template: "%s | Aeopic",
   },
   description:

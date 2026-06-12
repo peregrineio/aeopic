@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Service Areas | Web Design & Marketing in Texas | Aeopic",
   description:
     "Aeopic serves businesses across Texas including Conroe, College Station, Montgomery County, Tomball, Bryan, Magnolia, and Manor with custom web design and marketing services.",
+  alternates: { canonical: "/locations" },
   openGraph: {
     title: "Service Areas | Web Design & Marketing in Texas | Aeopic",
     description:

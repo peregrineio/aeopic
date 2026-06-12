@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Blog | Aeopic",
   description:
     "Real engineering decisions from real client builds. Case studies, technical deep-dives, and lessons from building custom software for Texas businesses.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogPage() {

@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: "Industries We Serve | Aeopic",
   description:
     "Custom software solutions tailored for your industry. HVAC, plumbing, contractors, medical, restaurants, law offices, and more.",
+  alternates: { canonical: "/industries" },
 };
 
 const industries = [
