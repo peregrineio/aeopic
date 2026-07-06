@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "Aeopic serves businesses across Texas including Conroe, College Station, Montgomery County, Tomball, Bryan, Magnolia, and Manor with custom web design and marketing services.",
   alternates: { canonical: "/locations" },
   openGraph: {
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
     title: "Service Areas | Web Design & Marketing in Texas | Aeopic",
     description:
       "Aeopic serves businesses across Texas with custom web design and marketing services.",

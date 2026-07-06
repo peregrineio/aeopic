@@ -1,15 +1,15 @@
 import { ImageResponse } from "next/og";
+import { loadOgFonts, OG_SIZE, OG_GRID } from "@/lib/og";
 
 export const runtime = "edge";
 
-export const alt = "Aeopic - AI Software Development Houston";
-export const size = {
-  width: 1200,
-  height: 630,
-};
+export const alt = "Aeopic — AI Software Development Houston";
+export const size = OG_SIZE;
 export const contentType = "image/png";
 
 export default async function Image() {
+  const fonts = await loadOgFonts();
+
   return new ImageResponse(
     (
       <div
@@ -17,89 +17,125 @@ export default async function Image() {
           height: "100%",
           width: "100%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#0F1226",
-          backgroundImage:
-            "radial-gradient(circle at 25% 25%, rgba(114, 106, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(114, 106, 255, 0.1) 0%, transparent 50%)",
+          backgroundColor: "#08080F",
         }}
       >
-        {/* Logo/Brand */}
+        {/* Grid texture */}
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 40,
+            ...OG_GRID,
           }}
-        >
-          <div
-            style={{
-              fontSize: 80,
-              fontWeight: 800,
-              color: "white",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            AEOPIC
-          </div>
-        </div>
+        />
+        {/* Purple glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: -250,
+            left: 250,
+            width: 800,
+            height: 800,
+            display: "flex",
+            borderRadius: 9999,
+            backgroundImage:
+              "radial-gradient(circle, rgba(114,106,255,0.30) 0%, transparent 65%)",
+          }}
+        />
 
-        {/* Tagline */}
+        {/* Content */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            gap: 16,
+            justifyContent: "space-between",
+            padding: "64px 72px",
+            width: "100%",
           }}
         >
+          {/* Eyebrow */}
           <div
             style={{
-              fontSize: 36,
-              fontWeight: 600,
-              color: "#726AFF",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              fontFamily: "DM Sans",
+              fontSize: 24,
+              letterSpacing: "0.25em",
+              color: "rgba(255,255,255,0.5)",
             }}
           >
-            AI Software Development
+            <div
+              style={{
+                display: "flex",
+                width: 12,
+                height: 12,
+                borderRadius: 9999,
+                backgroundColor: "#726AFF",
+              }}
+            />
+            <div style={{ display: "flex" }}>HOUSTON, TX</div>
           </div>
-          <div
-            style={{
-              fontSize: 28,
-              color: "rgba(255, 255, 255, 0.7)",
-            }}
-          >
-            Custom Web Apps | AI Agents | AI Tools | Marketing
-          </div>
-        </div>
 
-        {/* Location Badge */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginTop: 48,
-            padding: "12px 24px",
-            backgroundColor: "rgba(114, 106, 255, 0.15)",
-            borderRadius: 50,
-            border: "1px solid rgba(114, 106, 255, 0.3)",
-          }}
-        >
+          {/* Title */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            <div
+              style={{
+                display: "flex",
+                fontFamily: "Syne",
+                fontWeight: 700,
+                fontSize: 130,
+                color: "white",
+                letterSpacing: "-0.02em",
+                lineHeight: 1,
+              }}
+            >
+              AEOPIC
+            </div>
+            <div
+              style={{
+                display: "flex",
+                fontFamily: "DM Sans",
+                fontSize: 36,
+                color: "#726AFF",
+              }}
+            >
+              Custom software & AI systems, built for how you actually work.
+            </div>
+          </div>
+
+          {/* Footer — service list */}
           <div
             style={{
-              fontSize: 20,
-              color: "rgba(255, 255, 255, 0.9)",
+              display: "flex",
+              alignItems: "center",
+              gap: 18,
+              fontFamily: "DM Sans",
+              fontSize: 26,
+              color: "rgba(255,255,255,0.55)",
             }}
           >
-            Houston, TX
+            <div style={{ display: "flex" }}>Custom Web Apps</div>
+            <div style={{ display: "flex", color: "rgba(255,255,255,0.2)" }}>
+              ·
+            </div>
+            <div style={{ display: "flex" }}>AI Agents</div>
+            <div style={{ display: "flex", color: "rgba(255,255,255,0.2)" }}>
+              ·
+            </div>
+            <div style={{ display: "flex" }}>AI Operating Systems</div>
+            <div style={{ display: "flex", color: "rgba(255,255,255,0.2)" }}>
+              ·
+            </div>
+            <div style={{ display: "flex" }}>Marketing</div>
           </div>
         </div>
       </div>
     ),
-    {
-      ...size,
-    }
+    { ...size, fonts }
   );
 }

@@ -14,14 +14,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  openGraph: {
-    title: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
-    description:
-      "Custom web apps, AI agents, and marketing solutions. Houston-based. Remote-friendly.",
-    url: "https://aeopic.com",
-    siteName: "Aeopic",
-    type: "website",
-  },
 };
 
 export default function HomePage() {

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   keywords: locationData.seo.keywords,
   alternates: { canonical: "/locations/tomball" },
   openGraph: {
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
     title: locationData.seo.title,
     description: locationData.seo.description,
     url: locationData.seo.ogUrl,
