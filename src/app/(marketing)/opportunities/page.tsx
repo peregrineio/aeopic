@@ -26,7 +26,7 @@ export default async function OpportunitiesPage() {
   ]);
 
   return (
-    <main>
+    <main className="bg-[#08080F]">
       <OpportunitiesHero openCount={count} />
       {/* useSearchParams() in the filter bar requires a Suspense boundary to prerender */}
       <Suspense>
