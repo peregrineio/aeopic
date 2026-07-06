@@ -24,7 +24,7 @@ export function OpportunitiesHero({ openCount }: HeroProps) {
   const marqueeRun = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
 
   return (
-    <section className="relative overflow-hidden bg-[#08080F] pt-16">
+    <section className="relative overflow-hidden bg-[#08080F] pt-[4.5rem] md:pt-[5.75rem]">
       {/* Grid texture */}
       <div
         className="absolute inset-0 opacity-[0.35] pointer-events-none"
