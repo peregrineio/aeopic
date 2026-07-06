@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const allIndustries = [
+  // Existing
   { slug: "hvac", title: "HVAC & Home Services", color: "#f59e0b" },
   { slug: "plumbing-electrical", title: "Plumbing & Electrical", color: "#3b82f6" },
   { slug: "contractors", title: "Contractors & Remodeling", color: "#726AFF" },
@@ -20,6 +21,15 @@ const allIndustries = [
   { slug: "auto", title: "Auto & Detailing", color: "#0ea5e9" },
   { slug: "cleaning", title: "Cleaning & Pest Control", color: "#10b981" },
   { slug: "chambers-of-commerce", title: "Chambers of Commerce", color: "#7C3AED" },
+  // New — Industrial & Enterprise
+  { slug: "oil-gas", title: "Oil & Gas", color: "#0C4A6E" },
+  { slug: "oilfield-services", title: "Oilfield Services", color: "#92400E" },
+  { slug: "pipeline-operations", title: "Pipeline Operations", color: "#334155" },
+  { slug: "industrial-contracting", title: "Industrial Contracting", color: "#EA580C" },
+  { slug: "energy-infrastructure", title: "Energy Infrastructure", color: "#0F766E" },
+  { slug: "manufacturing", title: "Manufacturing", color: "#B45309" },
+  { slug: "logistics", title: "Logistics & Supply Chain", color: "#0E7490" },
+  { slug: "enterprise-smb", title: "Enterprise SMB", color: "#475569" },
 ];
 
 export interface IndustryPageProps {

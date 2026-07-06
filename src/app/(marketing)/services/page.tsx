@@ -8,13 +8,13 @@ import {
   WebAppsMockup,
   AIToolsMockup,
   MarketingMockup,
-  EcommerceMockup,
 } from "@/components/services/service-mockups";
+import { AIAgentsMockup } from "@/components/services/ai-agents-mockup";
 
 export const metadata: Metadata = {
   title: "Services | Custom Software Development Houston",
   description:
-    "Custom web apps, AI tools, marketing & SEO, eCommerce solutions. Houston software studio serving local businesses.",
+    "Custom web apps, AI agents, AI tools, and marketing solutions. Houston software studio serving local businesses.",
   alternates: {
     canonical: "/services",
   },
@@ -52,6 +52,21 @@ const services = [
     mockup: "ai",
   },
   {
+    title: "Custom AI Agents",
+    description:
+      "Autonomous agents that qualify leads, handle phone calls, process documents, and coordinate workflows — trained on your data, connected to your tools.",
+    features: [
+      "Lead qualification & follow-up agents",
+      "Voice AI & phone handling",
+      "Document processing & data entry",
+      "Multi-agent orchestration",
+      "MCP-connected tool integrations",
+      "TRAIGA-compliant by default",
+    ],
+    href: "/services/ai-agents",
+    mockup: "ai-agents",
+  },
+  {
     title: "Marketing That Moves the Needle",
     description:
       "Get found. Get chosen. Get results. Data-driven strategies that bring real customers to your door.",
@@ -66,28 +81,13 @@ const services = [
     href: "/services/marketing",
     mockup: "marketing",
   },
-  {
-    title: "eCommerce Built for Conversion",
-    description:
-      "Sell anything, anywhere, to anyone — with a platform designed to grow with you.",
-    features: [
-      "Product catalogs & inventory",
-      "Subscription & recurring billing",
-      "Service booking & scheduling",
-      "Payment processing (Stripe)",
-      "Order management & fulfillment",
-      "Analytics & conversion tracking",
-    ],
-    href: "/services/ecommerce",
-    mockup: "ecommerce",
-  },
 ];
 
 const mockupComponents: Record<string, React.ReactNode> = {
   webapps: <WebAppsMockup />,
   ai: <AIToolsMockup />,
+  "ai-agents": <AIAgentsMockup />,
   marketing: <MarketingMockup />,
-  ecommerce: <EcommerceMockup />,
 };
 
 export default function ServicesPage() {

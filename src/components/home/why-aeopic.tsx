@@ -24,7 +24,7 @@ const differentiators = [
     n: "03",
     title: "Full stack, full service",
     description:
-      "Web apps, AI tools, marketing, eCommerce — one team, one vision, everything connected.",
+      "Web apps, AI agents, marketing — one team, one vision, everything connected.",
     points: ["No handoff chaos", "Unified strategy", "Single point of contact"],
   },
   {

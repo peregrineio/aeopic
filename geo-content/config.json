@@ -1,0 +1,52 @@
+{
+  "_comment": "GEO site config for /geo-blog and /new-geo-project. The project repo root = the directory that contains this geo-content/ folder. All paths below are relative to that repo root.",
+  "project": "aeopic",
+  "displayName": "Aeopic",
+  "domain": "https://aeopic.com",
+  "entity": "Aeopic LLC",
+  "isReference": true,
+  "_isReferenceNote": "Aeopic is the gold-standard template /new-geo-project clones foundation from.",
+
+  "contentSystem": "velite-mdx",
+  "blogDir": "content/blog",
+  "frontmatter": {
+    "fields": ["title", "description", "date", "category", "author", "tags", "featured", "draft"],
+    "categoryEnum": ["case-study", "problem-solution", "engineering", "industry", "process"],
+    "authors": ["sam", "justin", "theron"],
+    "defaultAuthor": "sam",
+    "dateFormat": "YYYY-MM-DD",
+    "noImageUnlessReal": true
+  },
+
+  "dataSources": {
+    "locations": "src/lib/locations.ts",
+    "locationGetter": "getLocationData(\"<slug>\")",
+    "industriesDir": "src/app/(marketing)/industries",
+    "servicesDir": "src/app/(marketing)/services"
+  },
+
+  "internalLinks": {
+    "service": "/services/{slug}",
+    "location": "/locations/{slug}",
+    "industry": "/industries/{slug}",
+    "blog": "/blog/{slug}"
+  },
+
+  "brand": {
+    "positioning": "Custom web apps, AI tools, marketing & eCommerce for small and mid-market businesses. Houston / Texas-based, remote-friendly.",
+    "timeline": "4–8 weeks typical build",
+    "stack": "Next.js, Supabase, AI built on Anthropic Claude",
+    "caseStudies": ["Kubin Automotive — full site built in ~2 weeks"],
+    "pricing": "Project-based, no fixed public tiers. Give honest ranges and 'depends on scope'. NEVER invent exact prices.",
+    "tone": "Direct, practical, builder-to-business-owner. No hype.",
+    "doNotClaim": ["invented prices", "invented statistics", "fake testimonials", "fake client names", "guarantees of rankings or results"]
+  },
+
+  "geoGoal": "Earn citations in AI answer engines (ChatGPT/SearchGPT, Perplexity, Google AI Overviews, Gemini) AND rank in local search.",
+
+  "publish": {
+    "gitBranch": "main",
+    "reviewRequired": true,
+    "vercelProject": "aeopic (peregrine-ios-projects team, prj_Fuum1HOrJRRwSD0NT45tYe0zbEUu)"
+  }
+}

@@ -158,10 +158,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Sell online to the new residents before they even know you exist.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -174,6 +174,9 @@ const locationConfigs: Record<string, LocationData> = {
       "Auto & Detailing",
       "Lawn Care & Landscaping",
       "Cleaning & Pest Control",
+      "Oil & Gas",
+      "Oilfield Services",
+      "Manufacturing",
     ],
 
     nearbyAreas: [
@@ -306,10 +309,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Sell to Aggies before they graduate and to the community that stays.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -322,6 +325,8 @@ const locationConfigs: Record<string, LocationData> = {
       "Contractors & Remodeling",
       "Lawn Care & Landscaping",
       "Law Offices",
+      "Enterprise SMB",
+      "Manufacturing",
     ],
 
     nearbyAreas: [
@@ -456,10 +461,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Reach the 781,000+ residents across the county, not just the ones who drive past your sign.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -472,6 +477,9 @@ const locationConfigs: Record<string, LocationData> = {
       "Real Estate",
       "Lawn Care & Landscaping",
       "Auto & Detailing",
+      "Oil & Gas",
+      "Manufacturing",
+      "Industrial Contracting",
     ],
 
     nearbyAreas: [
@@ -607,10 +615,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Sell to the 75,000+ people in your ZIP code — not just the ones who walk past your door.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -623,6 +631,9 @@ const locationConfigs: Record<string, LocationData> = {
       "Lawn Care & Landscaping",
       "Cleaning & Pest Control",
       "Professional Services",
+      "Oil & Gas",
+      "Oilfield Services",
+      "Manufacturing",
     ],
 
     nearbyAreas: [
@@ -756,10 +767,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Sell downtown Bryan's unique products to people who've never crossed Highway 6.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -772,6 +783,8 @@ const locationConfigs: Record<string, LocationData> = {
       "Law Offices",
       "Lawn Care & Landscaping",
       "Cleaning & Pest Control",
+      "Manufacturing",
+      "Enterprise SMB",
     ],
 
     nearbyAreas: [
@@ -907,10 +920,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Reach the $104K-income households that live here but shop elsewhere.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -923,6 +936,8 @@ const locationConfigs: Record<string, LocationData> = {
       "Medical & Dental",
       "Professional Services",
       "Cleaning & Pest Control",
+      "Oil & Gas",
+      "Manufacturing",
     ],
 
     nearbyAreas: [
@@ -1058,10 +1073,10 @@ const locationConfigs: Record<string, LocationData> = {
         href: "/services/marketing",
       },
       {
-        title: "eCommerce Solutions",
+        title: "Payments & Commerce",
         description:
           "Reach the fastest-growing customer base in Texas — from their phone, in their new home.",
-        href: "/services/ecommerce",
+        href: "/services/web-apps",
       },
     ],
 
@@ -1074,6 +1089,8 @@ const locationConfigs: Record<string, LocationData> = {
       "Medical & Dental",
       "Auto & Detailing",
       "Professional Services",
+      "Logistics & Supply Chain",
+      "Enterprise SMB",
     ],
 
     nearbyAreas: [

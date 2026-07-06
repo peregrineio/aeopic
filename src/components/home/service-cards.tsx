@@ -159,36 +159,35 @@ function MarketingShowcase() {
   );
 }
 
-function EcommerceShowcase() {
-  const rows = [
-    { sku: "Products", share: "40%", amt: "$19.2k" },
-    { sku: "Subscriptions", share: "29%", amt: "$13.9k" },
-    { sku: "Services", share: "19%", amt: "$9.1k" },
-    { sku: "Other", share: "12%", amt: "$5.8k" },
+function AIAgentsShowcase() {
+  const agents = [
+    { name: "Lead Qualifier", status: "active", handled: "847" },
+    { name: "Support Agent", status: "active", handled: "2.1k" },
+    { name: "Scheduler", status: "active", handled: "394" },
+    { name: "Voice Handler", status: "idle", handled: "156" },
   ];
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/40">
-          Monthly revenue
+          Agent fleet
         </p>
-        <span className="text-white font-bold">$48,000</span>
+        <span className="font-mono text-xs text-cyan-400">4 active</span>
       </div>
       <div className="border-t border-white/10">
-        {rows.map((row, i) => (
+        {agents.map((agent, i) => (
           <motion.div
-            key={row.sku}
+            key={agent.name}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 + i * 0.12 }}
-            className="flex items-baseline gap-3 py-2.5 border-b border-white/10"
+            className="flex items-center gap-3 py-2.5 border-b border-white/10"
           >
-            <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-white/55 w-28">
-              {row.sku}
+            <span className={`w-1.5 h-1.5 rounded-full ${agent.status === "active" ? "bg-cyan-400" : "bg-white/20"}`} />
+            <span className="font-mono text-[11px] tracking-[0.12em] text-white/55 flex-1">
+              {agent.name}
             </span>
-            <span className="flex-1 border-b border-dotted border-white/15 translate-y-[-3px]" />
-            <span className="font-mono text-[11px] text-white/40">{row.share}</span>
-            <span className="font-mono text-xs text-white font-semibold w-14 text-right">{row.amt}</span>
+            <span className="font-mono text-xs text-white font-semibold">{agent.handled}</span>
           </motion.div>
         ))}
       </div>
@@ -196,9 +195,9 @@ function EcommerceShowcase() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
-        className="font-mono text-[10px] tracking-[0.15em] uppercase text-emerald-400"
+        className="font-mono text-[10px] tracking-[0.15em] uppercase text-cyan-400"
       >
-        ✓ stripe-powered · no platform fees
+        ✓ autonomous · human-in-the-loop
       </motion.p>
     </div>
   );
@@ -238,12 +237,12 @@ const services = [
   },
   {
     n: "04",
-    title: "eCommerce",
-    slug: "shop.yourbusiness.com",
+    title: "Custom AI Agents",
+    slug: "agents.yourbusiness.com",
     description:
-      "Sell products, subscriptions, services. Stores built for conversion, not monthly platform fees.",
-    href: "/services/ecommerce",
-    Showcase: EcommerceShowcase,
+      "Autonomous agents that qualify leads, handle calls, and run operations — trained on your data.",
+    href: "/services/ai-agents",
+    Showcase: AIAgentsShowcase,
   },
 ];
 

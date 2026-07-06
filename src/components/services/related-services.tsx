@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Code2, Sparkles, TrendingUp, ShoppingCart, ArrowRight } from "lucide-react";
+import { Code2, Sparkles, Bot, TrendingUp, ArrowRight } from "lucide-react";
 import { SectionHeader } from "@/components/shared/section-header";
 
-type ServiceSlug = "web-apps" | "ai-tools" | "marketing" | "ecommerce";
+type ServiceSlug = "web-apps" | "ai-tools" | "ai-agents" | "marketing";
 
 const allServices = [
   {
@@ -25,20 +25,20 @@ const allServices = [
     href: "/services/ai-tools",
   },
   {
+    slug: "ai-agents" as ServiceSlug,
+    icon: Bot,
+    title: "Custom AI Agents",
+    description:
+      "Autonomous agents built for your operations.",
+    href: "/services/ai-agents",
+  },
+  {
     slug: "marketing" as ServiceSlug,
     icon: TrendingUp,
     title: "Marketing & SEO",
     description:
       "Data-driven strategies that bring real customers to your door.",
     href: "/services/marketing",
-  },
-  {
-    slug: "ecommerce" as ServiceSlug,
-    icon: ShoppingCart,
-    title: "eCommerce",
-    description:
-      "Sell products, subscriptions, and services with a platform built for conversion.",
-    href: "/services/ecommerce",
   },
 ];
 

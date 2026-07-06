@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Aeopic",
-  description: "Customer-tailored web applications, AI integrated operating systems, marketing, and eCommerce solutions.",
+  description: "Customer-tailored web applications, AI integrated operating systems, custom AI agents, and marketing solutions.",
   url: "https://aeopic.com",
   email: "contact@aeopic.com",
   links: {
@@ -17,8 +17,8 @@ export const navLinks = [
     children: [
       { label: "Custom Web Apps", href: "/services/web-apps", description: "Platforms built for your workflow" },
       { label: "AI Integrated Operating Systems", href: "/services/ai-tools", description: "Smart automation & support systems" },
+      { label: "Custom AI Agents", href: "/services/ai-agents", description: "Autonomous agents built for your operations" },
       { label: "Marketing & SEO", href: "/services/marketing", description: "Get found, get chosen, get results" },
-      { label: "eCommerce", href: "/services/ecommerce", description: "Sell products, subscriptions & services" },
     ],
   },
   {
@@ -48,8 +48,8 @@ export const footerLinks = {
   services: [
     { label: "Custom Web Apps", href: "/services/web-apps" },
     { label: "AI Integrated Operating Systems", href: "/services/ai-tools" },
+    { label: "Custom AI Agents", href: "/services/ai-agents" },
     { label: "Marketing & SEO", href: "/services/marketing" },
-    { label: "eCommerce", href: "/services/ecommerce" },
   ],
   industries: [
     { label: "HVAC & Home Services", href: "/industries/hvac" },

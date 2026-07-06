@@ -421,6 +421,11 @@ export default function WebAppsPage() {
                 title: "Automated Workflows",
                 desc: "Invoices, reminders, follow-ups — all on autopilot. Set it and forget it.",
               },
+              {
+                num: "05",
+                title: "Payments & Commerce",
+                desc: "Stripe-powered checkout, subscriptions, recurring billing, and invoicing — built directly into your platform. No Shopify fees, no third-party limitations.",
+              },
             ].map((item, index) => (
               <motion.div
                 key={item.num}

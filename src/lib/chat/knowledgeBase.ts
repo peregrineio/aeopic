@@ -57,8 +57,8 @@ export const faqPatterns: KBEntry[] = [
     ],
     keywords: ["services", "offer", "capabilities", "build"],
     response:
-      "We build four things for local businesses:\n\n• **Custom Web Apps** — CRMs, portals, dashboards\n• **AI Integrated Operating Systems** — Smart automation & support\n• **Marketing & SEO** — Get found online\n• **eCommerce** — Sell products & services\n\nWhich one interests you? Or **[see all our services](/services)**.",
-    quickReplies: ["Custom Web Apps", "AI Tools", "Marketing", "eCommerce"],
+      "We build four things for local businesses:\n\n• **Custom Web Apps** — CRMs, portals, dashboards\n• **AI Integrated Operating Systems** — Smart automation & support\n• **Custom AI Agents** — Autonomous agents for your operations\n• **Marketing & SEO** — Get found online\n\nWhich one interests you? Or **[see all our services](/services)**.",
+    quickReplies: ["Custom Web Apps", "AI Tools", "AI Agents", "Marketing"],
     boostOn: ["/services"],
   },
   {
@@ -207,7 +207,7 @@ export const faqPatterns: KBEntry[] = [
   },
   {
     id: "ecommerce",
-    title: "eCommerce",
+    title: "Payments & Commerce",
     utterances: [
       "do you build online stores",
       "can you build an ecommerce site",
@@ -218,9 +218,9 @@ export const faqPatterns: KBEntry[] = [
     ],
     keywords: ["ecommerce", "e-commerce", "store", "shop", "sell", "products", "subscription", "payments", "stripe", "checkout", "ordering"],
     response:
-      "We build **eCommerce platforms** — product stores, subscription billing, service booking, and online ordering. All powered by Stripe.\n\n**[Learn more about eCommerce](/services/ecommerce)**",
+      "We build **payments and commerce** directly into your custom platform — Stripe-powered checkout, subscription billing, service booking, and invoicing. No Shopify fees, no third-party limitations.\n\n**[Learn more about Custom Web Apps](/services/web-apps)**",
     quickReplies: ["How much?", "Get started"],
-    boostOn: ["/services/ecommerce"],
+    boostOn: ["/services/web-apps"],
   },
   {
     id: "industries",
@@ -358,7 +358,7 @@ export const faqPatterns: KBEntry[] = [
     ],
     keywords: ["aeopic", "company", "team", "agency", "studio", "founders", "story"],
     response:
-      "Aeopic is a **custom software studio in Houston, Texas**. We build web apps, AI systems, marketing engines, and eCommerce platforms for local businesses — production-grade work you fully own.\n\n**[More about us](/about)**",
+      "Aeopic is a **custom software studio in Houston, Texas**. We build web apps, AI agents, intelligent operating systems, and marketing engines for local businesses — production-grade work you fully own.\n\n**[More about us](/about)**",
     quickReplies: ["What do you build?", "See your work", "Get a ballpark"],
     boostOn: ["/about"],
   },

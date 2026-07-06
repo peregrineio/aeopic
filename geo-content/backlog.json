@@ -1,0 +1,41 @@
+{
+  "_comment": "GEO content matrix backlog for aeopic.com. Read + updated by the /geo-blog skill. After a post goes live, append its slug to publishedSlugs. Pilot city is built first.",
+  "pilotCity": "college-station",
+  "publishedSlugs": [],
+  "velocity": { "perWeekMax": 20, "batchDefault": 10 },
+  "cities": [
+    { "slug": "college-station", "name": "College Station", "hook": "Aggieland / Texas A&M; ~40k-student fall-to-summer business swing; Northgate; research corridor (biotech, defense, aerospace)" },
+    { "slug": "bryan", "name": "Bryan", "hook": "Other half of the BCS metro; Historic Downtown Bryan revival; more blue-collar/established than CS" },
+    { "slug": "conroe", "name": "Conroe", "hook": "Fastest-growing city in Montgomery County; Lake Conroe; FM 105 vs downtown split" },
+    { "slug": "montgomery-county", "name": "Montgomery County", "hook": "Woodlands corporate corridor + Conroe boomtown + Magnolia ranch-to-suburb; top-10 US growth, unevenly distributed" },
+    { "slug": "tomball", "name": "Tomball", "hook": "Oil & railroad town; Old Town Main Street; Grand Parkway 99 corridor pulling development away from downtown; German Festival" },
+    { "slug": "magnolia", "name": "Magnolia", "hook": "Ranch country going suburban; FM 1488 growth corridor" },
+    { "slug": "manor", "name": "Manor", "hook": "Fast-growing Austin-metro exurb east of Austin" }
+  ],
+  "services": [
+    { "slug": "web-apps", "name": "custom web apps", "path": "/services/web-apps" },
+    { "slug": "ai-tools", "name": "AI tools & automation", "path": "/services/ai-tools" },
+    { "slug": "ecommerce", "name": "eCommerce", "path": "/services/ecommerce" },
+    { "slug": "marketing", "name": "digital marketing & local SEO", "path": "/services/marketing" }
+  ],
+  "industries": [
+    { "slug": "hvac", "name": "HVAC & home services", "path": "/industries/hvac" },
+    { "slug": "plumbing-electrical", "name": "plumbing & electrical", "path": "/industries/plumbing-electrical" },
+    { "slug": "cleaning", "name": "cleaning & pest control", "path": "/industries/cleaning" },
+    { "slug": "contractors", "name": "contractors & remodeling", "path": "/industries/contractors" },
+    { "slug": "auto", "name": "auto repair & detailing", "path": "/industries/auto" },
+    { "slug": "lawn-care", "name": "lawn care & landscaping", "path": "/industries/lawn-care" },
+    { "slug": "law", "name": "law offices", "path": "/industries/law" },
+    { "slug": "restaurants", "name": "restaurants & food service", "path": "/industries/restaurants" },
+    { "slug": "chambers-of-commerce", "name": "chambers of commerce", "path": "/industries/chambers-of-commerce" },
+    { "slug": "medical", "name": "medical & dental practices", "path": "/industries/medical" }
+  ],
+  "formats": [
+    { "key": "cost-guide", "titlePattern": "How Much Does a [Service] Cost in [City]? (2026)", "category": "problem-solution", "priority": 1 },
+    { "key": "industry-city", "titlePattern": "[Service] for [Industry] in [City]", "category": "industry", "priority": 2 },
+    { "key": "service-city", "titlePattern": "[Service] in [City]: What Local Businesses Need to Know", "category": "problem-solution", "priority": 3 },
+    { "key": "comparison", "titlePattern": "Custom-Built vs. Off-the-Shelf: [Service] for [City] Businesses", "category": "problem-solution", "priority": 4 },
+    { "key": "faq-hub", "titlePattern": "[Service] in [City]: Frequently Asked Questions", "category": "problem-solution", "priority": 5 },
+    { "key": "how-to", "titlePattern": "How [City] [Industry] Businesses Can [Outcome] (Step-by-Step)", "category": "process", "priority": 6 }
+  ]
+}

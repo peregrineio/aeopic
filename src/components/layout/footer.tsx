@@ -8,8 +8,8 @@ import { ChamberBadge } from "./chamber-badge";
 const services = [
   { label: "Custom Web Apps", href: "/services/web-apps" },
   { label: "AI Integrated Operating Systems", href: "/services/ai-tools" },
+  { label: "Custom AI Agents", href: "/services/ai-agents" },
   { label: "Marketing & SEO", href: "/services/marketing" },
-  { label: "eCommerce", href: "/services/ecommerce" },
 ];
 
 const industries = [

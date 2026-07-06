@@ -100,8 +100,8 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="text-lg md:text-xl lg:text-2xl text-white/70 max-w-2xl mx-auto mb-10 lg:mb-12 font-light leading-relaxed"
           >
-            Custom web applications, AI integrated operating systems, marketing that converts,
-            and eCommerce that scales — built by engineers who ship.
+            Custom web applications, AI agents, intelligent operating systems, and marketing
+            that converts — built by engineers who ship.
           </motion.p>
 
           {/* CTA Buttons */}

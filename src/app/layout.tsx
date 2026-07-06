@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     template: "%s | Aeopic",
   },
   description:
-    "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
+    "Custom web apps, AI agents, and marketing solutions. Houston-based. Remote-friendly.",
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png" }],
     apple: "/favicon.png",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Aeopic | AI Software Development & Custom Web Apps | Houston, TX",
     description:
-      "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
+      "Custom web apps, AI agents, and marketing solutions. Houston-based. Remote-friendly.",
     url: "https://aeopic.com",
     siteName: "Aeopic",
     locale: "en_US",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Aeopic | AI Software Development Houston",
     description:
-      "Custom web apps, AI tools, marketing & eCommerce. Houston-based. Remote-friendly.",
+      "Custom web apps, AI agents, and marketing solutions. Houston-based. Remote-friendly.",
     site: "@aeopic",
     // Images handled by opengraph-image.tsx
   },
