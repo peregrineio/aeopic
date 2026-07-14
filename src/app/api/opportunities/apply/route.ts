@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isRoleFilled } from "@/lib/role-filled";
 import { Resend } from "resend";
 import {
   employeeApplicationSchema,
@@ -88,6 +89,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, message: "Server error" },
         { status: 500 }
+      );
+    }
+    // ⚖️ Filled roles reject server-side too — the hidden form is not the gate
+    if (listing && isRoleFilled(listing.slug)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "This role is currently filled and not accepting applications.",
+        },
+        { status: 403 }
       );
     }
     if (!listing || listing.engagement_type !== data.engagement_type) {

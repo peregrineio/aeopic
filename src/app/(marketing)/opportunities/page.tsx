@@ -4,6 +4,7 @@ import {
   getActiveListingCount,
   getActiveListings,
 } from "@/lib/opportunities";
+import { sortWithOdrFirst } from "@/lib/role-filled";
 import { OpportunitiesHero } from "@/components/opportunities/hero";
 import { OpportunitiesFilterBar } from "@/components/opportunities/filter-bar";
 import { OpportunitiesJsonLd } from "@/components/opportunities/schema-json-ld";
@@ -20,10 +21,12 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function OpportunitiesPage() {
-  const [listings, count] = await Promise.all([
+  const [rawListings, count] = await Promise.all([
     getActiveListings(),
     getActiveListingCount(),
   ]);
+  // ODR pinned to the top of the careers list (Prompt 32)
+  const listings = sortWithOdrFirst(rawListings);
 
   return (
     <main className="bg-[#08080F]">

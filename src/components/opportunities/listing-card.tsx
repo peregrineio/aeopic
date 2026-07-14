@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { OpportunityListing } from "@/lib/types/opportunities";
 
+import { isRoleFilled } from "@/lib/role-filled";
+
 interface ListingCardProps {
   listing: OpportunityListing;
   index: number;
@@ -16,6 +18,17 @@ function formatComp(listing: OpportunityListing): {
   secondary: string | null;
 } {
   const { salary_min, salary_max, salary_type } = listing;
+  // Max-only = unguaranteed ceiling ("Up to") — used for commission-only
+  // roles where a min would read as a wage floor (legal review 2026-07-14)
+  if (!salary_min && salary_max) {
+    return {
+      primary:
+        salary_type === "hourly"
+          ? `Up to $${salary_max}/hr`
+          : `Up to ${compactMoney(salary_max)}`,
+      secondary: listing.compensation_notes,
+    };
+  }
   if (salary_min && salary_max) {
     if (salary_type === "hourly") {
       return {
@@ -62,6 +75,7 @@ function truncate(text: string, max = 170): string {
 
 export function ListingCard({ listing, index }: ListingCardProps) {
   const isEmployee = listing.engagement_type === "employee";
+  const filled = isRoleFilled(listing.slug);
   const accent = isEmployee ? "#726AFF" : "#FBBF24";
   const comp = formatComp(listing);
   const excerpt = truncate(
@@ -100,6 +114,11 @@ export function ListingCard({ listing, index }: ListingCardProps) {
             >
               {isEmployee ? "W-2 Employee" : "1099 Contract"}
             </span>
+            {filled && (
+              <span className="px-2.5 py-1 rounded-md font-medium bg-red-500/15 text-red-400">
+                Role Currently Filled
+              </span>
+            )}
             <span className="text-white/35">{listing.department}</span>
             <span className="text-white/15">·</span>
             <span className="text-white/35">

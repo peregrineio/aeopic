@@ -1,39 +1,30 @@
-# Session Snapshot — 2026-06-17 15:40 CDT
-**Agent:** Orchestrator (cwd: root workspace)
-**Project:** Aeopic Website (`projects/Aeopic/website/`, repo: peregrineio/aeopic — Next.js 16 + MDX/Velite)
+# Session Snapshot — 2026-07-12 23:45 CDT
+**Agent:** Orchestrator (root workspace → aeopic-doc-agent)
+**Project:** Aeopic LLC — Legal Docs / Ella Beahm Onboarding
 **Workspace:** Peregrine IO root
 
 ## Where we are
-GEO content system fully built — both skills (`/geo-blog`, `/new-geo-project`), config + backlog files, and master process doc are done. Aeopic is `/geo-blog`-ready. NDA for independent caller delivered as PDF + HTML source. Opportunities page live with sales-team roles (SDR, AM, AE, CSM). SEO foundation complete (canonical bug fixed, unique metadata on all pages, Bing + GSC connected, sitemap 45 pages).
+Applied GPT's 6 final revisions to Ella's NDA + ICA (v4 Final), completed her address (Parker, CO 80134), wired up SignatureAPI send script in aeopic-doc-agent, and sent both docs via SignatureAPI. Envelope live — Ella signs first, then Sam co-signs.
 
 ## What's next (exact next step)
-1. Run `/geo-blog college-station` to kick off the pilot batch — first real GEO posts.
-2. Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel (still empty — blocks /opportunities Apply forms).
-3. Review Bing Site Scan results when available.
+1. Wait for Ella to sign (envelope `557ac500-e7df-418a-9e3e-70aebc2b2e81`). Sam co-signs after.
+2. After both sign → move envelope log to `contracts/signed/`, update info.md checklist, collect W-9.
+3. Attorney review of classification still pending — the one remaining YELLOW flag before Ella starts calling.
+4. GEO content: run `/geo-blog college-station` for the pilot batch whenever ready.
 
 ## Files currently being edited
 - None actively open
 
-## Key files from this session
-- `geo-content/config.json` — Aeopic's GEO site config (brand, frontmatter schema, data sources, publish settings)
-- `geo-content/backlog.json` — matrix: 7 cities × 4 services × 10 industries × 6 formats, pilotCity=college-station
-- `.claude/skills/geo-blog/SKILL.md` — config-driven multi-site blog post generator
-- `.claude/skills/new-geo-project/SKILL.md` — study-first site setup skill
-- `project-manager/processes/geo-content-system.md` — master flow reference doc
-- `projects/Aeopic/legal-docs/Aeopic-Caller-NDA.pdf` + `.html` — NDA for independent callers
-
 ## Open questions Sam hasn't answered
-- NDA entity: drafted under Aeopic LLC — confirm if correct or should be Peregrine IO
-- Legal agent review: offered to route NDA for compliance pass — no response yet
+- Attorney review of IC classification — strongly recommended before Ella starts (2026-07-13 commencement date)
 
 ## Blockers
-- `SUPABASE_SERVICE_ROLE_KEY` still empty in Vercel — Apply forms on /opportunities won't work until added
-- Bing site scan results pending
+- `SUPABASE_SERVICE_ROLE_KEY` still empty in Vercel — /opportunities Apply forms won't work
+- Background check vendor not selected (§6 blocks lead/CRM/dialer access unless waived in writing)
 
 ## Anything Sam needs to remember
-- **Vercel project for aeopic.com** = `aeopic` under **"peregrine io's projects"** team, deploys from `peregrineio/aeopic`. NOT the "Aeopic" team.
-- **Never** set a layout-level `canonical` — pages self-canonicalize. Root title template appends "| Aeopic".
-- Supabase project: `dhavmrdnnfcjckzlkhnn` ("Official Aeopic"). Editing `src/lib/chat/knowledgeBase.ts` requires `npm run chat:embeddings` after.
-- GEO pilot plan: ~30 posts for College Station first → measure 6-8 weeks → scale to remaining 6 cities
-- NDA fill-in fields (blue): [EFFECTIVE DATE], [RECIPIENT NAME], [RECIPIENT ADDRESS]. Non-solicitation = 12 months, confidentiality = 2 years.
-- Design language: mono microlabels, ruled ledgers, outline-stroke type, dark terminal/artifact windows, square purple CTAs.
+- Ella is in **Colorado** (Parker, CO 80134) — NOT Virginia. Classification analysis should be under CO law.
+- SignatureAPI plan blocks URLs/emails in message fields — stripped `admin@aeopic.com` from envelope message.
+- Envelope logged to `aeopic-doc-agent/contracts/pending/ella-beahm_nda-ica_envelope.json`
+- v4 revisions: liability cap narrowed, Go-Live sequenced after Closed Deal, change orders tied to 120-day tail, non-solicit narrowed to material contact, Startup Fee defined, statement/deferred payment clarity added.
+- Master NDA template also updated with the non-solicit narrowing.

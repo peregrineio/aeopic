@@ -13,6 +13,7 @@ import { ListingSidebar } from "@/components/opportunities/listing-sidebar";
 import { OpportunitiesJsonLd } from "@/components/opportunities/schema-json-ld";
 import { EmployeeApplicationForm } from "@/components/opportunities/employee-form";
 import { ContractorProposalForm } from "@/components/opportunities/contractor-form";
+import { isRoleFilled } from "@/lib/role-filled";
 
 export const revalidate = 3600;
 
@@ -47,10 +48,13 @@ function formatSalary(
   max: number | null,
   type: string | null
 ) {
-  if (!min || !max) return null;
+  if (!max) return null;
   const fmt = (v: number) => v.toLocaleString("en-US");
   const suffix =
     type === "annual" ? "/year" : type === "hourly" ? "/hour" : "";
+  // Max-only = unguaranteed ceiling for commission-only roles — never
+  // render a floor that reads as a wage guarantee (legal review 2026-07-14)
+  if (!min) return `Up to $${fmt(max)}${suffix}`;
   return `$${fmt(min)} – $${fmt(max)}${suffix}`;
 }
 
@@ -77,17 +81,23 @@ export default async function ListingDetailPage({
 
   const isEmployee = listing.engagement_type === "employee";
 
+  // Contractor roles with salary fields set (e.g. commission-only "Up to
+  // $X") render those; the Project-based/Hourly label is the fallback only
+  const salaryLabel = formatSalary(
+    listing.salary_min,
+    listing.salary_max,
+    listing.salary_type
+  );
   const compensation = isEmployee
-    ? formatSalary(listing.salary_min, listing.salary_max, listing.salary_type)
-    : `${listing.salary_type === "project" ? "Project-based" : "Hourly"}${
+    ? salaryLabel
+    : salaryLabel ??
+      `${listing.salary_type === "project" ? "Project-based" : "Hourly"}${
         listing.estimated_duration ? ` · Est. ${listing.estimated_duration}` : ""
       }`;
 
   const sidebarComp =
     (compensation ?? "") +
-    (isEmployee && listing.compensation_notes
-      ? ` ${listing.compensation_notes}`
-      : "");
+    (listing.compensation_notes ? ` ${listing.compensation_notes}` : "");
 
   return (
     <main className="bg-background">
@@ -243,8 +253,19 @@ export default async function ListingDetailPage({
           </p>
         </div>
 
-        {/* Application form (Prompt 6 / 7) */}
-        {isEmployee ? (
+        {/* Application form — hidden entirely while the role is filled
+            (2026-07-12 punch list; server-side reject in the apply API too) */}
+        {isRoleFilled(listing.slug) ? (
+          <div className="mt-12 rounded-2xl border border-red-500/25 bg-red-500/5 p-8 text-center">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-red-400 mb-2">
+              Role Currently Filled
+            </p>
+            <p className="text-sm text-[#8888A0] max-w-xl mx-auto">
+              We&apos;re not accepting applications for this position right
+              now. Check back — openings are posted here first.
+            </p>
+          </div>
+        ) : isEmployee ? (
           <div id="employee-application-form" className="mt-12 scroll-mt-24">
             <EmployeeApplicationForm
               listingId={listing.id}
