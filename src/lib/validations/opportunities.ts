@@ -51,6 +51,12 @@ export const employeeApplicationSchema = z.object({
 export const contractorProposalSchema = z.object({
   ...sharedBase,
   engagement_type: z.literal("contractor"),
+  // Optional here so generic proposals still validate; the sales application
+  // form requires them client-side via salesApplicationSchema below
+  phone: phoneSchema,
+  applicant_state: stateSchema.optional().or(z.literal("")),
+  sales_english_ack: z.boolean().optional(),
+  commission_only_ack: z.boolean().optional(),
   portfolio_url: z
     .string()
     .trim()
@@ -79,8 +85,28 @@ export const contractorProposalSchema = z.object({
   ),
 });
 
+/**
+ * Sales-role (SDR) 1099 application — same wire format as a contractor
+ * proposal, but phone/state are required and the two legally-worded
+ * screeners (legal review 2026-07-10) must be affirmed.
+ */
+export const salesApplicationSchema = contractorProposalSchema.extend({
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[\d().+\-\s]{7,20}$/u, "Enter a valid phone number"),
+  applicant_state: stateSchema,
+  sales_english_ack: acknowledgedTrue(
+    "This role requires conducting professional sales calls in fluent English"
+  ),
+  commission_only_ack: acknowledgedTrue(
+    "You must acknowledge this is a commission-only role"
+  ),
+});
+
 export type EmployeeApplicationInput = z.infer<typeof employeeApplicationSchema>;
 export type ContractorProposalInput = z.infer<typeof contractorProposalSchema>;
+export type SalesApplicationInput = z.infer<typeof salesApplicationSchema>;
 
 export type ApplicationInput =
   | EmployeeApplicationInput

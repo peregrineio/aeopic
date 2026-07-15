@@ -135,13 +135,26 @@ export async function POST(request: NextRequest) {
         at_will_acknowledged: data.at_will_acknowledged,
       };
     } else {
+      // Screener affirmations (sales/SDR applications) are recorded on the
+      // row — checkbox-gated client-side, but the stored record is the point
+      const screenerNote =
+        data.sales_english_ack || data.commission_only_ack
+          ? `Screeners affirmed: fluent-English sales calls=${
+              data.sales_english_ack ? "yes" : "no"
+            }; commission-only (no base pay, none guaranteed)=${
+              data.commission_only_ack ? "yes" : "no"
+            }`
+          : null;
       insertPayload = {
         ...baseInsert,
+        phone: data.phone || null,
+        applicant_state: data.applicant_state || null,
         portfolio_url: data.portfolio_url || null,
         rate_range: data.rate_range || null,
         availability: data.availability,
         project_interest: data.project_interest,
         ic_acknowledged: data.ic_acknowledged,
+        notes: screenerNote,
       };
     }
 
