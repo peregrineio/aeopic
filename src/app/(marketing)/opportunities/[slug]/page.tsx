@@ -13,6 +13,7 @@ import { ListingSidebar } from "@/components/opportunities/listing-sidebar";
 import { OpportunitiesJsonLd } from "@/components/opportunities/schema-json-ld";
 import { EmployeeApplicationForm } from "@/components/opportunities/employee-form";
 import { ContractorProposalForm } from "@/components/opportunities/contractor-form";
+import { SalesApplicationForm } from "@/components/opportunities/sales-application-form";
 import { isRoleFilled } from "@/lib/role-filled";
 
 export const revalidate = 3600;
@@ -268,6 +269,15 @@ export default async function ListingDetailPage({
         ) : isEmployee ? (
           <div id="employee-application-form" className="mt-12 scroll-mt-24">
             <EmployeeApplicationForm
+              listingId={listing.id}
+              listingTitle={listing.title}
+            />
+          </div>
+        ) : listing.department === "Sales" ? (
+          /* Sales-department 1099 roles (SDR) get a real application form —
+             the generic proposal form reads as freelance-project intake */
+          <div id="sales-application-form" className="mt-12 scroll-mt-24">
+            <SalesApplicationForm
               listingId={listing.id}
               listingTitle={listing.title}
             />
