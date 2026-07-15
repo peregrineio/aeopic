@@ -4,13 +4,22 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Share2, ArrowRight } from "lucide-react";
 
+type FormVariant = "employee" | "sales" | "contractor";
+
 interface SidebarProps {
   title: string;
   compensationLine: string;
-  isEmployee: boolean;
+  variant: FormVariant;
+  filled?: boolean;
   postedAt: string | null;
   closesAt: string | null;
 }
+
+const FORM_TARGETS: Record<FormVariant, { id: string; label: string }> = {
+  employee: { id: "employee-application-form", label: "Apply Now" },
+  sales: { id: "sales-application-form", label: "Submit Application" },
+  contractor: { id: "contractor-proposal-form", label: "Submit Proposal" },
+};
 
 function fmtDate(iso: string | null): string {
   if (!iso) return "—";
@@ -24,15 +33,13 @@ function fmtDate(iso: string | null): string {
 export function ListingSidebar({
   title,
   compensationLine,
-  isEmployee,
+  variant,
+  filled = false,
   postedAt,
   closesAt,
 }: SidebarProps) {
   function scrollToForm() {
-    const id = isEmployee
-      ? "employee-application-form"
-      : "contractor-proposal-form";
-    const el = document.getElementById(id);
+    const el = document.getElementById(FORM_TARGETS[variant].id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
       const firstField = el.querySelector<HTMLElement>("input, select, textarea, button");
@@ -57,15 +64,27 @@ export function ListingSidebar({
           {compensationLine}
         </p>
 
-        <Button
-          type="button"
-          onClick={scrollToForm}
-          className="mt-5 w-full bg-[#726AFF] hover:bg-[#5B54D6]"
-          size="lg"
-        >
-          {isEmployee ? "Apply Now" : "Submit Proposal"}
-          <ArrowRight className="ml-2 size-4" />
-        </Button>
+        {filled ? (
+          <Button
+            type="button"
+            disabled
+            className="mt-5 w-full"
+            variant="secondary"
+            size="lg"
+          >
+            Role Currently Filled
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={scrollToForm}
+            className="mt-5 w-full bg-[#726AFF] hover:bg-[#5B54D6]"
+            size="lg"
+          >
+            {FORM_TARGETS[variant].label}
+            <ArrowRight className="ml-2 size-4" />
+          </Button>
+        )}
 
         <Button
           type="button"

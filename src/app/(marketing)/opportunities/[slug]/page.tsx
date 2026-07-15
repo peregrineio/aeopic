@@ -226,7 +226,14 @@ export default async function ListingDetailPage({
             <ListingSidebar
               title={listing.title}
               compensationLine={sidebarComp}
-              isEmployee={isEmployee}
+              variant={
+                isEmployee
+                  ? "employee"
+                  : listing.department === "Sales"
+                    ? "sales"
+                    : "contractor"
+              }
+              filled={isRoleFilled(listing.slug)}
               postedAt={listing.posted_at}
               closesAt={listing.closes_at}
             />
